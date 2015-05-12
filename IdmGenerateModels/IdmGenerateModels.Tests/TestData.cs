@@ -222,6 +222,113 @@ namespace IdmNet.Models
 }
 ";
 
+        public const string BindingWithDifferentDisplayName = @"
+        /// <summary>
+        /// Binding Display Name - First Choice for Summary Part II
+        /// </summary>
+        [Required]
+        public string PropertyName
+        {
+            get { return GetAttrValue(""PropertyName""); }
+            set {
+                var regEx = new RegEx(""*."");
+                if (!regEx.IsMatch(value))
+                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression '*.'"");
+                SetAttrValue(""PropertyName"", value); 
+            }
+        }
+
+";
+
+        public const string BindingWithDifferentDescription = @"
+        /// <summary>
+        /// First Choice for Summary Part I - Binding Description
+        /// </summary>
+        [Required]
+        public string PropertyName
+        {
+            get { return GetAttrValue(""PropertyName""); }
+            set {
+                var regEx = new RegEx(""*."");
+                if (!regEx.IsMatch(value))
+                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression '*.'"");
+                SetAttrValue(""PropertyName"", value); 
+            }
+        }
+
+";
+
+        public const string BindingNotRequired = @"
+        /// <summary>
+        /// First Choice for Summary Part I - First Choice for Summary Part II
+        /// </summary>
+        public string PropertyName
+        {
+            get { return GetAttrValue(""PropertyName""); }
+            set {
+                var regEx = new RegEx(""*."");
+                if (!regEx.IsMatch(value))
+                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression '*.'"");
+                SetAttrValue(""PropertyName"", value); 
+            }
+        }
+
+";
+
+        public const string StringAttributeWithDifferentPropertyName = @"
+        /// <summary>
+        /// First Choice for Summary Part I - First Choice for Summary Part II
+        /// </summary>
+        [Required]
+        public string PropertyName2
+        {
+            get { return GetAttrValue(""PropertyName2""); }
+            set {
+                var regEx = new RegEx(""*."");
+                if (!regEx.IsMatch(value))
+                    throw new ArgumentException(""Invalid value for PropertyName2.  Must match regular expression '*.'"");
+                SetAttrValue(""PropertyName2"", value); 
+            }
+        }
+
+";
+
+        public const string StringAttributeWithoutBindingDisplayName = @"
+        /// <summary>
+        /// Second Choice for Summary Part I - First Choice for Summary Part II
+        /// </summary>
+        [Required]
+        public string PropertyName
+        {
+            get { return GetAttrValue(""PropertyName""); }
+            set {
+                var regEx = new RegEx(""*."");
+                if (!regEx.IsMatch(value))
+                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression '*.'"");
+                SetAttrValue(""PropertyName"", value); 
+            }
+        }
+
+";
+
+        public const string StringAttributeWithoutABindingDescription = @"
+        /// <summary>
+        /// First Choice for Summary Part I - Second Choice for Summary Part II
+        /// </summary>
+        [Required]
+        public string PropertyName
+        {
+            get { return GetAttrValue(""PropertyName""); }
+            set {
+                var regEx = new RegEx(""*."");
+                if (!regEx.IsMatch(value))
+                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression '*.'"");
+                SetAttrValue(""PropertyName"", value); 
+            }
+        }
+
+";
+
         public const string StringAttributeWithAllStringFieldsPopulated = @"
         /// <summary>
         /// First Choice for Summary Part I - First Choice for Summary Part II
@@ -233,12 +340,13 @@ namespace IdmNet.Models
             set {
                 var regEx = new RegEx(""*."");
                 if (!regEx.IsMatch(value))
-                    throw new ArgumentException(""Invalid value for Propertyname.  Must match regular expression '*.'"");
+                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression '*.'"");
                 SetAttrValue(""PropertyName"", value); 
             }
         }
 
 ";
+
     }
 
 
