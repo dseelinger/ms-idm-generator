@@ -27,11 +27,15 @@ namespace IdmNet.Models
         /// </summary>
         /// <param name=""resource"">base class</param>
         public Foo(IdmResource resource)
-            : base(resource)
         {
             ObjectType = ForcedObjType = ""Foo"";
-            Clone(resource);
+            Attributes = resource.Attributes;
+            if (resource.Creator == null)
+                return;
+            Creator = resource.Creator;
         }
+
+        readonly string ForcedObjType;
 
         /// <summary>
         /// Object Type (can only be Foo)
@@ -329,6 +333,21 @@ namespace IdmNet.Models
 
 ";
 
+        public const string StringAttributeWithoutRegEx= @"
+        /// <summary>
+        /// First Choice for Summary Part I - First Choice for Summary Part II
+        /// </summary>
+        [Required]
+        public string PropertyName
+        {
+            get { return GetAttrValue(""PropertyName""); }
+            set {
+                SetAttrValue(""PropertyName"", value); 
+            }
+        }
+
+";
+
         public const string StringAttributeWithAllStringFieldsPopulated = @"
         /// <summary>
         /// First Choice for Summary Part I - First Choice for Summary Part II
@@ -343,6 +362,32 @@ namespace IdmNet.Models
                     throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression '*.'"");
                 SetAttrValue(""PropertyName"", value); 
             }
+        }
+
+";
+
+        public const string BoolAttribute = @"
+        /// <summary>
+        /// Boolean Attrbute - A boolean attribute
+        /// </summary>
+        [Required]
+        public bool? PropertyName
+        {
+            get { return AttrToBool(""PropertyName""); }
+            set { SetAttrValue(""PropertyName"", value.ToString()); }
+        }
+
+";
+
+        public const string IntegerAttribute = @"
+        /// <summary>
+        /// Integer Attrbute - An integer attribute
+        /// </summary>
+        [Required]
+        public int? PropertyName
+        {
+            get { return AttrToBool(""PropertyName""); }
+            set { SetAttrValue(""PropertyName"", value.ToString()); }
         }
 
 ";

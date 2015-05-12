@@ -11,9 +11,10 @@ namespace IdmGenerateModels
 {
     class Program
     {
-        private static IdmNetClient _client;
+        public static IdmNetClient Client;
+        public static string TargetDirectoryPath;
 
-        static void Main()
+        public static void Main()
         {
             MainAsync().Wait();
 
@@ -21,24 +22,22 @@ namespace IdmGenerateModels
             Console.ReadLine();
         }
 
-        private static async Task MainAsync()
+        public static async Task MainAsync()
         {
-            _client = IdmNetClientFactory.BuildClient();
+            Client = IdmNetClientFactory.BuildClient();
 
             var objectTypeResource = await GetObjectTypes();
 
-            var allSchemaObjects = await GetSchema(objectTypeResource);
-
-            GenerateCode(allSchemaObjects);
+            await GenerateCode(objectTypeResource);
         }
 
         
-        private static async Task<IEnumerable<IdmResource>> GetObjectTypes()
+        public static async Task<IEnumerable<IdmResource>> GetObjectTypes()
         {
             Console.WriteLine("Querying Object Types.");
             var objectTypeResource =
                 await
-                    _client.SearchAsync(new SearchCriteria("/ObjectTypeDescription[Name='BindingDescription']")
+                    Client.SearchAsync(new SearchCriteria("/ObjectTypeDescription")
                     {
                         Selection = new List<string> { "Name" }
                     });
@@ -46,46 +45,47 @@ namespace IdmGenerateModels
         }
 
 
-        private static async Task<List<ObjectTypeDescription>> GetSchema(IEnumerable<IdmResource> objectTypeResource)
-        {
-            var allSchemaObjects = new List<ObjectTypeDescription>();
-            foreach (var idmResource in objectTypeResource)
-            {
-                var objTypeName = idmResource.GetAttrValue("Name");
-                Console.WriteLine("Getting Schema for ObjectTypeDescription: [{0}]", objTypeName);
-                var objectType = await _client.GetSchemaAsync(objTypeName);
-                allSchemaObjects.Add(objectType);
-            }
-            return allSchemaObjects;
-        }
-
-
-        private static void GenerateCode(List<ObjectTypeDescription> allSchemaObjects)
+        public static async Task<int> GenerateCode(IEnumerable<IdmResource> objectTypeResource)
         {
             ClearOutputDirectory();
 
-            foreach (var objectTypeDescription in allSchemaObjects)
+            foreach (var idmResource in objectTypeResource)
             {
-                Console.WriteLine("Generating model and tests for [{0}]", objectTypeDescription.Name);
-                GenerateModelAndTests(objectTypeDescription);
+                var objectType = await GetSchema(idmResource);
+
+                Console.WriteLine("Generating model and tests for [{0}]", objectType.Name);
+                GenerateModelAndTests(objectType);
             }
+            return 1;
         }
 
-        private static void ClearOutputDirectory()
+        public static async Task<ObjectTypeDescription> GetSchema(IdmResource idmResource)
         {
-            var targetDirectoryPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\output\";
-            if (Directory.Exists(targetDirectoryPath))
-            {
-                Directory.Delete(targetDirectoryPath, true);
-            }
-            Directory.CreateDirectory(targetDirectoryPath);
+            var objTypeName = idmResource.GetAttrValue("Name");
+            Console.WriteLine("Getting Schema for ObjectTypeDescription: [{0}]", objTypeName);
+            var objectType = await Client.GetSchemaAsync(objTypeName);
+            return objectType;
         }
 
 
-        private static void GenerateModelAndTests(ObjectTypeDescription objectTypeDescription)
+        public static void ClearOutputDirectory()
+        {
+            TargetDirectoryPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\output\";
+            if (Directory.Exists(TargetDirectoryPath))
+            {
+                Directory.Delete(TargetDirectoryPath, true);
+            }
+            Directory.CreateDirectory(TargetDirectoryPath);
+        }
+
+
+        public static void GenerateModelAndTests(ObjectTypeDescription objectTypeDescription)
         {
             IdmCodeGenerator generator = new IdmCodeGenerator(objectTypeDescription);
-            generator.Generate();
+            var classString = generator.Generate();
+
+            var classFile = string.Format(@"{0}{1}.cs", TargetDirectoryPath, objectTypeDescription.Name);
+            File.WriteAllText(classFile, classString);
         }
     }
 }

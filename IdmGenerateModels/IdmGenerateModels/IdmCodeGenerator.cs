@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Text;
 using IdmNet.Models;
 
 namespace IdmGenerateModels
@@ -14,35 +16,90 @@ namespace IdmGenerateModels
 
         public string Generate()
         {
+            var attrSb = GenerateAttributes();
+
             return String.Format(Templates.ClassTemplate, _objectTypeDescription.Name,
-                _objectTypeDescription.Description, null, null, null);
+                _objectTypeDescription.Description, null, null, attrSb);
+        }
+
+        public StringBuilder GenerateAttributes()
+        {
+            var attrSb = new StringBuilder();
+
+            var attrsToSkip = new[]
+            {
+                "ObjectID", "ObjectType", "CreatedTime", "Creator", "DeletedTime", "Description", "DetectedRulesList",
+                "DisplayName", "ExpectedRulesList", "ExpirationTime", "Locale", "MVObjectID", "ResourceTime"
+            };
+
+            var bindingsToGenerate =
+                _objectTypeDescription.BindingDescriptions.Where(b => !(attrsToSkip.Contains(b.BoundAttributeType.Name)));
+
+            foreach (var bindingDescription in bindingsToGenerate)
+            {
+                attrSb.Append(GenerateProperty(bindingDescription));
+            }
+            return attrSb;
         }
 
         public string GenerateProperty(BindingDescription bindingDescription)
         {
-            var required = GetRequired(bindingDescription);
+            string prop = "";
+            if (bindingDescription.BoundAttributeType.Multivalued)
+            {
+                
+            }
+            else
+            {
+                prop = GenerateSingleValuedProperty(bindingDescription, prop);
+            }
+            return prop;
+        }
 
-            var regEx = GetRegEx(bindingDescription);
+        public static string GenerateSingleValuedProperty(BindingDescription bindingDescription, string prop)
+        {
+            switch (bindingDescription.BoundAttributeType.DataType)
+            {
+                case "String":
+                    prop = GenerateSingleValuedStringProperty(bindingDescription);
+                    break;
+                case "Boolean":
+                case "Integer":
+                    prop = GenerateSingleValuedValueProperty(bindingDescription);
+                    break;
+            }
+            return prop;
+        }
 
-            var propertyFormat = @"
-        /// <summary>
-        /// {0} - {1}
-        /// </summary>
-        {2}public string {3}
-        {{
-            get {{ return GetAttrValue(""{3}""); }}
-            set {{
-                {4}SetAttrValue(""{3}"", value); 
-            }}
-        }}
-
-";
-            return String.Format(propertyFormat,
-                bindingDescription.DisplayName ?? bindingDescription.BoundAttributeType.DisplayName,
-                bindingDescription.Description ?? bindingDescription.BoundAttributeType.Description, 
-                required, 
+        public static string GenerateSingleValuedValueProperty(BindingDescription bindingDescription)
+        {
+            string typeString = bindingDescription.BoundAttributeType.DataType == "Boolean" ? "bool?" : "int?";
+            return String.Format(Templates.SingleValuedValueFormat,
+                GetDisplayName(bindingDescription),
+                GetDescription(bindingDescription),
+                GetRequired(bindingDescription),
                 bindingDescription.BoundAttributeType.Name,
-                regEx);
+                typeString);
+        }
+
+        public static string GenerateSingleValuedStringProperty(BindingDescription bindingDescription)
+        {
+            return String.Format(Templates.SingleValuedStringFormat,
+                GetDisplayName(bindingDescription),
+                GetDescription(bindingDescription),
+                GetRequired(bindingDescription),
+                bindingDescription.BoundAttributeType.Name,
+                GetRegEx(bindingDescription));
+        }
+
+        private static string GetDescription(BindingDescription bindingDescription)
+        {
+            return bindingDescription.Description ?? bindingDescription.BoundAttributeType.Description;
+        }
+
+        private static string GetDisplayName(BindingDescription bindingDescription)
+        {
+            return bindingDescription.DisplayName ?? bindingDescription.BoundAttributeType.DisplayName;
         }
 
         private static string GetRegEx(BindingDescription bindingDescription)

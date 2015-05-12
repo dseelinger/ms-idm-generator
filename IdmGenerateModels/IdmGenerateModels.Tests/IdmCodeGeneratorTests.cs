@@ -14,7 +14,8 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(new ObjectTypeDescription
             {
                 Name = "Foo",
-                Description = "Bar"
+                Description = "Bar",
+                BindingDescriptions = new List<BindingDescription>()
             });
 
             // Act
@@ -199,6 +200,35 @@ namespace IdmGenerateModels.Tests
         }
 
         [TestMethod]
+        public void It_generates_the_correct_property_for_a_string_attribute_without_a_regular_expression()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName =
+                    "First Choice for Summary Part I",
+                Description =
+                    "First Choice for Summary Part II",
+                Required = true,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    DataType = "String",
+                    DisplayName = "Second Choice for Summary Part I",
+                    Description = "Second Choice for Summary Part II",
+                    Name = "PropertyName"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            Assert.AreEqual(TestData.StringAttributeWithoutRegEx, result);
+        }
+
+        [TestMethod]
         public void It_generates_the_correct_property_for_a_string_attribute_with_all_string_fields_populated()
         {
             // Arrange
@@ -226,6 +256,64 @@ namespace IdmGenerateModels.Tests
 
             // Assert
             Assert.AreEqual(TestData.StringAttributeWithAllStringFieldsPopulated, result);
+        }
+
+        [TestMethod]
+        public void It_generates_the_correct_property_for_a_boolean()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName =
+                    "Boolean Attrbute",
+                Description =
+                    "A boolean attribute",
+                Required = true,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    DataType = "Boolean",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "PropertyName"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            Assert.AreEqual(TestData.BoolAttribute, result);
+        }
+
+        [TestMethod]
+        public void It_generates_the_correct_property_for_an_integer()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName =
+                    "Integer Attrbute",
+                Description =
+                    "An integer attribute",
+                Required = true,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    DataType = "Integer",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "PropertyName"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            Assert.AreEqual(TestData.IntegerAttribute, result);
         }
 
     }

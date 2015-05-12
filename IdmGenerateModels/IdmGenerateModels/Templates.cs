@@ -2,6 +2,33 @@
 {
     public static class Templates
     {
+
+        public const string SingleValuedStringFormat = @"
+        /// <summary>
+        /// {0} - {1}
+        /// </summary>
+        {2}public string {3}
+        {{
+            get {{ return GetAttrValue(""{3}""); }}
+            set {{
+                {4}SetAttrValue(""{3}"", value); 
+            }}
+        }}
+
+";
+
+        public const string SingleValuedValueFormat = @"
+        /// <summary>
+        /// {0} - {1}
+        /// </summary>
+        {2}public {4} {3}
+        {{
+            get {{ return AttrToBool(""{3}""); }}
+            set {{ SetAttrValue(""{3}"", value.ToString()); }}
+        }}
+
+";
+
         // ObjectType name
         // ObjectType Description
         // privates (if any)
@@ -32,11 +59,15 @@ namespace IdmNet.Models
         /// </summary>
         /// <param name=""resource"">base class</param>
         public {0}(IdmResource resource)
-            : base(resource)
         {{
             ObjectType = ForcedObjType = ""{0}"";
-            Clone(resource);
+            Attributes = resource.Attributes;
+            if (resource.Creator == null)
+                return;
+            Creator = resource.Creator;
         }}
+
+        readonly string ForcedObjType;
 
         /// <summary>
         /// Object Type (can only be {0})
