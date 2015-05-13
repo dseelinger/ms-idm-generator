@@ -72,6 +72,7 @@ namespace IdmGenerateModels
             switch (bindingDescription.BoundAttributeType.DataType)
             {
                 case "String":
+                case "Text":
                     prop = GenerateSingleValuedStringProperty(bindingDescription);
                     break;
                 case "Boolean":
@@ -84,10 +85,23 @@ namespace IdmGenerateModels
                 case "Reference":
                     prop = GenerateSingleValuedReferenceProperty(bindingDescription);
                     break;
+                case "Binary":
+                    prop = GenerateSingleValuedBinaryProperty(bindingDescription);
+                    break;
                 default:
+                    // TODO: Binary is next
                     throw new ApplicationException();
             }
             return prop;
+        }
+
+        private string GenerateSingleValuedBinaryProperty(BindingDescription bindingDescription)
+        {
+            return String.Format(Templates.SingleValuedBinaryFormat,
+                GetDisplayName(bindingDescription),
+                GetDescription(bindingDescription),
+                GetRequired(bindingDescription),
+                bindingDescription.BoundAttributeType.Name);
         }
 
         private string GenerateSingleValuedReferenceProperty(BindingDescription bindingDescription)

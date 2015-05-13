@@ -419,6 +419,7 @@ namespace IdmNet.Models
             }
         }
         private PropertyName _thePropertyName;
+
 ";
 
         public const string StandardReferenceAttributeWhereTypeFoundInJsonFile = @"
@@ -435,6 +436,7 @@ namespace IdmNet.Models
             }
         }
         private ModelType _thePropertyName;
+
 ";
 
         public const string ReferenceAttributeWhereTypeNotFound = @"
@@ -451,6 +453,20 @@ namespace IdmNet.Models
             }
         }
         private IdmResource _thePropertyName2;
+
+";
+
+        public const string BinaryAttribute = @"
+        /// <summary>
+        /// Reference Attrbute - A standard reference attribute
+        /// </summary>
+        [Required]
+        public byte[] PropertyName
+        {
+            get { return GetAttr(""PropertyName"") == null ? null : GetAttr(""PropertyName"").ToBinary(); }
+            set { SetAttrValue(""PropertyName"", value.ToBase64String()); }
+        }
+
 ";
 
     }

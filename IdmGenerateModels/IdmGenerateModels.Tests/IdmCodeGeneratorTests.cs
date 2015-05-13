@@ -464,5 +464,35 @@ namespace IdmGenerateModels.Tests
             // Assert
             Assert.AreEqual(TestData.ReferenceAttributeWhereTypeNotFound, result);
         }
+
+        [TestMethod]
+        public void It_generates_the_correct_property_for_a_binary_attr()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName =
+                    "Reference Attrbute",
+                Description =
+                    "A standard reference attribute",
+                Required = true, 
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    DataType = "Binary",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "PropertyName"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            Assert.AreEqual(TestData.BinaryAttribute, result);
+        }
     }
 }

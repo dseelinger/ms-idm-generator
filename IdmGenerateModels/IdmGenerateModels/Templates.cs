@@ -41,6 +41,18 @@
 
 ";
 
+        public const string SingleValuedBinaryFormat = @"
+        /// <summary>
+        /// {0} - {1}
+        /// </summary>
+        {2}public byte[] {3}
+        {{
+            get {{ return GetAttr(""{3}"") == null ? null : GetAttr(""{3}"").ToBinary(); }}
+            set {{ SetAttrValue(""{3}"", value.ToBase64String()); }}
+        }}
+
+";
+
         public const string SingleValuedReferenceFormat = @"
         /// <summary>
         /// {0} - {1}
@@ -55,6 +67,7 @@
             }}
         }}
         private {3} _the{2};
+
 ";
 
         // ObjectType name
