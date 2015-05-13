@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using IdmNet;
@@ -13,6 +14,7 @@ namespace IdmGenerateModels
     {
         public static IdmNetClient Client;
         public static string TargetDirectoryPath;
+        private static IEnumerable<IdmResource> _objectTypes;
 
         public static void Main()
         {
@@ -26,9 +28,9 @@ namespace IdmGenerateModels
         {
             Client = IdmNetClientFactory.BuildClient();
 
-            var objectTypeResource = await GetObjectTypes();
+            _objectTypes = await GetObjectTypes();
 
-            await GenerateCode(objectTypeResource);
+            await GenerateCode();
         }
 
         
@@ -45,11 +47,11 @@ namespace IdmGenerateModels
         }
 
 
-        public static async Task<int> GenerateCode(IEnumerable<IdmResource> objectTypeResource)
+        public static async Task<int> GenerateCode()
         {
             ClearOutputDirectory();
 
-            foreach (var idmResource in objectTypeResource)
+            foreach (var idmResource in _objectTypes)
             {
                 var objectType = await GetSchema(idmResource);
 
@@ -81,7 +83,8 @@ namespace IdmGenerateModels
 
         public static void GenerateModelAndTests(ObjectTypeDescription objectTypeDescription)
         {
-            IdmCodeGenerator generator = new IdmCodeGenerator(objectTypeDescription);
+            var objTypeNames = from o in _objectTypes select o.GetAttrValue("Name");
+            IdmCodeGenerator generator = new IdmCodeGenerator(objectTypeDescription, objTypeNames);
             var classString = generator.Generate();
 
             var classFile = string.Format(@"{0}{1}.cs", TargetDirectoryPath, objectTypeDescription.Name);

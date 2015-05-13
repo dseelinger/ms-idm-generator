@@ -316,5 +316,153 @@ namespace IdmGenerateModels.Tests
             Assert.AreEqual(TestData.IntegerAttribute, result);
         }
 
+        [TestMethod]
+        public void It_generates_the_correct_property_for_a_dateTime()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName =
+                    "Integer Attrbute",
+                Description =
+                    "An integer attribute",
+                Required = true,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    DataType = "DateTime",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "PropertyName"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            Assert.AreEqual(TestData.DateTimeAttribute, result);
+        }
+
+        [TestMethod]
+        public void It_generates_the_correct_property_for_a_standard_reference_attribute_that_matches_an_object_type_name()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName =
+                    "Reference Attrbute",
+                Description =
+                    "A standard reference attribute",
+                Required = true, // should be ignored - reference attributes can't be required
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    DataType = "Reference",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "PropertyName"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null, new[] { "PropertyName" });
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            Assert.AreEqual(TestData.StandardReferenceAttributeWhereTypeMatchesName, result);
+        }
+
+        [TestMethod]
+        public void It_generates_the_correct_property_for_a_standard_reference_attribute_that_matches_an_item_in_the_json_file()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName =
+                    "Reference Attrbute",
+                Description =
+                    "A standard reference attribute",
+                Required = true, // should be ignored - reference attributes can't be required
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    DataType = "Reference",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "PropertyName"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null, new[] { "foo" },
+                @"[ { ""AttrName"": ""ActionWorkflowInstance"", ""ObjType"": ""WorkflowInstance"" }, { ""AttrName"": ""PropertyName"", ""ObjType"": ""ModelType"" } ]");
+
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            Assert.AreEqual(TestData.StandardReferenceAttributeWhereTypeFoundInJsonFile, result);
+        }
+
+        [TestMethod]
+        public void It_generates_the_correct_property_for_a_standard_reference_attribute_that_matches_an_item_in_the_json_environment_variable()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName =
+                    "Reference Attrbute",
+                Description =
+                    "A standard reference attribute",
+                Required = true, // should be ignored - reference attributes can't be required
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    DataType = "Reference",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "PropertyName"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            Assert.AreEqual(TestData.StandardReferenceAttributeWhereTypeFoundInJsonFile, result);
+        }
+
+        [TestMethod]
+        public void It_generates_the_correct_property_for_a_reference_attribute_doesnt_match_any_object_type()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName =
+                    "Reference Attrbute",
+                Description =
+                    "A standard reference attribute",
+                Required = true, // should be ignored - reference attributes can't be required
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    DataType = "Reference",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "PropertyName2"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            Assert.AreEqual(TestData.ReferenceAttributeWhereTypeNotFound, result);
+        }
     }
 }

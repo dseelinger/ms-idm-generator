@@ -29,6 +29,34 @@
 
 ";
 
+        public const string SingleValuedDateTimeFormat = @"
+        /// <summary>
+        /// {0} - {1}
+        /// </summary>
+        {2}public DateTime? {3}
+        {{
+            get {{ return GetAttr(""{3}"") == null ? null : GetAttr(""{3}"").ToDateTime(); }}
+            set {{ SetAttrValue(""{3}"", value.ToString()); }}
+        }}
+
+";
+
+        public const string SingleValuedReferenceFormat = @"
+        /// <summary>
+        /// {0} - {1}
+        /// </summary>
+        public {3} {2}
+        {{
+            get {{ return GetAttr(""{2}"", _the{2}); }}
+            set 
+            {{ 
+                _the{2} = value;
+                SetAttrValue(""{2}"", ObjectIdOrNull(value)); 
+            }}
+        }}
+        private {3} _the{2};
+";
+
         // ObjectType name
         // ObjectType Description
         // privates (if any)

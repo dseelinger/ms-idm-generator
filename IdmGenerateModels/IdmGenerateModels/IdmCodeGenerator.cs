@@ -1,17 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using IdmNet.Models;
+using Newtonsoft.Json;
 
 namespace IdmGenerateModels
 {
     public class IdmCodeGenerator
     {
         private readonly ObjectTypeDescription _objectTypeDescription;
-
-        public IdmCodeGenerator(ObjectTypeDescription objectTypeDescription)
+        private readonly IEnumerable<string> _objectTypeNames;
+        private readonly List<ReferenceToObjectTypeMap> _referenceMap;
+ 
+        public IdmCodeGenerator(ObjectTypeDescription objectTypeDescription, IEnumerable<string> objectTypeNames = null, string json = null)
         {
             _objectTypeDescription = objectTypeDescription;
+            _objectTypeNames = objectTypeNames;
+
+            if (!string.IsNullOrWhiteSpace(json))
+            {
+                _referenceMap = JsonConvert.DeserializeObject<List<ReferenceToObjectTypeMap>>(json);
+            }
         }
 
         public string Generate()
@@ -51,13 +61,14 @@ namespace IdmGenerateModels
             }
             else
             {
-                prop = GenerateSingleValuedProperty(bindingDescription, prop);
+                prop = GenerateSingleValuedProperty(bindingDescription);
             }
             return prop;
         }
 
-        public static string GenerateSingleValuedProperty(BindingDescription bindingDescription, string prop)
+        public string GenerateSingleValuedProperty(BindingDescription bindingDescription)
         {
+            string prop;
             switch (bindingDescription.BoundAttributeType.DataType)
             {
                 case "String":
@@ -67,8 +78,60 @@ namespace IdmGenerateModels
                 case "Integer":
                     prop = GenerateSingleValuedValueProperty(bindingDescription);
                     break;
+                case "DateTime":
+                    prop = GenerateSingleValuedDateTimeProperty(bindingDescription);
+                    break;
+                case "Reference":
+                    prop = GenerateSingleValuedReferenceProperty(bindingDescription);
+                    break;
+                default:
+                    throw new ApplicationException();
             }
             return prop;
+        }
+
+        private string GenerateSingleValuedReferenceProperty(BindingDescription bindingDescription)
+        {
+            return String.Format(Templates.SingleValuedReferenceFormat,
+                GetDisplayName(bindingDescription),
+                GetDescription(bindingDescription),
+                bindingDescription.BoundAttributeType.Name,
+                GetObjTypeName(bindingDescription));
+        }
+
+        private string GetObjTypeName(BindingDescription bindingDescription)
+        {
+            if (_objectTypeNames != null && _objectTypeNames.Contains(bindingDescription.BoundAttributeType.Name))
+            {
+                return bindingDescription.BoundAttributeType.Name;
+            }
+            if (_referenceMap != null && _referenceMap.Any(r => r.AttrName == bindingDescription.BoundAttributeType.Name))
+            {
+                return (from r in _referenceMap
+                    where r.AttrName == bindingDescription.BoundAttributeType.Name
+                    select r.ObjType).First();
+            }
+            var otherJson = Environment.GetEnvironmentVariable("CUSTOM_ATTR_TO_OBJ_MAPPINGS");
+            if (!string.IsNullOrWhiteSpace(otherJson))
+            {
+                List<ReferenceToObjectTypeMap> otherMappings = JsonConvert.DeserializeObject<List<ReferenceToObjectTypeMap>>(otherJson);
+                if (otherMappings.Any(r => r.AttrName == bindingDescription.BoundAttributeType.Name))
+                {
+                    return (from r in otherMappings
+                            where r.AttrName == bindingDescription.BoundAttributeType.Name
+                            select r.ObjType).First();
+                }
+            }
+            return "IdmResource";
+        }
+
+        private static string GenerateSingleValuedDateTimeProperty(BindingDescription bindingDescription)
+        {
+            return String.Format(Templates.SingleValuedDateTimeFormat,
+                GetDisplayName(bindingDescription),
+                GetDescription(bindingDescription),
+                GetRequired(bindingDescription),
+                bindingDescription.BoundAttributeType.Name);
         }
 
         public static string GenerateSingleValuedValueProperty(BindingDescription bindingDescription)

@@ -392,6 +392,67 @@ namespace IdmNet.Models
 
 ";
 
+        public const string DateTimeAttribute = @"
+        /// <summary>
+        /// Integer Attrbute - An integer attribute
+        /// </summary>
+        [Required]
+        public DateTime? PropertyName
+        {
+            get { return GetAttr(""PropertyName"") == null ? null : GetAttr(""PropertyName"").ToDateTime(); }
+            set { SetAttrValue(""PropertyName"", value.ToString()); }
+        }
+
+";
+
+        public const string StandardReferenceAttributeWhereTypeMatchesName = @"
+        /// <summary>
+        /// Reference Attrbute - A standard reference attribute
+        /// </summary>
+        public PropertyName PropertyName
+        {
+            get { return GetAttr(""PropertyName"", _thePropertyName); }
+            set 
+            { 
+                _thePropertyName = value;
+                SetAttrValue(""PropertyName"", ObjectIdOrNull(value)); 
+            }
+        }
+        private PropertyName _thePropertyName;
+";
+
+        public const string StandardReferenceAttributeWhereTypeFoundInJsonFile = @"
+        /// <summary>
+        /// Reference Attrbute - A standard reference attribute
+        /// </summary>
+        public ModelType PropertyName
+        {
+            get { return GetAttr(""PropertyName"", _thePropertyName); }
+            set 
+            { 
+                _thePropertyName = value;
+                SetAttrValue(""PropertyName"", ObjectIdOrNull(value)); 
+            }
+        }
+        private ModelType _thePropertyName;
+";
+
+        public const string ReferenceAttributeWhereTypeNotFound = @"
+        /// <summary>
+        /// Reference Attrbute - A standard reference attribute
+        /// </summary>
+        public IdmResource PropertyName2
+        {
+            get { return GetAttr(""PropertyName2"", _thePropertyName2); }
+            set 
+            { 
+                _thePropertyName2 = value;
+                SetAttrValue(""PropertyName2"", ObjectIdOrNull(value)); 
+            }
+        }
+        private IdmResource _thePropertyName2;
+";
+
     }
 
 
