@@ -12,11 +12,13 @@ namespace IdmGenerateModels
         private readonly ObjectTypeDescription _objectTypeDescription;
         private readonly IEnumerable<string> _objectTypeNames;
         private readonly List<ReferenceToObjectTypeMap> _referenceMap;
- 
+        private readonly string _otherJson;
+
         public IdmCodeGenerator(ObjectTypeDescription objectTypeDescription, IEnumerable<string> objectTypeNames = null, string json = null)
         {
             _objectTypeDescription = objectTypeDescription;
             _objectTypeNames = objectTypeNames;
+            _otherJson = Environment.GetEnvironmentVariable("CUSTOM_ATTR_TO_OBJ_MAPPINGS");
 
             if (!string.IsNullOrWhiteSpace(json))
             {
@@ -26,10 +28,19 @@ namespace IdmGenerateModels
 
         public string Generate()
         {
-            var attrSb = GenerateAttributes();
+            var className = GetValidCSharpIdentifier(_objectTypeDescription.Name);
 
-            return String.Format(Templates.ClassTemplate, _objectTypeDescription.Name,
-                _objectTypeDescription.Description, null, null, attrSb);
+            var attrSb = GenerateAttributes();
+            return String.Format(Templates.ClassTemplate, 
+                _objectTypeDescription.Name,
+                _objectTypeDescription.Description, 
+                className,
+                attrSb);
+        }
+
+        private static string GetValidCSharpIdentifier(string name)
+        {
+            return name.Replace('-', '_');
         }
 
         public StringBuilder GenerateAttributes()
@@ -110,33 +121,34 @@ namespace IdmGenerateModels
                 GetDisplayName(bindingDescription),
                 GetDescription(bindingDescription),
                 bindingDescription.BoundAttributeType.Name,
-                GetObjTypeName(bindingDescription));
+                GetObjTypeName(bindingDescription),
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
         }
 
         private string GetObjTypeName(BindingDescription bindingDescription)
         {
+            string returnVal = "IdmResource";
             if (_objectTypeNames != null && _objectTypeNames.Contains(bindingDescription.BoundAttributeType.Name))
             {
-                return bindingDescription.BoundAttributeType.Name;
+                returnVal = bindingDescription.BoundAttributeType.Name;
             }
-            if (_referenceMap != null && _referenceMap.Any(r => r.AttrName == bindingDescription.BoundAttributeType.Name))
+            else if (_referenceMap != null && _referenceMap.Any(r => r.AttrName == bindingDescription.BoundAttributeType.Name))
             {
-                return (from r in _referenceMap
+                returnVal = (from r in _referenceMap
                     where r.AttrName == bindingDescription.BoundAttributeType.Name
                     select r.ObjType).First();
             }
-            var otherJson = Environment.GetEnvironmentVariable("CUSTOM_ATTR_TO_OBJ_MAPPINGS");
-            if (!string.IsNullOrWhiteSpace(otherJson))
+            else if (!string.IsNullOrWhiteSpace(_otherJson))
             {
-                List<ReferenceToObjectTypeMap> otherMappings = JsonConvert.DeserializeObject<List<ReferenceToObjectTypeMap>>(otherJson);
+                List<ReferenceToObjectTypeMap> otherMappings = JsonConvert.DeserializeObject<List<ReferenceToObjectTypeMap>>(_otherJson);
                 if (otherMappings.Any(r => r.AttrName == bindingDescription.BoundAttributeType.Name))
                 {
-                    return (from r in otherMappings
+                    returnVal = (from r in otherMappings
                             where r.AttrName == bindingDescription.BoundAttributeType.Name
                             select r.ObjType).First();
                 }
             }
-            return "IdmResource";
+            return GetValidCSharpIdentifier(returnVal);
         }
 
         private static string GenerateSingleValuedDateTimeProperty(BindingDescription bindingDescription)
@@ -145,7 +157,8 @@ namespace IdmGenerateModels
                 GetDisplayName(bindingDescription),
                 GetDescription(bindingDescription),
                 GetRequired(bindingDescription),
-                bindingDescription.BoundAttributeType.Name);
+                bindingDescription.BoundAttributeType.Name,
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
         }
 
         public static string GenerateSingleValuedValueProperty(BindingDescription bindingDescription)
@@ -156,7 +169,8 @@ namespace IdmGenerateModels
                 GetDescription(bindingDescription),
                 GetRequired(bindingDescription),
                 bindingDescription.BoundAttributeType.Name,
-                typeString);
+                typeString,
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
         }
 
         public static string GenerateSingleValuedStringProperty(BindingDescription bindingDescription)
@@ -166,6 +180,7 @@ namespace IdmGenerateModels
                 GetDescription(bindingDescription),
                 GetRequired(bindingDescription),
                 bindingDescription.BoundAttributeType.Name,
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
                 GetRegEx(bindingDescription));
         }
 

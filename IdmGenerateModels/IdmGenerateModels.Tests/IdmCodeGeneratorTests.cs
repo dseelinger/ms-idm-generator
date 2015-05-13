@@ -494,5 +494,141 @@ namespace IdmGenerateModels.Tests
             // Assert
             Assert.AreEqual(TestData.BinaryAttribute, result);
         }
+
+        [TestMethod]
+        public void It_can_handle_class_names_that_have_dash()
+        {
+            // Arrange
+            var it = new IdmCodeGenerator(new ObjectTypeDescription
+            {
+                Name = "Foo-Bar",
+                Description = "Bar",
+                BindingDescriptions = new List<BindingDescription>()
+            });
+
+            // Act
+            var result = it.Generate();
+
+            // Assert
+            Assert.AreEqual(TestData.ClassWithDash, result);
+        }
+
+        [TestMethod]
+        public void It_can_handle_attributes_with_dashes_in_the_name()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName =
+                    "First Choice for Summary Part I",
+                Description =
+                    "First Choice for Summary Part II",
+                Required = true,
+                StringRegex = "*.",
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    DataType = "String",
+                    DisplayName = "Second Choice for Summary Part I",
+                    Description = "Second Choice for Summary Part II",
+                    Name = "Property-Name"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            Assert.AreEqual(TestData.StringAttributeWithDashInName, result);
+        }
+
+        [TestMethod]
+        public void It_handles_booleans_with_dashes()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName =
+                    "Boolean Attrbute",
+                Description =
+                    "A boolean attribute",
+                Required = true,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    DataType = "Boolean",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "Property-Name"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            Assert.AreEqual(TestData.BoolAttributeWithDash, result);
+        }
+
+        [TestMethod]
+        public void It_handles_dashes_in_DateTime_attrName()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName =
+                    "Integer Attrbute",
+                Description =
+                    "An integer attribute",
+                Required = true,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    DataType = "DateTime",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "Property-Name"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            Assert.AreEqual(TestData.DateTimeAttributeWithDash, result);
+        }
+
+        [TestMethod]
+        public void It_handles_dashes_in_reference_AttrName()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName =
+                    "Reference Attrbute",
+                Description =
+                    "A standard reference attribute",
+                Required = true, // should be ignored - reference attributes can't be required
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    DataType = "Reference",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "Property-Name"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null, new[] { "Property-Name" });
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            Assert.AreEqual(TestData.ReferenceAttrWithDashInName, result);
+        }
+
     }
 }

@@ -57,6 +57,61 @@ namespace IdmNet.Models
 ";
 
 
+        public const string ClassWithDash = @"using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+// ReSharper disable InconsistentNaming
+
+namespace IdmNet.Models
+{
+    /// <summary>
+    /// Foo-Bar - Bar
+    /// </summary>
+    public class Foo_Bar : IdmResource
+    {
+        /// <summary>
+        /// Parameterless CTOR
+        /// </summary>
+        public Foo_Bar()
+        {
+            ObjectType = ForcedObjType = ""Foo-Bar"";
+        }
+
+        /// <summary>
+        /// Build a Foo_Bar object from a IdmResource object
+        /// </summary>
+        /// <param name=""resource"">base class</param>
+        public Foo_Bar(IdmResource resource)
+        {
+            ObjectType = ForcedObjType = ""Foo-Bar"";
+            Attributes = resource.Attributes;
+            if (resource.Creator == null)
+                return;
+            Creator = resource.Creator;
+        }
+
+        readonly string ForcedObjType;
+
+        /// <summary>
+        /// Object Type (can only be Foo-Bar)
+        /// </summary>
+        [Required]
+        public override sealed string ObjectType
+        {
+            get { return GetAttrValue(""ObjectType""); }
+            set
+            {
+                if (value != ForcedObjType)
+                    throw new InvalidOperationException(""Object Type of Foo_Bar can only be 'Foo-Bar'"");
+                SetAttrValue(""ObjectType"", value);
+            }
+        }
+
+    }
+}
+";
+
+
         public const string GroupExpectedOutput = @"using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -469,9 +524,68 @@ namespace IdmNet.Models
 
 ";
 
+        public const string StringAttributeWithDashInName = @"
+        /// <summary>
+        /// First Choice for Summary Part I - First Choice for Summary Part II
+        /// </summary>
+        [Required]
+        public string Property_Name
+        {
+            get { return GetAttrValue(""Property-Name""); }
+            set {
+                var regEx = new RegEx(""*."");
+                if (!regEx.IsMatch(value))
+                    throw new ArgumentException(""Invalid value for Property-Name.  Must match regular expression '*.'"");
+                SetAttrValue(""Property-Name"", value); 
+            }
+        }
+
+";
+
+        public const string BoolAttributeWithDash = @"
+        /// <summary>
+        /// Boolean Attrbute - A boolean attribute
+        /// </summary>
+        [Required]
+        public bool? Property_Name
+        {
+            get { return AttrToBool(""Property-Name""); }
+            set { SetAttrValue(""Property-Name"", value.ToString()); }
+        }
+
+";
+
+        public const string DateTimeAttributeWithDash = @"
+        /// <summary>
+        /// Integer Attrbute - An integer attribute
+        /// </summary>
+        [Required]
+        public DateTime? Property_Name
+        {
+            get { return GetAttr(""Property-Name"") == null ? null : GetAttr(""Property-Name"").ToDateTime(); }
+            set { SetAttrValue(""Property-Name"", value.ToString()); }
+        }
+
+";
+
+        public const string ReferenceAttrWithDashInName = @"
+        /// <summary>
+        /// Reference Attrbute - A standard reference attribute
+        /// </summary>
+        public Property_Name Property_Name
+        {
+            get { return GetAttr(""Property-Name"", _theProperty_Name); }
+            set 
+            { 
+                _theProperty_Name = value;
+                SetAttrValue(""Property-Name"", ObjectIdOrNull(value)); 
+            }
+        }
+        private Property_Name _theProperty_Name;
+
+";
+
     }
-
-
 }
 
 

@@ -7,11 +7,11 @@
         /// <summary>
         /// {0} - {1}
         /// </summary>
-        {2}public string {3}
+        {2}public string {4}
         {{
             get {{ return GetAttrValue(""{3}""); }}
             set {{
-                {4}SetAttrValue(""{3}"", value); 
+                {5}SetAttrValue(""{3}"", value); 
             }}
         }}
 
@@ -21,7 +21,7 @@
         /// <summary>
         /// {0} - {1}
         /// </summary>
-        {2}public {4} {3}
+        {2}public {4} {5}
         {{
             get {{ return AttrToBool(""{3}""); }}
             set {{ SetAttrValue(""{3}"", value.ToString()); }}
@@ -33,7 +33,7 @@
         /// <summary>
         /// {0} - {1}
         /// </summary>
-        {2}public DateTime? {3}
+        {2}public DateTime? {4}
         {{
             get {{ return GetAttr(""{3}"") == null ? null : GetAttr(""{3}"").ToDateTime(); }}
             set {{ SetAttrValue(""{3}"", value.ToString()); }}
@@ -57,16 +57,16 @@
         /// <summary>
         /// {0} - {1}
         /// </summary>
-        public {3} {2}
+        public {3} {4}
         {{
-            get {{ return GetAttr(""{2}"", _the{2}); }}
+            get {{ return GetAttr(""{2}"", _the{4}); }}
             set 
             {{ 
-                _the{2} = value;
+                _the{4} = value;
                 SetAttrValue(""{2}"", ObjectIdOrNull(value)); 
             }}
         }}
-        private {3} _the{2};
+        private {3} _the{4};
 
 ";
 
@@ -85,21 +85,21 @@ namespace IdmNet.Models
     /// <summary>
     /// {0} - {1}
     /// </summary>
-    public class {0} : IdmResource
+    public class {2} : IdmResource
     {{
-        {2}/// <summary>
+        /// <summary>
         /// Parameterless CTOR
         /// </summary>
-        public {0}()
+        public {2}()
         {{
             ObjectType = ForcedObjType = ""{0}"";
         }}
 
         /// <summary>
-        /// Build a {0} object from a IdmResource object
+        /// Build a {2} object from a IdmResource object
         /// </summary>
         /// <param name=""resource"">base class</param>
-        public {0}(IdmResource resource)
+        public {2}(IdmResource resource)
         {{
             ObjectType = ForcedObjType = ""{0}"";
             Attributes = resource.Attributes;
@@ -120,11 +120,11 @@ namespace IdmNet.Models
             set
             {{
                 if (value != ForcedObjType)
-                    throw new InvalidOperationException(""Object Type of {0} can only be '{0}'"");
+                    throw new InvalidOperationException(""Object Type of {2} can only be '{0}'"");
                 SetAttrValue(""ObjectType"", value);
             }}
         }}
-{3}{4}
+{3}
     }}
 }}
 ";
