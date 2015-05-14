@@ -17,6 +17,34 @@
 
 ";
 
+        public const string MultiValuedStringFormat = @"
+        /// <summary>
+        /// {0} - {1}
+        /// </summary>
+        {2}public List<string> {4}
+        {{
+            get {{ return GetAttrValues(""{3}""); }}
+            set {{
+                {5}SetAttrValues(""{3}"", value); 
+            }}
+        }}
+
+";
+
+        public const string MultiValuedIntegerFormat = @"
+        /// <summary>
+        /// {0} - {1}
+        /// </summary>
+        {2}public List<int> {4}
+        {{
+            get {{ return GetAttr(""{3}"").Values.Select(int.Parse).ToList(); }}
+            set {{
+                {5}SetAttrValues(""{3}"", value.Select(v => v.ToString());
+            }}
+        }}
+
+";
+
         public const string SingleValuedValueFormat = @"
         /// <summary>
         /// {0} - {1}
@@ -24,7 +52,9 @@
         {2}public {4} {5}
         {{
             get {{ return {6}(""{3}""); }}
-            set {{ SetAttrValue(""{3}"", value.ToString()); }}
+            set {{ 
+                {7}SetAttrValue(""{3}"", value.ToString());
+            }}
         }}
 
 ";

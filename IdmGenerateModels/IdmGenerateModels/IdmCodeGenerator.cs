@@ -65,16 +65,60 @@ namespace IdmGenerateModels
 
         public string GenerateProperty(BindingDescription bindingDescription)
         {
+            return bindingDescription.BoundAttributeType.Multivalued
+                ? GenerateMultiValuedProperty(bindingDescription)
+                : GenerateSingleValuedProperty(bindingDescription);
+        }
+
+        private string GenerateMultiValuedProperty(BindingDescription bindingDescription)
+        {
             string prop = "";
-            if (bindingDescription.BoundAttributeType.Multivalued)
+            switch (bindingDescription.BoundAttributeType.DataType)
             {
-                
-            }
-            else
-            {
-                prop = GenerateSingleValuedProperty(bindingDescription);
+                case "String":
+                case "Text":
+                    prop = GenerateMultiValuedStringProperty(bindingDescription);
+                    break;
+                case "Integer":
+                    prop = GenerateMultiValuedValueProperty(bindingDescription);
+                    break;
+                //case "DateTime":
+                //    prop = GenerateMultiValuedDateTimeProperty(bindingDescription);
+                //    break;
+                //case "Reference":
+                //    prop = GenerateMultiValuedReferenceProperty(bindingDescription);
+                //    break;
+                //case "Binary":
+                //    prop = GenerateMultiValuedBinaryProperty(bindingDescription);
+                //    break;
+                //default:
+                //    throw new ApplicationException();
             }
             return prop;
+        }
+
+        private string GenerateMultiValuedValueProperty(BindingDescription bindingDescription)
+        {
+            var minMax = GetMinMax(bindingDescription);
+            var propertyCode = String.Format(Templates.MultiValuedIntegerFormat,
+                GetDisplayName(bindingDescription),
+                GetDescription(bindingDescription),
+                GetRequired(bindingDescription),
+                bindingDescription.BoundAttributeType.Name,
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
+                minMax);
+            return propertyCode;
+        }
+
+        private string GenerateMultiValuedStringProperty(BindingDescription bindingDescription)
+        {
+            return String.Format(Templates.MultiValuedStringFormat,
+                GetDisplayName(bindingDescription),
+                GetDescription(bindingDescription),
+                GetRequired(bindingDescription),
+                bindingDescription.BoundAttributeType.Name,
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
+                GetRegEx(bindingDescription));
         }
 
         public string GenerateSingleValuedProperty(BindingDescription bindingDescription)
@@ -100,7 +144,6 @@ namespace IdmGenerateModels
                     prop = GenerateSingleValuedBinaryProperty(bindingDescription);
                     break;
                 default:
-                    // TODO: Binary is next
                     throw new ApplicationException();
             }
             return prop;
@@ -165,15 +208,65 @@ namespace IdmGenerateModels
         public static string GenerateSingleValuedValueProperty(BindingDescription bindingDescription)
         {
             string typeString = bindingDescription.BoundAttributeType.DataType == "Boolean" ? "bool?" : "int?";
-            string conversionMethodString = bindingDescription.BoundAttributeType.DataType == "Boolean" ? "AttrToBool" : "AttrToInteger";
-            return String.Format(Templates.SingleValuedValueFormat,
+            string conversionMethodString = bindingDescription.BoundAttributeType.DataType == "Boolean"
+                ? "AttrToBool"
+                : "AttrToInteger";
+
+            var minMax = GetMinMax(bindingDescription);
+            var propertyCode = String.Format(Templates.SingleValuedValueFormat,
                 GetDisplayName(bindingDescription),
                 GetDescription(bindingDescription),
                 GetRequired(bindingDescription),
                 bindingDescription.BoundAttributeType.Name,
                 typeString,
                 GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
-                conversionMethodString);
+                conversionMethodString,
+                minMax);
+            return propertyCode;
+        }
+
+        private static string GetMinMax(BindingDescription bindingDescription)
+        {
+            var minMax = "";
+            var min = bindingDescription.IntegerMinimum;
+            var max = bindingDescription.IntegerMaximum;
+            if (min != null)
+            {
+                if (bindingDescription.BoundAttributeType.Multivalued)
+                {
+                    var format = @"if (value.Any( v => v < {0}))
+                    throw new ArgumentException(""One or more invalid values for {1}.  Minimum value for each is {0}"");
+                ";
+                    minMax += String.Format(format, min, bindingDescription.BoundAttributeType.Name);
+
+                }
+                else
+                {
+                    var format = @"if (value < {0})
+                    throw new ArgumentException(""Invalid value for {1}.  Minimum value is {0}"");
+                ";
+                    minMax += String.Format(format, min, bindingDescription.BoundAttributeType.Name);
+                }
+            }
+            if (max != null)
+            {
+                if (bindingDescription.BoundAttributeType.Multivalued)
+                {
+                    var format = @"if (value.Any( v => v > {0}))
+                    throw new ArgumentException(""One or more invalid values for {1}.  Maximum value for each is {0}"");
+                ";
+                    minMax += String.Format(format, max, bindingDescription.BoundAttributeType.Name);
+
+                }
+                else
+                {
+                    var format = @"if (value > {0})
+                    throw new ArgumentException(""Invalid value for {1}.  Maximum value is {0}"");
+                ";
+                    minMax += String.Format(format, max, bindingDescription.BoundAttributeType.Name);
+                }
+            }
+            return minMax;
         }
 
         public static string GenerateSingleValuedStringProperty(BindingDescription bindingDescription)
@@ -202,11 +295,23 @@ namespace IdmGenerateModels
             var regEx = "";
             if (!String.IsNullOrEmpty(bindingDescription.StringRegex))
             {
-                var regExFormat = @"var regEx = new RegEx(""{0}"");
+                if (bindingDescription.BoundAttributeType.Multivalued)
+                {
+                    var regExFormat = @"var regEx = new RegEx(""{0}"");
+                if (value.Any(x => !regEx.IsMatch(x))
+                    throw new ArgumentException(""One or more invalid values for {1}.  Each value must match regular expression '{0}'"");
+                ";
+                    regEx = String.Format(regExFormat, bindingDescription.StringRegex, bindingDescription.BoundAttributeType.Name);
+                    
+                }
+                else
+                {
+                    var regExFormat = @"var regEx = new RegEx(""{0}"");
                 if (!regEx.IsMatch(value))
                     throw new ArgumentException(""Invalid value for {1}.  Must match regular expression '{0}'"");
                 ";
-                regEx = String.Format(regExFormat, bindingDescription.StringRegex, bindingDescription.BoundAttributeType.Name);
+                    regEx = String.Format(regExFormat, bindingDescription.StringRegex, bindingDescription.BoundAttributeType.Name);
+                }
             }
             return regEx;
         }

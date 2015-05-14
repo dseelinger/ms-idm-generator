@@ -64,8 +64,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ExAssert.cs" />
     <Compile Include="IdmCodeGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Spikes\AttributeSpikes.cs" />
     <Compile Include="Spikes\ModelSpikes.cs" />
     <Compile Include="TestData.cs" />
   </ItemGroup>

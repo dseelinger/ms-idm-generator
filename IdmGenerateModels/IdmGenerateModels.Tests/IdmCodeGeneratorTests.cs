@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using IdmNet.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -284,7 +285,7 @@ namespace IdmGenerateModels.Tests
             string result = it.GenerateProperty(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.BoolAttribute, result);
+            ExAssert.AreEqual(TestData.BoolAttribute, result);
         }
 
         [TestMethod]
@@ -313,7 +314,7 @@ namespace IdmGenerateModels.Tests
             string result = it.GenerateProperty(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.IntegerAttribute, result);
+            ExAssert.AreEqual(TestData.IntegerAttribute, result);
         }
 
         [TestMethod]
@@ -658,6 +659,152 @@ namespace IdmGenerateModels.Tests
 
             // Assert
             Assert.AreEqual(TestData.BinaryAttributeWithDash, result);
+        }
+
+        [TestMethod]
+        public void It_can_handle_multi_valued_strings()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName = "My Display Name",
+                Description = "My Description",
+                Required = true,
+                StringRegex = "[0-9]",
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    Multivalued = true,
+                    DataType = "String",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "Property-Name"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            Assert.AreEqual(TestData.MultiValuedString, result);
+
+        }
+
+        [TestMethod]
+        public void It_can_handle_IntegerMinimum()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName = "My Display Name",
+                Description = "My Description",
+                Required = true,
+                IntegerMinimum = 5,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    DataType = "Integer",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "Property-Name"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            ExAssert.AreEqual(TestData.IntegerAttributeWithMin, result);
+        }
+
+        [TestMethod]
+        public void It_can_handle_IntegerMaximum()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName = "My Display Name",
+                Description = "My Description",
+                Required = true,
+                IntegerMaximum = 5,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    DataType = "Integer",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "Property-Name"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            ExAssert.AreEqual(TestData.IntegerAttributeWithMax, result);
+        }
+
+        [TestMethod]
+        public void It_can_handle_IntegerMaxAndMin()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName = "My Display Name",
+                Description = "My Description",
+                Required = true,
+                IntegerMinimum = 2,
+                IntegerMaximum = 5,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    DataType = "Integer",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "Property-Name"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            ExAssert.AreEqual(TestData.IntegerAttributeWithMinMax, result);
+        }
+
+        [TestMethod]
+        public void It_can_handle_MultiValuedIntegerMaxAndMin()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName = "My Display Name",
+                Description = "My Description",
+                Required = true,
+                IntegerMinimum = 2,
+                IntegerMaximum = 5,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    Multivalued = true,
+                    DataType = "Integer",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "Property-Name"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            ExAssert.AreEqual(TestData.MultiValuedIntegerAttributeWithMinMax, result);
         }
 
     }

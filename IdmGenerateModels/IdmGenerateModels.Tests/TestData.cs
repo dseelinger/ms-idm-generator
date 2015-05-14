@@ -429,7 +429,9 @@ namespace IdmNet.Models
         public bool? PropertyName
         {
             get { return AttrToBool(""PropertyName""); }
-            set { SetAttrValue(""PropertyName"", value.ToString()); }
+            set { 
+                SetAttrValue(""PropertyName"", value.ToString());
+            }
         }
 
 ";
@@ -442,7 +444,62 @@ namespace IdmNet.Models
         public int? PropertyName
         {
             get { return AttrToInteger(""PropertyName""); }
-            set { SetAttrValue(""PropertyName"", value.ToString()); }
+            set { 
+                SetAttrValue(""PropertyName"", value.ToString());
+            }
+        }
+
+";
+
+        public const string IntegerAttributeWithMin = @"
+        /// <summary>
+        /// My Display Name - My Description
+        /// </summary>
+        [Required]
+        public int? Property_Name
+        {
+            get { return AttrToInteger(""Property-Name""); }
+            set { 
+                if (value < 5)
+                    throw new ArgumentException(""Invalid value for Property-Name.  Minimum value is 5"");
+                SetAttrValue(""Property-Name"", value.ToString());
+            }
+        }
+
+";
+
+        public const string IntegerAttributeWithMax = @"
+        /// <summary>
+        /// My Display Name - My Description
+        /// </summary>
+        [Required]
+        public int? Property_Name
+        {
+            get { return AttrToInteger(""Property-Name""); }
+            set { 
+                if (value > 5)
+                    throw new ArgumentException(""Invalid value for Property-Name.  Maximum value is 5"");
+                SetAttrValue(""Property-Name"", value.ToString());
+            }
+        }
+
+";
+
+        public const string IntegerAttributeWithMinMax = @"
+        /// <summary>
+        /// My Display Name - My Description
+        /// </summary>
+        [Required]
+        public int? Property_Name
+        {
+            get { return AttrToInteger(""Property-Name""); }
+            set { 
+                if (value < 2)
+                    throw new ArgumentException(""Invalid value for Property-Name.  Minimum value is 2"");
+                if (value > 5)
+                    throw new ArgumentException(""Invalid value for Property-Name.  Maximum value is 5"");
+                SetAttrValue(""Property-Name"", value.ToString());
+            }
         }
 
 ";
@@ -550,7 +607,9 @@ namespace IdmNet.Models
         public bool? Property_Name
         {
             get { return AttrToBool(""Property-Name""); }
-            set { SetAttrValue(""Property-Name"", value.ToString()); }
+            set { 
+                SetAttrValue(""Property-Name"", value.ToString());
+            }
         }
 
 ";
@@ -594,6 +653,57 @@ namespace IdmNet.Models
         {
             get { return GetAttr(""Property-Name"") == null ? null : GetAttr(""Property-Name"").ToBinary(); }
             set { SetAttrValue(""Property-Name"", Convert.ToBase64String(value)); }
+        }
+
+";
+
+        public const string MultiValuedString = @"
+        /// <summary>
+        /// My Display Name - My Description
+        /// </summary>
+        [Required]
+        public List<string> Property_Name
+        {
+            get { return GetAttrValues(""Property-Name""); }
+            set {
+                var regEx = new RegEx(""[0-9]"");
+                if (value.Any(x => !regEx.IsMatch(x))
+                    throw new ArgumentException(""One or more invalid values for Property-Name.  Each value must match regular expression '[0-9]'"");
+                SetAttrValues(""Property-Name"", value); 
+            }
+        }
+
+";
+
+        // TODO: Pick up here after implementing min-max int
+        public const string MultiValuedInteger = @"
+        /// <summary>
+        /// My Display Name - My Description
+        /// </summary>
+        [Required]
+        public List<int?> Property_Name
+        {
+            get { return GetAttrValues(""Property-Name"").Select(v => AttrToInteger(v)); }
+            set { SetAttrValue(""PropertyName"", value.ToString()); }
+        }
+
+";
+
+        public const string MultiValuedIntegerAttributeWithMinMax = @"
+        /// <summary>
+        /// My Display Name - My Description
+        /// </summary>
+        [Required]
+        public List<int> Property_Name
+        {
+            get { return GetAttr(""Property-Name"").Values.Select(int.Parse).ToList(); }
+            set {
+                if (value.Any( v => v < 2))
+                    throw new ArgumentException(""One or more invalid values for Property-Name.  Minimum value for each is 2"");
+                if (value.Any( v => v > 5))
+                    throw new ArgumentException(""One or more invalid values for Property-Name.  Maximum value for each is 5"");
+                SetAttrValues(""Property-Name"", value.Select(v => v.ToString());
+            }
         }
 
 ";
