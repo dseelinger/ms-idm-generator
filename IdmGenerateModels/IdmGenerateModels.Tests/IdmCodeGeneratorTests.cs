@@ -630,5 +630,35 @@ namespace IdmGenerateModels.Tests
             Assert.AreEqual(TestData.ReferenceAttrWithDashInName, result);
         }
 
+        [TestMethod]
+        public void It_can_handle_binary_attributes_with_dashes_in_the_name()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName =
+                    "Reference Attrbute",
+                Description =
+                    "A standard reference attribute",
+                Required = true,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    DataType = "Binary",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "Property-Name"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            Assert.AreEqual(TestData.BinaryAttributeWithDash, result);
+        }
+
     }
 }

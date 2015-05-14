@@ -112,7 +112,8 @@ namespace IdmGenerateModels
                 GetDisplayName(bindingDescription),
                 GetDescription(bindingDescription),
                 GetRequired(bindingDescription),
-                bindingDescription.BoundAttributeType.Name);
+                bindingDescription.BoundAttributeType.Name,
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
         }
 
         private string GenerateSingleValuedReferenceProperty(BindingDescription bindingDescription)
@@ -164,13 +165,15 @@ namespace IdmGenerateModels
         public static string GenerateSingleValuedValueProperty(BindingDescription bindingDescription)
         {
             string typeString = bindingDescription.BoundAttributeType.DataType == "Boolean" ? "bool?" : "int?";
+            string conversionMethodString = bindingDescription.BoundAttributeType.DataType == "Boolean" ? "AttrToBool" : "AttrToInteger";
             return String.Format(Templates.SingleValuedValueFormat,
                 GetDisplayName(bindingDescription),
                 GetDescription(bindingDescription),
                 GetRequired(bindingDescription),
                 bindingDescription.BoundAttributeType.Name,
                 typeString,
-                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
+                conversionMethodString);
         }
 
         public static string GenerateSingleValuedStringProperty(BindingDescription bindingDescription)

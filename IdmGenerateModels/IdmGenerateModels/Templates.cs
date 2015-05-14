@@ -23,7 +23,7 @@
         /// </summary>
         {2}public {4} {5}
         {{
-            get {{ return AttrToBool(""{3}""); }}
+            get {{ return {6}(""{3}""); }}
             set {{ SetAttrValue(""{3}"", value.ToString()); }}
         }}
 
@@ -45,10 +45,10 @@
         /// <summary>
         /// {0} - {1}
         /// </summary>
-        {2}public byte[] {3}
+        {2}public byte[] {4}
         {{
             get {{ return GetAttr(""{3}"") == null ? null : GetAttr(""{3}"").ToBinary(); }}
-            set {{ SetAttrValue(""{3}"", value.ToBase64String()); }}
+            set {{ SetAttrValue(""{3}"", Convert.ToBase64String(value)); }}
         }}
 
 ";

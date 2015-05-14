@@ -441,7 +441,7 @@ namespace IdmNet.Models
         [Required]
         public int? PropertyName
         {
-            get { return AttrToBool(""PropertyName""); }
+            get { return AttrToInteger(""PropertyName""); }
             set { SetAttrValue(""PropertyName"", value.ToString()); }
         }
 
@@ -519,7 +519,7 @@ namespace IdmNet.Models
         public byte[] PropertyName
         {
             get { return GetAttr(""PropertyName"") == null ? null : GetAttr(""PropertyName"").ToBinary(); }
-            set { SetAttrValue(""PropertyName"", value.ToBase64String()); }
+            set { SetAttrValue(""PropertyName"", Convert.ToBase64String(value)); }
         }
 
 ";
@@ -582,6 +582,19 @@ namespace IdmNet.Models
             }
         }
         private Property_Name _theProperty_Name;
+
+";
+
+        public const string BinaryAttributeWithDash = @"
+        /// <summary>
+        /// Reference Attrbute - A standard reference attribute
+        /// </summary>
+        [Required]
+        public byte[] Property_Name
+        {
+            get { return GetAttr(""Property-Name"") == null ? null : GetAttr(""Property-Name"").ToBinary(); }
+            set { SetAttrValue(""Property-Name"", Convert.ToBase64String(value)); }
+        }
 
 ";
 
