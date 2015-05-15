@@ -15,6 +15,7 @@ namespace IdmGenerateModels
         public static IdmNetClient Client;
         public static string TargetDirectoryPath;
         private static IEnumerable<IdmResource> _objectTypes;
+        private static string _json;
 
         public static void Main()
         {
@@ -26,6 +27,7 @@ namespace IdmGenerateModels
 
         public static async Task MainAsync()
         {
+            _json = File.ReadAllText("AttributeToObjectMapping.json");
             Client = IdmNetClientFactory.BuildClient();
 
             _objectTypes = await GetObjectTypes();
@@ -39,6 +41,7 @@ namespace IdmGenerateModels
             Console.WriteLine("Querying Object Types.");
             var objectTypeResource =
                 await
+                    //Client.SearchAsync(new SearchCriteria("/ObjectTypeDescription[Name='BindingDescription']")
                     Client.SearchAsync(new SearchCriteria("/ObjectTypeDescription")
                     {
                         Selection = new List<string> { "Name" }
@@ -61,7 +64,7 @@ namespace IdmGenerateModels
             return 1;
         }
 
-        public static async Task<ObjectTypeDescription> GetSchema(IdmResource idmResource)
+        public static async Task<Schema> GetSchema(IdmResource idmResource)
         {
             var objTypeName = idmResource.GetAttrValue("Name");
             Console.WriteLine("Getting Schema for ObjectTypeDescription: [{0}]", objTypeName);
@@ -81,10 +84,10 @@ namespace IdmGenerateModels
         }
 
 
-        public static void GenerateModelAndTests(ObjectTypeDescription objectTypeDescription)
+        public static void GenerateModelAndTests(Schema objectTypeDescription)
         {
-            var objTypeNames = from o in _objectTypes select o.GetAttrValue("Name");
-            IdmCodeGenerator generator = new IdmCodeGenerator(objectTypeDescription, objTypeNames);
+            var objTypeNames = (from o in _objectTypes select o.GetAttrValue("Name")).ToList();
+            IdmCodeGenerator generator = new IdmCodeGenerator(objectTypeDescription, objTypeNames, _json);
             var classString = generator.Generate();
 
             var classFile = string.Format(@"{0}{1}.cs", TargetDirectoryPath, objectTypeDescription.Name);

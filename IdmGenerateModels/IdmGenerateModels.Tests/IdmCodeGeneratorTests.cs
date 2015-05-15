@@ -11,7 +11,7 @@ namespace IdmGenerateModels.Tests
         public void It_generates_the_correct_class_for_an_empty_object_type()
         {
             // Arrange
-            var it = new IdmCodeGenerator(new ObjectTypeDescription
+            var it = new IdmCodeGenerator(new Schema
             {
                 Name = "Foo",
                 Description = "Bar",
@@ -39,6 +39,7 @@ namespace IdmGenerateModels.Tests
                 StringRegex = "*.",
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "String",
                     DisplayName = "Second Choice for Summary Part I",
                     Description = "Second Choice for Summary Part II",
@@ -67,6 +68,7 @@ namespace IdmGenerateModels.Tests
                 StringRegex = "*.",
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "String",
                     DisplayName = "Second Choice for Summary Part I",
                     Description = "Second Choice for Summary Part II",
@@ -95,6 +97,7 @@ namespace IdmGenerateModels.Tests
                 StringRegex = "*.",
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "String",
                     DisplayName = "Second Choice for Summary Part I",
                     Description = "Second Choice for Summary Part II",
@@ -125,6 +128,7 @@ namespace IdmGenerateModels.Tests
                 StringRegex = "*.",
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "String",
                     DisplayName = "Second Choice for Summary Part I",
                     Description = "Second Choice for Summary Part II",
@@ -155,6 +159,7 @@ namespace IdmGenerateModels.Tests
                 StringRegex = "*.",
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "String",
                     DisplayName = "Second Choice for Summary Part I",
                     Description = "Second Choice for Summary Part II",
@@ -183,6 +188,7 @@ namespace IdmGenerateModels.Tests
                 StringRegex = "*.",
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "String",
                     DisplayName = "Second Choice for Summary Part I",
                     Description = "Second Choice for Summary Part II",
@@ -212,6 +218,7 @@ namespace IdmGenerateModels.Tests
                 Required = true,
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "String",
                     DisplayName = "Second Choice for Summary Part I",
                     Description = "Second Choice for Summary Part II",
@@ -242,6 +249,7 @@ namespace IdmGenerateModels.Tests
                 StringRegex = "*.",
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "String",
                     DisplayName = "Second Choice for Summary Part I",
                     Description = "Second Choice for Summary Part II",
@@ -271,6 +279,7 @@ namespace IdmGenerateModels.Tests
                 Required = true,
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "Boolean",
                     DisplayName = "Doesn't matter",
                     Description = "Doesn't matter",
@@ -287,64 +296,7 @@ namespace IdmGenerateModels.Tests
             ExAssert.AreEqual(TestData.BoolAttribute, result);
         }
 
-        [TestMethod]
-        public void It_generates_the_correct_property_for_an_integer()
-        {
-            // Arrange
-            var bindingDescription = new BindingDescription
-            {
-                DisplayName =
-                    "Integer Attrbute",
-                Description =
-                    "An integer attribute",
-                Required = true,
-                BoundAttributeType = new AttributeTypeDescription
-                {
-                    DataType = "Integer",
-                    DisplayName = "Doesn't matter",
-                    Description = "Doesn't matter",
-                    Name = "PropertyName"
-                },
-            };
-
-            var it = new IdmCodeGenerator(null);
-
-            // Act
-            string result = it.GenerateProperty(bindingDescription);
-
-            // Assert
-            ExAssert.AreEqual(TestData.IntegerAttribute, result);
-        }
-
-        [TestMethod]
-        public void It_generates_the_correct_property_for_a_dateTime()
-        {
-            // Arrange
-            var bindingDescription = new BindingDescription
-            {
-                DisplayName =
-                    "Integer Attrbute",
-                Description =
-                    "An integer attribute",
-                Required = true,
-                BoundAttributeType = new AttributeTypeDescription
-                {
-                    DataType = "DateTime",
-                    DisplayName = "Doesn't matter",
-                    Description = "Doesn't matter",
-                    Name = "PropertyName"
-                },
-            };
-
-            var it = new IdmCodeGenerator(null);
-
-            // Act
-            string result = it.GenerateProperty(bindingDescription);
-
-            // Assert
-            Assert.AreEqual(TestData.DateTimeAttribute, result);
-        }
-
+        
         [TestMethod]
         public void It_generates_the_correct_property_for_a_standard_reference_attribute_that_matches_an_object_type_name()
         {
@@ -358,6 +310,7 @@ namespace IdmGenerateModels.Tests
                 Required = true, // should be ignored - reference attributes can't be required
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "Reference",
                     DisplayName = "Doesn't matter",
                     Description = "Doesn't matter",
@@ -365,7 +318,7 @@ namespace IdmGenerateModels.Tests
                 },
             };
 
-            var it = new IdmCodeGenerator(null, new[] { "PropertyName" });
+            var it = new IdmCodeGenerator(null, new List<string> { "PropertyName" });
 
             // Act
             string result = it.GenerateProperty(bindingDescription);
@@ -387,6 +340,7 @@ namespace IdmGenerateModels.Tests
                 Required = true, // should be ignored - reference attributes can't be required
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "Reference",
                     DisplayName = "Doesn't matter",
                     Description = "Doesn't matter",
@@ -394,7 +348,7 @@ namespace IdmGenerateModels.Tests
                 },
             };
 
-            var it = new IdmCodeGenerator(null, new[] { "foo" },
+            var it = new IdmCodeGenerator(null, new List<string> { "foo" },
                 @"[ { ""AttrName"": ""ActionWorkflowInstance"", ""ObjType"": ""WorkflowInstance"" }, { ""AttrName"": ""PropertyName"", ""ObjType"": ""ModelType"" } ]");
 
 
@@ -411,13 +365,12 @@ namespace IdmGenerateModels.Tests
             // Arrange
             var bindingDescription = new BindingDescription
             {
-                DisplayName =
-                    "Reference Attrbute",
-                Description =
-                    "A standard reference attribute",
+                DisplayName = "Reference Attrbute",
+                Description = "A standard reference attribute",
                 Required = true, // should be ignored - reference attributes can't be required
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "Reference",
                     DisplayName = "Doesn't matter",
                     Description = "Doesn't matter",
@@ -448,6 +401,7 @@ namespace IdmGenerateModels.Tests
                 Required = true, // should be ignored - reference attributes can't be required
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "Reference",
                     DisplayName = "Doesn't matter",
                     Description = "Doesn't matter",
@@ -478,6 +432,7 @@ namespace IdmGenerateModels.Tests
                 Required = true, 
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "Binary",
                     DisplayName = "Doesn't matter",
                     Description = "Doesn't matter",
@@ -499,7 +454,7 @@ namespace IdmGenerateModels.Tests
         public void It_can_handle_class_names_that_have_dash()
         {
             // Arrange
-            var it = new IdmCodeGenerator(new ObjectTypeDescription
+            var it = new IdmCodeGenerator(new Schema
             {
                 Name = "Foo-Bar",
                 Description = "Bar",
@@ -527,10 +482,11 @@ namespace IdmGenerateModels.Tests
                 StringRegex = "*.",
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "String",
                     DisplayName = "Second Choice for Summary Part I",
                     Description = "Second Choice for Summary Part II",
-                    Name = "Property-Name"
+                    Name = "Property-Name",
                 },
             };
 
@@ -556,6 +512,7 @@ namespace IdmGenerateModels.Tests
                 Required = true,
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "Boolean",
                     DisplayName = "Doesn't matter",
                     Description = "Doesn't matter",
@@ -578,13 +535,12 @@ namespace IdmGenerateModels.Tests
             // Arrange
             var bindingDescription = new BindingDescription
             {
-                DisplayName =
-                    "Integer Attrbute",
-                Description =
-                    "An integer attribute",
+                DisplayName = "My Display Name",
+                Description = "My Description",
                 Required = true,
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "DateTime",
                     DisplayName = "Doesn't matter",
                     Description = "Doesn't matter",
@@ -607,13 +563,12 @@ namespace IdmGenerateModels.Tests
             // Arrange
             var bindingDescription = new BindingDescription
             {
-                DisplayName =
-                    "Reference Attrbute",
-                Description =
-                    "A standard reference attribute",
+                DisplayName = "Reference Attrbute",
+                Description = "A standard reference attribute",
                 Required = true, // should be ignored - reference attributes can't be required
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "Reference",
                     DisplayName = "Doesn't matter",
                     Description = "Doesn't matter",
@@ -621,7 +576,7 @@ namespace IdmGenerateModels.Tests
                 },
             };
 
-            var it = new IdmCodeGenerator(null, new[] { "Property-Name" });
+            var it = new IdmCodeGenerator(null, new List<string> { "Property-Name" });
 
             // Act
             string result = it.GenerateProperty(bindingDescription);
@@ -643,6 +598,7 @@ namespace IdmGenerateModels.Tests
                 Required = true,
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "Binary",
                     DisplayName = "Doesn't matter",
                     Description = "Doesn't matter",
@@ -703,6 +659,7 @@ namespace IdmGenerateModels.Tests
                 IntegerMinimum = 5,
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "Integer",
                     DisplayName = "Doesn't matter",
                     Description = "Doesn't matter",
@@ -731,6 +688,7 @@ namespace IdmGenerateModels.Tests
                 IntegerMaximum = 5,
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "Integer",
                     DisplayName = "Doesn't matter",
                     Description = "Doesn't matter",
@@ -760,6 +718,7 @@ namespace IdmGenerateModels.Tests
                 IntegerMaximum = 5,
                 BoundAttributeType = new AttributeTypeDescription
                 {
+                    Multivalued = false,
                     DataType = "Integer",
                     DisplayName = "Doesn't matter",
                     Description = "Doesn't matter",
@@ -852,7 +811,7 @@ namespace IdmGenerateModels.Tests
                 },
             };
 
-            var it = new IdmCodeGenerator(null, new[] { "foo" },
+            var it = new IdmCodeGenerator(null, new List<string> { "foo" },
                 @"[ { ""AttrName"": ""ActionWorkflowInstance"", ""ObjType"": ""WorkflowInstance"" }, { ""AttrName"": ""Property-Name"", ""ObjType"": ""Model-Type"" } ]");
 
 
@@ -890,6 +849,118 @@ namespace IdmGenerateModels.Tests
 
             // Assert
             Assert.AreEqual(TestData.MultiValuedBinary, result);
+        }
+
+        [TestMethod]
+        public void It_generates_the_correct_property_for_an_integer_thats_required()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName = "My Display Name",
+                Description = "My Description",
+                Required = true,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    Multivalued = false,
+                    DataType = "Integer",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "PropertyName"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            ExAssert.AreEqual(TestData.IntegerAttribute, result);
+        }
+
+        [TestMethod]
+        public void It_generates_the_correct_property_for_an_integer_thats_not_required()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName = "My Display Name",
+                Description = "My Description",
+                Required = false,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    Multivalued = false,
+                    DataType = "Integer",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "PropertyName"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            ExAssert.AreEqual(TestData.IntegerAttributeNotRequired, result);
+        }
+
+        [TestMethod]
+        public void It_generates_the_correct_property_for_a_required_DateTime()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName = "My Display Name",
+                Description = "My Description",
+                Required = true,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    Multivalued = false,
+                    DataType = "DateTime",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "PropertyName"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            ExAssert.AreEqual(TestData.DateTimeAttribute, result);
+        }
+
+        [TestMethod]
+        public void It_generates_the_correct_property_for_an_optional_DateTime()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName = "My Display Name",
+                Description = "My Description",
+                Required = false,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    Multivalued = false,
+                    DataType = "DateTime",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "PropertyName"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            ExAssert.AreEqual(TestData.DateTimeAttributeOptional, result);
         }
 
     }

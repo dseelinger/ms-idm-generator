@@ -35,12 +35,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IdmNet, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IdmNet.1.1.0\lib\net45\IdmNet.dll</HintPath>
+    <Reference Include="IdmNet, Version=0.1.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IdmNet.0.1.7\lib\net45\IdmNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="IdmService, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IdmNet.1.1.0\lib\net45\IdmService.dll</HintPath>
+      <HintPath>..\packages\IdmService.1.0.1\lib\net45\IdmService.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

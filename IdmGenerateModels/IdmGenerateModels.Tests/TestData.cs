@@ -428,24 +428,9 @@ namespace IdmNet.Models
         /// Boolean Attrbute - A boolean attribute
         /// </summary>
         [Required]
-        public bool? PropertyName
+        public bool PropertyName
         {
             get { return AttrToBool(""PropertyName""); }
-            set { 
-                SetAttrValue(""PropertyName"", value.ToString());
-            }
-        }
-
-";
-
-        public const string IntegerAttribute = @"
-        /// <summary>
-        /// Integer Attrbute - An integer attribute
-        /// </summary>
-        [Required]
-        public int? PropertyName
-        {
-            get { return AttrToInteger(""PropertyName""); }
             set { 
                 SetAttrValue(""PropertyName"", value.ToString());
             }
@@ -458,7 +443,7 @@ namespace IdmNet.Models
         /// My Display Name - My Description
         /// </summary>
         [Required]
-        public int? Property_Name
+        public int Property_Name
         {
             get { return AttrToInteger(""Property-Name""); }
             set { 
@@ -475,7 +460,7 @@ namespace IdmNet.Models
         /// My Display Name - My Description
         /// </summary>
         [Required]
-        public int? Property_Name
+        public int Property_Name
         {
             get { return AttrToInteger(""Property-Name""); }
             set { 
@@ -492,7 +477,7 @@ namespace IdmNet.Models
         /// My Display Name - My Description
         /// </summary>
         [Required]
-        public int? Property_Name
+        public int Property_Name
         {
             get { return AttrToInteger(""Property-Name""); }
             set { 
@@ -502,19 +487,6 @@ namespace IdmNet.Models
                     throw new ArgumentException(""Invalid value for Property-Name.  Maximum value is 5"");
                 SetAttrValue(""Property-Name"", value.ToString());
             }
-        }
-
-";
-
-        public const string DateTimeAttribute = @"
-        /// <summary>
-        /// Integer Attrbute - An integer attribute
-        /// </summary>
-        [Required]
-        public DateTime? PropertyName
-        {
-            get { return GetAttr(""PropertyName"") == null ? null : GetAttr(""PropertyName"").ToDateTime(); }
-            set { SetAttrValue(""PropertyName"", value.ToString()); }
         }
 
 ";
@@ -606,25 +578,12 @@ namespace IdmNet.Models
         /// Boolean Attrbute - A boolean attribute
         /// </summary>
         [Required]
-        public bool? Property_Name
+        public bool Property_Name
         {
             get { return AttrToBool(""Property-Name""); }
             set { 
                 SetAttrValue(""Property-Name"", value.ToString());
             }
-        }
-
-";
-
-        public const string DateTimeAttributeWithDash = @"
-        /// <summary>
-        /// Integer Attrbute - An integer attribute
-        /// </summary>
-        [Required]
-        public DateTime? Property_Name
-        {
-            get { return GetAttr(""Property-Name"") == null ? null : GetAttr(""Property-Name"").ToDateTime(); }
-            set { SetAttrValue(""Property-Name"", value.ToString()); }
         }
 
 ";
@@ -673,20 +632,6 @@ namespace IdmNet.Models
                     throw new ArgumentException(""One or more invalid values for Property-Name.  Each value must match regular expression '[0-9]'"");
                 SetAttrValues(""Property-Name"", value); 
             }
-        }
-
-";
-
-        // TODO: Pick up here after implementing min-max int
-        public const string MultiValuedInteger = @"
-        /// <summary>
-        /// My Display Name - My Description
-        /// </summary>
-        [Required]
-        public List<int?> Property_Name
-        {
-            get { return GetAttrValues(""Property-Name"").Select(v => AttrToInteger(v)); }
-            set { SetAttrValue(""PropertyName"", value.ToString()); }
         }
 
 ";
@@ -745,6 +690,73 @@ namespace IdmNet.Models
         {
             get { return GetAttr(""Property-Name"").ToBinaries(); }
             set { SetAttrValues(""Property-Name"", value.Select(Convert.ToBase64String).ToList()); }
+        }
+
+";
+
+        public const string IntegerAttribute = @"
+        /// <summary>
+        /// My Display Name - My Description
+        /// </summary>
+        [Required]
+        public int PropertyName
+        {
+            get { return AttrToInteger(""PropertyName""); }
+            set { 
+                SetAttrValue(""PropertyName"", value.ToString());
+            }
+        }
+
+";
+
+        public const string IntegerAttributeNotRequired = @"
+        /// <summary>
+        /// My Display Name - My Description
+        /// </summary>
+        public int? PropertyName
+        {
+            get { return AttrToNullableInteger(""PropertyName""); }
+            set { 
+                SetAttrValue(""PropertyName"", value.ToString());
+            }
+        }
+
+";
+
+        public const string DateTimeAttributeWithDash = @"
+        /// <summary>
+        /// My Display Name - My Description
+        /// </summary>
+        [Required]
+        public DateTime Property_Name
+        {
+            get { return AttrToDateTime(""Property-Name""); }
+            set { SetAttrValue(""Property-Name"", value.ToString()); }
+        }
+
+";
+
+        public const string DateTimeAttribute = @"
+        /// <summary>
+        /// My Display Name - My Description
+        /// </summary>
+        [Required]
+        public DateTime PropertyName
+        {
+            get { return AttrToDateTime(""PropertyName""); }
+            set { SetAttrValue(""PropertyName"", value.ToString()); }
+        }
+
+";
+
+        public const string DateTimeAttributeOptional = @"
+        /// <summary>
+        /// My Display Name - My Description
+        /// </summary>
+        public DateTime? PropertyName
+        {
+            get { return AttrToNullableDateTime(""PropertyName""); }
+            set { SetAttrValue(""PropertyName"", value.ToString()); }
         }
 
 ";

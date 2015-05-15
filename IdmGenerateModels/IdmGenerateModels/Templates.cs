@@ -75,9 +75,9 @@
         /// <summary>
         /// {0} - {1}
         /// </summary>
-        {2}public DateTime? {4}
+        {2}public DateTime{5} {4}
         {{
-            get {{ return GetAttr(""{3}"") == null ? null : GetAttr(""{3}"").ToDateTime(); }}
+            get {{ return AttrTo{6}DateTime(""{3}""); }}
             set {{ SetAttrValue(""{3}"", value.ToString()); }}
         }}
 

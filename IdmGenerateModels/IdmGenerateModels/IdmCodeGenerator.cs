@@ -9,16 +9,16 @@ namespace IdmGenerateModels
 {
     public class IdmCodeGenerator
     {
-        private readonly ObjectTypeDescription _objectTypeDescription;
-        private readonly IEnumerable<string> _objectTypeNames;
+        private readonly Schema _schemaObject;
+        private readonly List<string> _objectTypeNames;
         private readonly List<ReferenceToObjectTypeMap> _referenceMap;
-        private readonly string _otherJson;
+        private readonly string _customSchemaJson;
 
-        public IdmCodeGenerator(ObjectTypeDescription objectTypeDescription, IEnumerable<string> objectTypeNames = null, string json = null)
+        public IdmCodeGenerator(Schema schemaObject, List<string> objectTypeNames = null, string json = null)
         {
-            _objectTypeDescription = objectTypeDescription;
+            _schemaObject = schemaObject;
             _objectTypeNames = objectTypeNames;
-            _otherJson = Environment.GetEnvironmentVariable("CUSTOM_ATTR_TO_OBJ_MAPPINGS");
+            _customSchemaJson = Environment.GetEnvironmentVariable("CUSTOM_ATTR_TO_OBJ_MAPPINGS");
 
             if (!string.IsNullOrWhiteSpace(json))
             {
@@ -28,12 +28,12 @@ namespace IdmGenerateModels
 
         public string Generate()
         {
-            var className = GetValidCSharpIdentifier(_objectTypeDescription.Name);
+            var className = GetValidCSharpIdentifier(_schemaObject.Name);
 
             var attrSb = GenerateAttributes();
             return String.Format(Templates.ClassTemplate, 
-                _objectTypeDescription.Name,
-                _objectTypeDescription.Description, 
+                _schemaObject.Name,
+                _schemaObject.Description, 
                 className,
                 attrSb);
         }
@@ -54,7 +54,7 @@ namespace IdmGenerateModels
             };
 
             var bindingsToGenerate =
-                _objectTypeDescription.BindingDescriptions.Where(b => !(attrsToSkip.Contains(b.BoundAttributeType.Name)));
+                _schemaObject.BindingDescriptions.Where(b => !(attrsToSkip.Contains(b.BoundAttributeType.Name)));
 
             foreach (var bindingDescription in bindingsToGenerate)
             {
@@ -100,7 +100,7 @@ namespace IdmGenerateModels
 
         private string GenerateMultiValuedProperty(BindingDescription bindingDescription)
         {
-            string prop = "";
+            string prop;
             switch (bindingDescription.BoundAttributeType.DataType)
             {
                 case "String":
@@ -204,27 +204,51 @@ namespace IdmGenerateModels
         private string GetObjTypeName(BindingDescription bindingDescription)
         {
             string returnVal = "IdmResource";
-            if (_objectTypeNames != null && _objectTypeNames.Contains(bindingDescription.BoundAttributeType.Name))
+            if (IsObjectTypeSameAsAttributeName(bindingDescription))
             {
                 returnVal = bindingDescription.BoundAttributeType.Name;
             }
-            else if (_referenceMap != null && _referenceMap.Any(r => r.AttrName == bindingDescription.BoundAttributeType.Name))
+            else if (IsObjectTypeListedInJsonFile(bindingDescription))
             {
-                returnVal = (from r in _referenceMap
+                returnVal = GetObjectTypeFromJson(bindingDescription, returnVal);
+            }
+            else if (!string.IsNullOrWhiteSpace(_customSchemaJson))
+            {
+                returnVal = GetObjectTypeFromCustomSchemaJson(bindingDescription, returnVal);
+            }
+            return GetValidCSharpIdentifier(returnVal);
+        }
+
+        private string GetObjectTypeFromCustomSchemaJson(BindingDescription bindingDescription, string returnVal)
+        {
+            List<ReferenceToObjectTypeMap> otherMappings =
+                JsonConvert.DeserializeObject<List<ReferenceToObjectTypeMap>>(_customSchemaJson);
+            if (otherMappings.Any(r => r.AttrName == bindingDescription.BoundAttributeType.Name))
+            {
+                returnVal = (from r in otherMappings
                     where r.AttrName == bindingDescription.BoundAttributeType.Name
                     select r.ObjType).First();
             }
-            else if (!string.IsNullOrWhiteSpace(_otherJson))
-            {
-                List<ReferenceToObjectTypeMap> otherMappings = JsonConvert.DeserializeObject<List<ReferenceToObjectTypeMap>>(_otherJson);
-                if (otherMappings.Any(r => r.AttrName == bindingDescription.BoundAttributeType.Name))
-                {
-                    returnVal = (from r in otherMappings
-                            where r.AttrName == bindingDescription.BoundAttributeType.Name
-                            select r.ObjType).First();
-                }
-            }
-            return GetValidCSharpIdentifier(returnVal);
+            return returnVal;
+        }
+
+        private string GetObjectTypeFromJson(BindingDescription bindingDescription, string returnVal)
+        {
+            if (returnVal == null) throw new ArgumentNullException("returnVal");
+            returnVal = (from r in _referenceMap
+                where r.AttrName == bindingDescription.BoundAttributeType.Name
+                select r.ObjType).First();
+            return returnVal;
+        }
+
+        private bool IsObjectTypeListedInJsonFile(BindingDescription bindingDescription)
+        {
+            return _referenceMap != null && _referenceMap.Any(r => r.AttrName == bindingDescription.BoundAttributeType.Name);
+        }
+
+        private bool IsObjectTypeSameAsAttributeName(BindingDescription bindingDescription)
+        {
+            return _objectTypeNames != null && _objectTypeNames.Contains(bindingDescription.BoundAttributeType.Name);
         }
 
         private static string GenerateSingleValuedDateTimeProperty(BindingDescription bindingDescription)
@@ -234,15 +258,29 @@ namespace IdmGenerateModels
                 GetDescription(bindingDescription),
                 GetRequired(bindingDescription),
                 bindingDescription.BoundAttributeType.Name,
-                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
+                bindingDescription.Required == true ? "" : "?",
+                bindingDescription.Required == true ? "" : "Nullable"
+                );
         }
 
         public static string GenerateSingleValuedValueProperty(BindingDescription bindingDescription)
         {
-            string typeString = bindingDescription.BoundAttributeType.DataType == "Boolean" ? "bool?" : "int?";
-            string conversionMethodString = bindingDescription.BoundAttributeType.DataType == "Boolean"
-                ? "AttrToBool"
-                : "AttrToInteger";
+            string conversionMethodString;
+            string typeString = bindingDescription.BoundAttributeType.DataType == "Boolean" ? "bool" : "int";
+            if (bindingDescription.Required == false)
+            {
+                typeString += '?';
+                conversionMethodString = bindingDescription.BoundAttributeType.DataType == "Boolean"
+                    ? "AttrToNullableBool"
+                    : "AttrToNullableInteger";
+            }
+            else
+            {
+                conversionMethodString = bindingDescription.BoundAttributeType.DataType == "Boolean"
+                    ? "AttrToBool"
+                    : "AttrToInteger";
+            }
 
             var minMax = GetMinMax(bindingDescription);
             var propertyCode = String.Format(Templates.SingleValuedValueFormat,
