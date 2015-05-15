@@ -70,57 +70,6 @@ namespace IdmGenerateModels
                 : GenerateSingleValuedProperty(bindingDescription);
         }
 
-        private string GenerateMultiValuedProperty(BindingDescription bindingDescription)
-        {
-            string prop = "";
-            switch (bindingDescription.BoundAttributeType.DataType)
-            {
-                case "String":
-                case "Text":
-                    prop = GenerateMultiValuedStringProperty(bindingDescription);
-                    break;
-                case "Integer":
-                    prop = GenerateMultiValuedValueProperty(bindingDescription);
-                    break;
-                //case "DateTime":
-                //    prop = GenerateMultiValuedDateTimeProperty(bindingDescription);
-                //    break;
-                //case "Reference":
-                //    prop = GenerateMultiValuedReferenceProperty(bindingDescription);
-                //    break;
-                //case "Binary":
-                //    prop = GenerateMultiValuedBinaryProperty(bindingDescription);
-                //    break;
-                //default:
-                //    throw new ApplicationException();
-            }
-            return prop;
-        }
-
-        private string GenerateMultiValuedValueProperty(BindingDescription bindingDescription)
-        {
-            var minMax = GetMinMax(bindingDescription);
-            var propertyCode = String.Format(Templates.MultiValuedIntegerFormat,
-                GetDisplayName(bindingDescription),
-                GetDescription(bindingDescription),
-                GetRequired(bindingDescription),
-                bindingDescription.BoundAttributeType.Name,
-                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
-                minMax);
-            return propertyCode;
-        }
-
-        private string GenerateMultiValuedStringProperty(BindingDescription bindingDescription)
-        {
-            return String.Format(Templates.MultiValuedStringFormat,
-                GetDisplayName(bindingDescription),
-                GetDescription(bindingDescription),
-                GetRequired(bindingDescription),
-                bindingDescription.BoundAttributeType.Name,
-                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
-                GetRegEx(bindingDescription));
-        }
-
         public string GenerateSingleValuedProperty(BindingDescription bindingDescription)
         {
             string prop;
@@ -147,6 +96,89 @@ namespace IdmGenerateModels
                     throw new ApplicationException();
             }
             return prop;
+        }
+
+        private string GenerateMultiValuedProperty(BindingDescription bindingDescription)
+        {
+            string prop = "";
+            switch (bindingDescription.BoundAttributeType.DataType)
+            {
+                case "String":
+                case "Text":
+                    prop = GenerateMultiValuedStringProperty(bindingDescription);
+                    break;
+                case "Integer":
+                    prop = GenerateMultiValuedValueProperty(bindingDescription);
+                    break;
+                case "DateTime":
+                    prop = GenerateMultiValuedDateTimeProperty(bindingDescription);
+                    break;
+                case "Reference":
+                    prop = GenerateMultiValuedReferenceProperty(bindingDescription);
+                    break;
+                case "Binary":
+                    prop = GenerateMultiValuedBinaryProperty(bindingDescription);
+                    break;
+                default:
+                    throw new ApplicationException();
+            }
+            return prop;
+        }
+
+
+        private string GenerateMultiValuedBinaryProperty(BindingDescription bindingDescription)
+        {
+            return String.Format(Templates.MultiValuedBinaryFormat,
+                GetDisplayName(bindingDescription),
+                GetDescription(bindingDescription),
+                GetRequired(bindingDescription),
+                bindingDescription.BoundAttributeType.Name,
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
+        }
+
+        private string GenerateMultiValuedReferenceProperty(BindingDescription bindingDescription)
+        {
+            return String.Format(Templates.MultiValuedReferenceFormat,
+                GetDisplayName(bindingDescription),
+                GetDescription(bindingDescription),
+                bindingDescription.BoundAttributeType.Name,
+                GetObjTypeName(bindingDescription),
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
+        }
+
+
+        private string GenerateMultiValuedDateTimeProperty(BindingDescription bindingDescription)
+        {
+            return String.Format(Templates.MultiValuedDateTimeFormat,
+                GetDisplayName(bindingDescription),
+                GetDescription(bindingDescription),
+                GetRequired(bindingDescription),
+                bindingDescription.BoundAttributeType.Name,
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
+        }
+
+        private string GenerateMultiValuedValueProperty(BindingDescription bindingDescription)
+        {
+            var minMax = GetMinMax(bindingDescription);
+            var propertyCode = String.Format(Templates.MultiValuedIntegerFormat,
+                GetDisplayName(bindingDescription),
+                GetDescription(bindingDescription),
+                GetRequired(bindingDescription),
+                bindingDescription.BoundAttributeType.Name,
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
+                minMax);
+            return propertyCode;
+        }
+
+        private string GenerateMultiValuedStringProperty(BindingDescription bindingDescription)
+        {
+            return String.Format(Templates.MultiValuedStringFormat,
+                GetDisplayName(bindingDescription),
+                GetDescription(bindingDescription),
+                GetRequired(bindingDescription),
+                bindingDescription.BoundAttributeType.Name,
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
+                GetRegEx(bindingDescription));
         }
 
         private string GenerateSingleValuedBinaryProperty(BindingDescription bindingDescription)

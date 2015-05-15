@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using IdmNet.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -805,6 +804,92 @@ namespace IdmGenerateModels.Tests
 
             // Assert
             ExAssert.AreEqual(TestData.MultiValuedIntegerAttributeWithMinMax, result);
+        }
+
+        [TestMethod]
+        public void It_handles_Multivalued_DateTimes()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName = "My Display Name",
+                Description = "My Description",
+                Required = true,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    Multivalued = true,
+                    DataType = "DateTime",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "Property-Name"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            ExAssert.AreEqual(TestData.MultiValuedDateTime, result);
+        }
+
+        [TestMethod]
+        public void It_handles_Multivalued_Reference_attributes()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName = "My Display Name",
+                Description = "My Description",
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    Multivalued = true,
+                    DataType = "Reference",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "Property-Name"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null, new[] { "foo" },
+                @"[ { ""AttrName"": ""ActionWorkflowInstance"", ""ObjType"": ""WorkflowInstance"" }, { ""AttrName"": ""Property-Name"", ""ObjType"": ""Model-Type"" } ]");
+
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            ExAssert.AreEqual(TestData.MultiValuedReference, result);
+        }
+
+        [TestMethod]
+        public void It_handles_Multivalued_Binary_attributes()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName = "My Display Name",
+                Description = "My Description",
+                Required = true,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    Multivalued = true,
+                    DataType = "Binary",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "Property-Name"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+
+            // Act
+            string result = it.GenerateProperty(bindingDescription);
+
+            // Assert
+            Assert.AreEqual(TestData.MultiValuedBinary, result);
         }
 
     }

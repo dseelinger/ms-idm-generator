@@ -27,7 +27,6 @@
     { "AttrName": "Owner", "ObjType": "Person" },
     { "AttrName": "ParentRequest", "ObjType": "Request" },
     { "AttrName": "PrincipalSet", "ObjType": "Set" },
-    { "AttrName": "Requestor", "ObjType": "Person" },
     { "AttrName": "ResourceCurrentSet", "ObjType": "Set" },
     { "AttrName": "ResourceFinalSet", "ObjType": "Set" },
     { "AttrName": "BoundObjectType", "ObjType": "ObjectTypeDescription" },

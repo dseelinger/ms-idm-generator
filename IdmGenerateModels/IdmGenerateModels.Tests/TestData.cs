@@ -5,6 +5,7 @@
         public const string EmptyClassOutput = @"using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 // ReSharper disable InconsistentNaming
 
 namespace IdmNet.Models
@@ -60,6 +61,7 @@ namespace IdmNet.Models
         public const string ClassWithDash = @"using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 // ReSharper disable InconsistentNaming
 
 namespace IdmNet.Models
@@ -708,7 +710,43 @@ namespace IdmNet.Models
 
 ";
 
+        public const string MultiValuedDateTime = @"
+        /// <summary>
+        /// My Display Name - My Description
+        /// </summary>
+        [Required]
+        public List<DateTime> Property_Name
+        {
+            get { return GetAttr(""Property-Name"").Values.Select(DateTime.Parse).ToList(); }
+            set { SetAttrValues(""Property-Name"", value.Select(v => v.ToString()); }
+        }
+
+";
+
+        public const string MultiValuedReference = @"
+        /// <summary>
+        /// My Display Name - My Description
+        /// </summary>
+        public List<Model_Type> Property_Name
+        {
+            get { return GetMultiValuedAttr(""Property-Name"", _theProperty_Name); }
+            set { SetMultiValuedAttr(""Property-Name"", out _theProperty_Name, value); }
+        }
+        private List<Model_Type> _theProperty_Name;
+
+";
+
+        public const string MultiValuedBinary = @"
+        /// <summary>
+        /// My Display Name - My Description
+        /// </summary>
+        [Required]
+        public List<byte[]> Property_Name
+        {
+            get { return GetAttr(""Property-Name"").ToBinaries(); }
+            set { SetAttrValues(""Property-Name"", value.Select(Convert.ToBase64String).ToList()); }
+        }
+
+";
     }
 }
-
-

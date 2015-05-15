@@ -45,6 +45,18 @@
 
 ";
 
+        public const string MultiValuedDateTimeFormat = @"
+        /// <summary>
+        /// {0} - {1}
+        /// </summary>
+        {2}public List<DateTime> {4}
+        {{
+            get {{ return GetAttr(""{3}"").Values.Select(DateTime.Parse).ToList(); }}
+            set {{ SetAttrValues(""{3}"", value.Select(v => v.ToString()); }}
+        }}
+
+";
+
         public const string SingleValuedValueFormat = @"
         /// <summary>
         /// {0} - {1}
@@ -83,6 +95,18 @@
 
 ";
 
+        public const string MultiValuedBinaryFormat = @"
+        /// <summary>
+        /// {0} - {1}
+        /// </summary>
+        {2}public List<byte[]> {4}
+        {{
+            get {{ return GetAttr(""{3}"").ToBinaries(); }}
+            set {{ SetAttrValues(""{3}"", value.Select(Convert.ToBase64String).ToList()); }}
+        }}
+
+";
+
         public const string SingleValuedReferenceFormat = @"
         /// <summary>
         /// {0} - {1}
@@ -100,14 +124,24 @@
 
 ";
 
-        // ObjectType name
-        // ObjectType Description
-        // privates (if any)
-        // Complex Attributes (if any)
-        // Attributes (if any)
+        public const string MultiValuedReferenceFormat = @"
+        /// <summary>
+        /// {0} - {1}
+        /// </summary>
+        public List<{3}> {4}
+        {{
+            get {{ return GetMultiValuedAttr(""{2}"", _the{4}); }}
+            set {{ SetMultiValuedAttr(""{2}"", out _the{4}, value); }}
+        }}
+        private List<{3}> _the{4};
+
+";
+
+
         public const string ClassTemplate = @"using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 // ReSharper disable InconsistentNaming
 
 namespace IdmNet.Models
