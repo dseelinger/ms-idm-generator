@@ -250,7 +250,7 @@ namespace IdmNet.Models.Tests
         {{
             new {0} {{ ObjectType = ""Incorrect Object Type"" }};
         }}
-
+{2}
     }}
 }}
 ";

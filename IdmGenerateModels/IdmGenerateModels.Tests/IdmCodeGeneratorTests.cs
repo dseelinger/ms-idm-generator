@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using IdmNet.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -22,7 +23,7 @@ namespace IdmGenerateModels.Tests
             var result = it.Generate();
 
             // Assert
-            Assert.AreEqual(TestData.EmptyClassOutput, result);
+            ExAssert.AreEqual(TestData.EmptyClassOutput, result.Item1);
         }
 
         [TestMethod]
@@ -50,10 +51,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.BindingWithDifferentDisplayName, result);
+            Assert.AreEqual(TestData.BindingWithDifferentDisplayName, result.Item1);
         }
 
         [TestMethod]
@@ -79,10 +80,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.BindingWithDifferentDescription, result);
+            Assert.AreEqual(TestData.BindingWithDifferentDescription, result.Item1);
         }
 
         [TestMethod]
@@ -108,10 +109,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.BindingNotRequired, result);
+            Assert.AreEqual(TestData.BindingNotRequired, result.Item1);
         }
 
         [TestMethod]
@@ -139,10 +140,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.StringAttributeWithDifferentPropertyName, result);
+            Assert.AreEqual(TestData.StringAttributeWithDifferentPropertyName, result.Item1);
         }
 
 
@@ -170,10 +171,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.StringAttributeWithoutBindingDisplayName, result);
+            Assert.AreEqual(TestData.StringAttributeWithoutBindingDisplayName, result.Item1);
         }
 
         [TestMethod]
@@ -199,10 +200,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.StringAttributeWithoutABindingDescription, result);
+            Assert.AreEqual(TestData.StringAttributeWithoutABindingDescription, result.Item1);
         }
 
         [TestMethod]
@@ -229,10 +230,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.StringAttributeWithoutRegEx, result);
+            Assert.AreEqual(TestData.StringAttributeWithoutRegEx, result.Item1);
         }
 
         [TestMethod]
@@ -260,10 +261,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.StringAttributeWithAllStringFieldsPopulated, result);
+            Assert.AreEqual(TestData.StringAttributeWithAllStringFieldsPopulated, result.Item1);
         }
 
         [TestMethod]
@@ -290,10 +291,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.BoolAttribute, result);
+            ExAssert.AreEqual(TestData.BoolAttribute, result.Item1);
         }
 
         
@@ -321,10 +322,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null, new List<string> { "PropertyName" });
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.StandardReferenceAttributeWhereTypeMatchesName, result);
+            Assert.AreEqual(TestData.StandardReferenceAttributeWhereTypeMatchesName, result.Item1);
         }
 
         [TestMethod]
@@ -353,10 +354,10 @@ namespace IdmGenerateModels.Tests
 
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.StandardReferenceAttributeWhereTypeFoundInJsonFile, result);
+            Assert.AreEqual(TestData.StandardReferenceAttributeWhereTypeFoundInJsonFile, result.Item1);
         }
 
         [TestMethod]
@@ -382,10 +383,10 @@ namespace IdmGenerateModels.Tests
 
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.StandardReferenceAttributeWhereTypeFoundInJsonFile, result);
+            Assert.AreEqual(TestData.StandardReferenceAttributeWhereTypeFoundInJsonFile, result.Item1);
         }
 
         [TestMethod]
@@ -413,10 +414,10 @@ namespace IdmGenerateModels.Tests
 
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.ReferenceAttributeWhereTypeNotFound, result);
+            Assert.AreEqual(TestData.ReferenceAttributeWhereTypeNotFound, result.Item1);
         }
 
         [TestMethod]
@@ -444,10 +445,10 @@ namespace IdmGenerateModels.Tests
 
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.BinaryAttribute, result);
+            Assert.AreEqual(TestData.BinaryAttribute, result.Item1);
         }
 
         [TestMethod]
@@ -462,10 +463,10 @@ namespace IdmGenerateModels.Tests
             });
 
             // Act
-            var result = it.Generate();
+            Tuple<string, string> result = it.Generate();
 
             // Assert
-            Assert.AreEqual(TestData.ClassWithDash, result);
+            Assert.AreEqual(TestData.ClassWithDash, result.Item1);
         }
 
         [TestMethod]
@@ -493,10 +494,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.StringAttributeWithDashInName, result);
+            Assert.AreEqual(TestData.StringAttributeWithDashInName, result.Item1);
         }
 
         [TestMethod]
@@ -523,10 +524,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.BoolAttributeWithDash, result);
+            Assert.AreEqual(TestData.BoolAttributeWithDash, result.Item1);
         }
 
         [TestMethod]
@@ -551,10 +552,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.DateTimeAttributeWithDash, result);
+            Assert.AreEqual(TestData.DateTimeAttributeWithDash, result.Item1);
         }
 
         [TestMethod]
@@ -579,10 +580,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null, new List<string> { "Property-Name" });
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.ReferenceAttrWithDashInName, result);
+            Assert.AreEqual(TestData.ReferenceAttrWithDashInName, result.Item1);
         }
 
         [TestMethod]
@@ -610,10 +611,10 @@ namespace IdmGenerateModels.Tests
 
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.BinaryAttributeWithDash, result);
+            Assert.AreEqual(TestData.BinaryAttributeWithDash, result.Item1);
         }
 
         [TestMethod]
@@ -640,10 +641,10 @@ namespace IdmGenerateModels.Tests
 
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.MultiValuedString, result);
+            Assert.AreEqual(TestData.MultiValuedString, result.Item1);
 
         }
 
@@ -670,10 +671,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.IntegerAttributeWithMin, result);
+            ExAssert.AreEqual(TestData.IntegerAttributeWithMin, result.Item1);
         }
 
         [TestMethod]
@@ -699,10 +700,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.IntegerAttributeWithMax, result);
+            ExAssert.AreEqual(TestData.IntegerAttributeWithMax, result.Item1);
         }
 
         [TestMethod]
@@ -729,10 +730,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.IntegerAttributeWithMinMax, result);
+            ExAssert.AreEqual(TestData.IntegerAttributeWithMinMax, result.Item1);
         }
 
         [TestMethod]
@@ -759,10 +760,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.MultiValuedIntegerAttributeWithMinMax, result);
+            ExAssert.AreEqual(TestData.MultiValuedIntegerAttributeWithMinMax, result.Item1);
         }
 
         [TestMethod]
@@ -787,10 +788,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.MultiValuedDateTime, result);
+            ExAssert.AreEqual(TestData.MultiValuedDateTime, result.Item1);
         }
 
         [TestMethod]
@@ -816,10 +817,10 @@ namespace IdmGenerateModels.Tests
 
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.MultiValuedReference, result);
+            ExAssert.AreEqual(TestData.MultiValuedReference, result.Item1);
         }
 
         [TestMethod]
@@ -845,10 +846,10 @@ namespace IdmGenerateModels.Tests
 
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.MultiValuedBinary, result);
+            Assert.AreEqual(TestData.MultiValuedBinary, result.Item1);
         }
 
         [TestMethod]
@@ -873,10 +874,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.IntegerAttribute, result);
+            ExAssert.AreEqual(TestData.IntegerAttribute, result.Item1);
         }
 
         [TestMethod]
@@ -901,10 +902,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.IntegerAttributeNotRequired, result);
+            ExAssert.AreEqual(TestData.IntegerAttributeNotRequired, result.Item1);
         }
 
         [TestMethod]
@@ -929,10 +930,10 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.DateTimeAttribute, result);
+            ExAssert.AreEqual(TestData.DateTimeAttribute, result.Item1);
         }
 
         [TestMethod]
@@ -957,11 +958,63 @@ namespace IdmGenerateModels.Tests
             var it = new IdmCodeGenerator(null);
 
             // Act
-            string result = it.GenerateProperty(bindingDescription);
+            Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.DateTimeAttributeOptional, result);
+            ExAssert.AreEqual(TestData.DateTimeAttributeOptional, result.Item1);
         }
+
+        [TestMethod]
+        public void It_generates_the_correct_class_for_an_object_type_with_a_string_attribute()
+        {
+            // Arrange
+            var it = new IdmCodeGenerator(new Schema
+            {
+                Name = "Foo",
+                Description = "Bar",
+                BindingDescriptions = new List<BindingDescription>
+                {
+                    new BindingDescription
+                    {
+                        DisplayName = "My Display Name",
+                        Description = "My Description",
+                        Required = true,
+                        BoundAttributeType = new AttributeTypeDescription
+                        {
+                            Multivalued = true,
+                            DataType = "Binary",
+                            DisplayName = "Doesn't matter",
+                            Description = "Doesn't matter",
+                            Name = "Property-Name"
+                        },
+                    }
+                }
+            });
+
+            // Act
+            var result = it.Generate();
+
+            // Assert
+            ExAssert.AreEqual(TestData.ClassOutputWithAttribute, result.Item1);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         [TestMethod]
         public void It_can_generate_a_test_class()
@@ -975,11 +1028,13 @@ namespace IdmGenerateModels.Tests
             });
 
             // Act
-            var result = it.GenerateTests();
+            Tuple<string, string> result = it.Generate();
 
             // Assert
-            ExAssert.AreEqual(TestData.TestClassTemplate, result);
+            ExAssert.AreEqual(TestData.TestClassTemplate, result.Item2);
         }
+
+
 
     }
 }

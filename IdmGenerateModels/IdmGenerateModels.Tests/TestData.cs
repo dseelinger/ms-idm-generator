@@ -823,5 +823,82 @@ namespace IdmNet.Models.Tests
 }
 ";
 
+        public const string ClassOutputWithAttribute = @"using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+// ReSharper disable InconsistentNaming
+
+namespace IdmNet.Models
+{
+    /// <summary>
+    /// Foo - Bar
+    /// </summary>
+    public class Foo : IdmResource
+    {
+        /// <summary>
+        /// Parameterless CTOR
+        /// </summary>
+        public Foo()
+        {
+            ObjectType = ForcedObjType = ""Foo"";
+        }
+
+        /// <summary>
+        /// Build a Foo object from a IdmResource object
+        /// </summary>
+        /// <param name=""resource"">base class</param>
+        public Foo(IdmResource resource)
+        {
+            Attributes = resource.Attributes;
+            ObjectType = ForcedObjType = ""Foo"";
+            if (resource.Creator == null)
+                return;
+            Creator = resource.Creator;
+        }
+
+        readonly string ForcedObjType;
+
+        /// <summary>
+        /// Object Type (can only be Foo)
+        /// </summary>
+        [Required]
+        public override sealed string ObjectType
+        {
+            get { return GetAttrValue(""ObjectType""); }
+            set
+            {
+                if (value != ForcedObjType)
+                    throw new InvalidOperationException(""Object Type of Foo can only be 'Foo'"");
+                SetAttrValue(""ObjectType"", value);
+            }
+        }
+
+        /// <summary>
+        /// My Display Name - My Description
+        /// </summary>
+        [Required]
+        public List<byte[]> Property_Name
+        {
+            get { return GetAttr(""Property-Name"").ToBinaries(); }
+            set { SetAttrValues(""Property-Name"", value.Select(Convert.ToBase64String).ToList()); }
+        }
+
+
     }
 }
+";
+
+
+
+    }
+}
+
+
+
+
+
+
+
+
+
