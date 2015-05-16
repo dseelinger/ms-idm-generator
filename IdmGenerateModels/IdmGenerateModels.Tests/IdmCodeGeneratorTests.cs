@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Fare;
 using IdmNet.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -87,15 +88,16 @@ namespace IdmGenerateModels.Tests
         }
 
         [TestMethod]
-        public void It_generates_the_correct_property_for_a_binding_thats_not_required()
+        public void It_generates_the_correct_property_and_tests_for_a_binding_thats_not_required()
         {
             // Arrange
+            var regExString = "[0-9]";
             var bindingDescription = new BindingDescription
             {
                 DisplayName = "First Choice for Summary Part I",
                 Description = "First Choice for Summary Part II",
                 Required = false,
-                StringRegex = "*.",
+                StringRegex = regExString,
                 BoundAttributeType = new AttributeTypeDescription
                 {
                     Multivalued = false,
@@ -105,6 +107,10 @@ namespace IdmGenerateModels.Tests
                     Name = "PropertyName"
                 },
             };
+            var xeger = new Xeger(regExString);
+            var match = xeger.Generate();
+
+            var expectedTests = string.Format(TestData.BindingNotRequiredTests, match);
 
             var it = new IdmCodeGenerator(null);
 
@@ -113,7 +119,24 @@ namespace IdmGenerateModels.Tests
 
             // Assert
             Assert.AreEqual(TestData.BindingNotRequired, result.Item1);
+            Assert.AreEqual(expectedTests, result.Item2);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         [TestMethod]
         public void It_generates_the_correct_property_for_a_string_attribute_with_a_different_property_name()
@@ -998,22 +1021,57 @@ namespace IdmGenerateModels.Tests
             ExAssert.AreEqual(TestData.ClassOutputWithAttribute, result.Item1);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void It_throws_for_an_unrecognized_single_value_type()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName = "My Display Name",
+                Description = "My Description",
+                Required = true,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    Multivalued = false,
+                    DataType = "FooBar",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "PropertyName"
+                },
+            };
 
+            var it = new IdmCodeGenerator(null);
 
+            // Act
+            it.GeneratePropertyAndTests(bindingDescription);
+        }
 
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void It_throws_for_an_unrecognized_multi_value_type()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName = "My Display Name",
+                Description = "My Description",
+                Required = true,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    Multivalued = true,
+                    DataType = "Boolean", // Multi-valued attributes cannot be boolean
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "PropertyName"
+                },
+            };
 
+            var it = new IdmCodeGenerator(null);
 
-
-
-
-
-
-
-
-
-
-
-
+            // Act
+            it.GeneratePropertyAndTests(bindingDescription);
+        }
 
 
         [TestMethod]

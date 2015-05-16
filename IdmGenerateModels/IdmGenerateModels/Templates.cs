@@ -208,12 +208,17 @@ namespace IdmNet.Models.Tests
     [TestClass]
     public class {0}Tests
     {{
+        private {0} _it;
+
+        public {0}Tests()
+        {{
+            _it = new {0}();
+        }}
+
         [TestMethod]
         public void It_has_a_paremeterless_constructor()
         {{
-            var it = new {0}();
-
-            Assert.AreEqual(""{1}"", it.ObjectType);
+            Assert.AreEqual(""{1}"", _it.ObjectType);
         }}
 
         [TestMethod]
@@ -248,7 +253,7 @@ namespace IdmNet.Models.Tests
         [ExpectedException(typeof(InvalidOperationException))]
         public void It_throws_when_you_try_to_set_ObjectType_to_anything_other_than_its_primary_ObjectType()
         {{
-            new {0} {{ ObjectType = ""Incorrect Object Type"" }};
+            _it.ObjectType = ""Invalid Object Type"";
         }}
 {2}
     }}

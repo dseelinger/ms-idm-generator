@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Fare, Version=1.0.4857.16365, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fare.1.0.0\lib\net35\Fare.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="IdmNet, Version=0.1.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\IdmNet.0.1.7\lib\net45\IdmNet.dll</HintPath>
       <Private>True</Private>

@@ -327,9 +327,9 @@ namespace IdmNet.Models
         {
             get { return GetAttrValue(""PropertyName""); }
             set {
-                var regEx = new RegEx(""*."");
+                var regEx = new RegEx(""[0-9]"");
                 if (!regEx.IsMatch(value))
-                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression '*.'"");
+                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression '[0-9]'"");
                 SetAttrValue(""PropertyName"", value); 
             }
         }
@@ -776,12 +776,17 @@ namespace IdmNet.Models.Tests
     [TestClass]
     public class Foo_BarTests
     {
+        private Foo_Bar _it;
+
+        public Foo_BarTests()
+        {
+            _it = new Foo_Bar();
+        }
+
         [TestMethod]
         public void It_has_a_paremeterless_constructor()
         {
-            var it = new Foo_Bar();
-
-            Assert.AreEqual(""Foo-Bar"", it.ObjectType);
+            Assert.AreEqual(""Foo-Bar"", _it.ObjectType);
         }
 
         [TestMethod]
@@ -816,7 +821,7 @@ namespace IdmNet.Models.Tests
         [ExpectedException(typeof(InvalidOperationException))]
         public void It_throws_when_you_try_to_set_ObjectType_to_anything_other_than_its_primary_ObjectType()
         {
-            new Foo_Bar { ObjectType = ""Incorrect Object Type"" };
+            _it.ObjectType = ""Invalid Object Type"";
         }
 
     }
@@ -890,6 +895,26 @@ namespace IdmNet.Models
 ";
 
 
+        public const string BindingNotRequiredTests = @"
+        [TestMethod]
+        public void SetGetPropertyNameTest_with_valid_value()
+        {{
+            // Act
+            _it.Property_Name = ""{0}""; 
+
+            // Assert
+            Assert.AreEqual(""{0}"", _it.Property_Name);
+        }}
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void SetGetPropertyNameTest_with_invalid_value()
+        {{
+            // Act
+            _it.Property_Name = """"; 
+        }}
+
+";
 
     }
 }
