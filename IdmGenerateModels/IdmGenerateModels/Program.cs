@@ -81,6 +81,7 @@ namespace IdmGenerateModels
                 Directory.Delete(TargetDirectoryPath, true);
             }
             Directory.CreateDirectory(TargetDirectoryPath);
+            Directory.CreateDirectory(TargetDirectoryPath + @"tests\");
         }
 
 
@@ -88,10 +89,14 @@ namespace IdmGenerateModels
         {
             var objTypeNames = (from o in _objectTypes select o.GetAttrValue("Name")).ToList();
             IdmCodeGenerator generator = new IdmCodeGenerator(objectTypeDescription, objTypeNames, _json);
-            var classString = generator.Generate();
 
+            var classString = generator.Generate();
             var classFile = string.Format(@"{0}{1}.cs", TargetDirectoryPath, objectTypeDescription.Name);
             File.WriteAllText(classFile, classString);
+
+            string testsString = generator.GenerateTests();
+            var testsFile = string.Format(@"{0}Tests\{1}Tests.cs", TargetDirectoryPath, objectTypeDescription.Name);
+            File.WriteAllText(testsFile, testsString);
         }
     }
 }

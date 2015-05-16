@@ -29,8 +29,8 @@ namespace IdmNet.Models
         /// <param name=""resource"">base class</param>
         public Foo(IdmResource resource)
         {
-            ObjectType = ForcedObjType = ""Foo"";
             Attributes = resource.Attributes;
+            ObjectType = ForcedObjType = ""Foo"";
             if (resource.Creator == null)
                 return;
             Creator = resource.Creator;
@@ -85,8 +85,8 @@ namespace IdmNet.Models
         /// <param name=""resource"">base class</param>
         public Foo_Bar(IdmResource resource)
         {
-            ObjectType = ForcedObjType = ""Foo-Bar"";
             Attributes = resource.Attributes;
+            ObjectType = ForcedObjType = ""Foo-Bar"";
             if (resource.Creator == null)
                 return;
             Creator = resource.Creator;
@@ -760,5 +760,68 @@ namespace IdmNet.Models
         }
 
 ";
+
+
+
+
+        public const string TestClassTemplate = @"using System;
+using System.Collections.Generic;
+using IdmNet.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable ObjectCreationAsStatement
+// ReSharper disable UseObjectOrCollectionInitializer
+
+namespace IdmNet.Models.Tests
+{
+    [TestClass]
+    public class Foo_BarTests
+    {
+        [TestMethod]
+        public void It_has_a_paremeterless_constructor()
+        {
+            var it = new Foo_Bar();
+
+            Assert.AreEqual(""Foo-Bar"", it.ObjectType);
+        }
+
+        [TestMethod]
+        public void It_has_a_constructor_that_takes_an_IdmResource()
+        {
+            var resource = new IdmResource
+            {
+                DisplayName = ""My Display Name"",
+                Creator = new Person { DisplayName = ""Creator Display Name"", ObjectID = ""Creator ObjectID""},
+            };
+            var it = new Foo_Bar(resource);
+
+            Assert.AreEqual(""Foo-Bar"", it.ObjectType);
+            Assert.AreEqual(""My Display Name"", it.DisplayName);
+            Assert.AreEqual(""Creator Display Name"", it.Creator.DisplayName);
+        }
+
+        [TestMethod]
+        public void It_has_a_constructor_that_takes_an_IdmResource_without_Creator()
+        {
+            var resource = new IdmResource
+            {
+                DisplayName = ""My Display Name"",
+            };
+            var it = new Foo_Bar(resource);
+
+            Assert.AreEqual(""My Display Name"", it.DisplayName);
+            Assert.IsNull(it.Creator);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void It_throws_when_you_try_to_set_ObjectType_to_anything_other_than_its_primary_ObjectType()
+        {
+            new Foo_Bar { ObjectType = ""Incorrect Object Type"" };
+        }
+
+    }
+}
+";
+
     }
 }

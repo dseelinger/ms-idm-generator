@@ -393,5 +393,14 @@ namespace IdmGenerateModels
                 required = string.Format("[Required]{0}        ", Environment.NewLine);
             return required;
         }
+
+        public string GenerateTests()
+        {
+            var className = GetValidCSharpIdentifier(_schemaObject.Name);
+
+            return String.Format(Templates.TestClassTemplate,
+                className,
+                _schemaObject.Name);
+        }
     }
 }

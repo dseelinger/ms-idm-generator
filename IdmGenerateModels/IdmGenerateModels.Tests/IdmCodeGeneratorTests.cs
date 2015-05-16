@@ -963,5 +963,23 @@ namespace IdmGenerateModels.Tests
             ExAssert.AreEqual(TestData.DateTimeAttributeOptional, result);
         }
 
+        [TestMethod]
+        public void It_can_generate_a_test_class()
+        {
+            // Arrange
+            var it = new IdmCodeGenerator(new Schema
+            {
+                Name = "Foo-Bar",
+                Description = "Bat",
+                BindingDescriptions = new List<BindingDescription>()
+            });
+
+            // Act
+            var result = it.GenerateTests();
+
+            // Assert
+            ExAssert.AreEqual(TestData.TestClassTemplate, result);
+        }
+
     }
 }
