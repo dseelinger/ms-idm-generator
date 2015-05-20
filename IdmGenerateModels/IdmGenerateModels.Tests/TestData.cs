@@ -327,9 +327,9 @@ namespace IdmNet.Models
         {
             get { return GetAttrValue(""PropertyName""); }
             set {
-                var regEx = new RegEx(""[0-9]"");
+                var regEx = new RegEx(""8"");
                 if (!regEx.IsMatch(value))
-                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression '[0-9]'"");
+                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression '8'"");
                 SetAttrValue(""PropertyName"", value); 
             }
         }
@@ -897,21 +897,21 @@ namespace IdmNet.Models
 
         public const string BindingNotRequiredTests = @"
         [TestMethod]
-        public void SetGetPropertyNameTest_with_valid_value()
+        public void It_can_get_and_set_PropertyName()
         {{
             // Act
-            _it.Property_Name = ""{0}""; 
+            _it.PropertyName = ""{0}"";
 
             // Assert
-            Assert.AreEqual(""{0}"", _it.Property_Name);
+            Assert.AreEqual(""{0}"", _it.PropertyName);
         }}
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void SetGetPropertyNameTest_with_invalid_value()
+        public void It_throws_when_PropertyName_set_to_invalid_value()
         {{
             // Act
-            _it.Property_Name = """"; 
+            _it.PropertyName = ""{1}"";
         }}
 
 ";

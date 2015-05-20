@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Fare;
 using IdmNet.Models;
 using Newtonsoft.Json;
 
@@ -356,16 +357,39 @@ namespace IdmGenerateModels
 
         public static Tuple<string, string> GenerateSingleValuedStringProperty(BindingDescription bindingDescription)
         {
+            var propName = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
             string property = String.Format(Templates.SingleValuedStringFormat,
                 GetDisplayName(bindingDescription),
                 GetDescription(bindingDescription),
                 GetRequired(bindingDescription),
                 bindingDescription.BoundAttributeType.Name,
-                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
+                propName,
                 GetRegEx(bindingDescription));
 
+            var nonMatchTest = "";
+            var val = "A string";
+            if (!string.IsNullOrEmpty(bindingDescription.StringRegex))
+            {
+                var xeger = new Xeger(bindingDescription.StringRegex);
+                val = xeger.Generate();
 
-            return new Tuple<string, string>(property, null);
+                var nonMatch = @"flkj3332@!!!$
+
+fd333
+";
+                nonMatchTest = String.Format(Templates.NonMatchTest,
+                    propName,
+                    nonMatch);
+            }
+
+            string tests = String.Format(Templates.SingleValuedStringTestsFormat,
+                propName,
+                val,
+                nonMatchTest);
+
+
+
+            return new Tuple<string, string>(property, tests);
 
         }
 

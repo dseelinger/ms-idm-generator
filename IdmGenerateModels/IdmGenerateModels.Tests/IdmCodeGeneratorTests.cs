@@ -91,7 +91,7 @@ namespace IdmGenerateModels.Tests
         public void It_generates_the_correct_property_and_tests_for_a_binding_thats_not_required()
         {
             // Arrange
-            var regExString = "[0-9]";
+            var regExString = "8";
             var bindingDescription = new BindingDescription
             {
                 DisplayName = "First Choice for Summary Part I",
@@ -109,8 +109,11 @@ namespace IdmGenerateModels.Tests
             };
             var xeger = new Xeger(regExString);
             var match = xeger.Generate();
+            var nonMatch = @"flkj3332@!!!$
 
-            var expectedTests = string.Format(TestData.BindingNotRequiredTests, match);
+fd333
+";
+            var expectedTests = string.Format(TestData.BindingNotRequiredTests, match, nonMatch);
 
             var it = new IdmCodeGenerator(null);
 
@@ -118,8 +121,8 @@ namespace IdmGenerateModels.Tests
             Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.BindingNotRequired, result.Item1);
-            Assert.AreEqual(expectedTests, result.Item2);
+            ExAssert.AreEqual(TestData.BindingNotRequired, result.Item1);
+            ExAssert.AreEqual(expectedTests, result.Item2);
         }
 
 

@@ -17,6 +17,29 @@
 
 ";
 
+        public const string SingleValuedStringTestsFormat = @"
+        [TestMethod]
+        public void It_can_get_and_set_{0}()
+        {{
+            // Act
+            _it.{0} = ""{1}"";
+
+            // Assert
+            Assert.AreEqual(""{1}"", _it.{0});
+        }}
+
+{2}";
+
+        public const string NonMatchTest = @"        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void It_throws_when_{0}_set_to_invalid_value()
+        {{
+            // Act
+            _it.{0} = ""{1}"";
+        }}
+
+";
+
         public const string MultiValuedStringFormat = @"
         /// <summary>
         /// {0} - {1}
