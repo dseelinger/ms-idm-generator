@@ -10,13 +10,13 @@ namespace IdmGenerateModels.Tests
     public class IdmCodeGeneratorTests
     {
         [TestMethod]
-        public void It_generates_the_correct_class_for_an_empty_object_type()
+        public void It_generates_the_correct_classes_for_an_empty_object_type()
         {
             // Arrange
             var it = new IdmCodeGenerator(new Schema
             {
-                Name = "Foo",
-                Description = "Bar",
+                Name = "Foo-Bar",
+                Description = "Bat",
                 BindingDescriptions = new List<BindingDescription>()
             });
 
@@ -25,6 +25,7 @@ namespace IdmGenerateModels.Tests
 
             // Assert
             ExAssert.AreEqual(TestData.EmptyClassOutput, result.Item1);
+            ExAssert.AreEqual(TestData.TestClassTemplate, result.Item2);
         }
 
         [TestMethod]
@@ -33,12 +34,10 @@ namespace IdmGenerateModels.Tests
             // Arrange
             var bindingDescription = new BindingDescription
             {
-                DisplayName =
-                    "Binding Display Name",
-                Description =
-                    "First Choice for Summary Part II",
+                DisplayName = "Binding Display Name",
+                Description = "First Choice for Summary Part II",
                 Required = true,
-                StringRegex = "*.",
+                StringRegex = ".*",
                 BoundAttributeType = new AttributeTypeDescription
                 {
                     Multivalued = false,
@@ -55,9 +54,12 @@ namespace IdmGenerateModels.Tests
             Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.BindingWithDifferentDisplayName, result.Item1);
+            ExAssert.AreEqual(TestData.BindingWithDifferentDisplayName, result.Item1);
+            // TODO 002: Make this test work
+            //ExAssert.AreEqual(TestData.BindingWithDifferentDisplayName, result.Item2);
         }
 
+        // TODO 003: Confirm Test generation
         [TestMethod]
         public void It_generates_the_correct_property_for_a_binding_with_different_Description()
         {
@@ -125,22 +127,7 @@ fd333
             ExAssert.AreEqual(expectedTests, result.Item2);
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        // TODO 004: Confirm Test generation
         [TestMethod]
         public void It_generates_the_correct_property_for_a_string_attribute_with_a_different_property_name()
         {
@@ -172,8 +159,7 @@ fd333
             Assert.AreEqual(TestData.StringAttributeWithDifferentPropertyName, result.Item1);
         }
 
-
-
+        // TODO 005: Confirm Test generation
         [TestMethod]
         public void It_generates_the_correct_property_for_a_string_attribute_without_a_binding_displayName()
         {
@@ -203,6 +189,7 @@ fd333
             Assert.AreEqual(TestData.StringAttributeWithoutBindingDisplayName, result.Item1);
         }
 
+        // TODO 006: Confirm Test generation
         [TestMethod]
         public void It_generates_the_correct_property_for_a_string_attribute_without_a_binding_description()
         {
@@ -232,6 +219,7 @@ fd333
             Assert.AreEqual(TestData.StringAttributeWithoutABindingDescription, result.Item1);
         }
 
+        // TODO 007: Confirm Test generation
         [TestMethod]
         public void It_generates_the_correct_property_for_a_string_attribute_without_a_regular_expression()
         {
@@ -262,6 +250,7 @@ fd333
             Assert.AreEqual(TestData.StringAttributeWithoutRegEx, result.Item1);
         }
 
+        // TODO 008: Confirm Test generation
         [TestMethod]
         public void It_generates_the_correct_property_for_a_string_attribute_with_all_string_fields_populated()
         {
@@ -293,6 +282,7 @@ fd333
             Assert.AreEqual(TestData.StringAttributeWithAllStringFieldsPopulated, result.Item1);
         }
 
+        // TODO 009: Confirm Test generation
         [TestMethod]
         public void It_generates_the_correct_property_for_a_boolean()
         {
@@ -323,7 +313,8 @@ fd333
             ExAssert.AreEqual(TestData.BoolAttribute, result.Item1);
         }
 
-        
+
+        // TODO 010: Confirm Test generation
         [TestMethod]
         public void It_generates_the_correct_property_for_a_standard_reference_attribute_that_matches_an_object_type_name()
         {
@@ -354,6 +345,7 @@ fd333
             Assert.AreEqual(TestData.StandardReferenceAttributeWhereTypeMatchesName, result.Item1);
         }
 
+        // TODO 011: Confirm Test generation
         [TestMethod]
         public void It_generates_the_correct_property_for_a_standard_reference_attribute_that_matches_an_item_in_the_json_file()
         {
@@ -386,6 +378,7 @@ fd333
             Assert.AreEqual(TestData.StandardReferenceAttributeWhereTypeFoundInJsonFile, result.Item1);
         }
 
+        // TODO 012: Confirm Test generation
         [TestMethod]
         public void It_generates_the_correct_property_for_a_standard_reference_attribute_that_matches_an_item_in_the_json_environment_variable()
         {
@@ -414,6 +407,7 @@ fd333
             ExAssert.AreEqual(TestData.StandardReferenceAttributeWhereTypeFoundInJsonFile, result.Item1);
         }
 
+        // TODO 013: Confirm Test generation
         [TestMethod]
         public void It_generates_the_correct_property_for_a_reference_attribute_doesnt_match_any_object_type()
         {
@@ -445,6 +439,7 @@ fd333
             Assert.AreEqual(TestData.ReferenceAttributeWhereTypeNotFound, result.Item1);
         }
 
+        // TODO 014: Confirm Test generation, including setting it to null
         [TestMethod]
         public void It_generates_the_correct_property_for_a_binary_attr()
         {
@@ -476,6 +471,7 @@ fd333
             Assert.AreEqual(TestData.BinaryAttribute, result.Item1);
         }
 
+        // TODO 015: Confirm Test generation
         [TestMethod]
         public void It_can_handle_class_names_that_have_dash()
         {
@@ -494,6 +490,7 @@ fd333
             Assert.AreEqual(TestData.ClassWithDash, result.Item1);
         }
 
+        // TODO 016: Confirm Test generation
         [TestMethod]
         public void It_can_handle_attributes_with_dashes_in_the_name()
         {
@@ -525,6 +522,7 @@ fd333
             Assert.AreEqual(TestData.StringAttributeWithDashInName, result.Item1);
         }
 
+        // TODO 017: Confirm Test generation
         [TestMethod]
         public void It_handles_booleans_with_dashes()
         {
@@ -555,6 +553,7 @@ fd333
             Assert.AreEqual(TestData.BoolAttributeWithDash, result.Item1);
         }
 
+        // TODO 018: Confirm Test generation
         [TestMethod]
         public void It_handles_dashes_in_DateTime_attrName()
         {
@@ -583,6 +582,7 @@ fd333
             Assert.AreEqual(TestData.DateTimeAttributeWithDash, result.Item1);
         }
 
+        // TODO 019: Confirm Test generation
         [TestMethod]
         public void It_handles_dashes_in_reference_AttrName()
         {
@@ -611,6 +611,7 @@ fd333
             Assert.AreEqual(TestData.ReferenceAttrWithDashInName, result.Item1);
         }
 
+        // TODO 020: Confirm Test generation
         [TestMethod]
         public void It_can_handle_binary_attributes_with_dashes_in_the_name()
         {
@@ -642,6 +643,7 @@ fd333
             Assert.AreEqual(TestData.BinaryAttributeWithDash, result.Item1);
         }
 
+        // TODO 021: Confirm Test generation
         [TestMethod]
         public void It_can_handle_multi_valued_strings()
         {
@@ -673,6 +675,7 @@ fd333
 
         }
 
+        // TODO 022: Confirm Test generation
         [TestMethod]
         public void It_can_handle_IntegerMinimum()
         {
@@ -702,6 +705,7 @@ fd333
             ExAssert.AreEqual(TestData.IntegerAttributeWithMin, result.Item1);
         }
 
+        // TODO 023: Confirm Test generation
         [TestMethod]
         public void It_can_handle_IntegerMaximum()
         {
@@ -731,6 +735,7 @@ fd333
             ExAssert.AreEqual(TestData.IntegerAttributeWithMax, result.Item1);
         }
 
+        // TODO 023: Confirm Test generation
         [TestMethod]
         public void It_can_handle_IntegerMaxAndMin()
         {
@@ -761,6 +766,7 @@ fd333
             ExAssert.AreEqual(TestData.IntegerAttributeWithMinMax, result.Item1);
         }
 
+        // TODO 024: Confirm Test generation
         [TestMethod]
         public void It_can_handle_MultiValuedIntegerMaxAndMin()
         {
@@ -791,6 +797,7 @@ fd333
             ExAssert.AreEqual(TestData.MultiValuedIntegerAttributeWithMinMax, result.Item1);
         }
 
+        // TODO 025: Confirm Test generation
         [TestMethod]
         public void It_handles_Multivalued_DateTimes()
         {
@@ -819,6 +826,7 @@ fd333
             ExAssert.AreEqual(TestData.MultiValuedDateTime, result.Item1);
         }
 
+        // TODO 026: Confirm Test generation
         [TestMethod]
         public void It_handles_Multivalued_Reference_attributes()
         {
@@ -848,6 +856,7 @@ fd333
             ExAssert.AreEqual(TestData.MultiValuedReference, result.Item1);
         }
 
+        // TODO 027: Confirm Test generation
         [TestMethod]
         public void It_handles_Multivalued_Binary_attributes()
         {
@@ -877,6 +886,7 @@ fd333
             ExAssert.AreEqual(TestData.MultiValuedBinary, result.Item1);
         }
 
+        // TODO 028: Confirm Test generation
         [TestMethod]
         public void It_generates_the_correct_property_for_an_integer_thats_required()
         {
@@ -905,6 +915,7 @@ fd333
             ExAssert.AreEqual(TestData.IntegerAttribute, result.Item1);
         }
 
+        // TODO 029: Confirm Test generation
         [TestMethod]
         public void It_generates_the_correct_property_for_an_integer_thats_not_required()
         {
@@ -933,6 +944,7 @@ fd333
             ExAssert.AreEqual(TestData.IntegerAttributeNotRequired, result.Item1);
         }
 
+        // TODO 030: Confirm Test generation
         [TestMethod]
         public void It_generates_the_correct_property_for_a_required_DateTime()
         {
@@ -961,6 +973,7 @@ fd333
             ExAssert.AreEqual(TestData.DateTimeAttribute, result.Item1);
         }
 
+        // TODO 031: Confirm Test generation
         [TestMethod]
         public void It_generates_the_correct_property_for_an_optional_DateTime()
         {
@@ -989,6 +1002,7 @@ fd333
             ExAssert.AreEqual(TestData.DateTimeAttributeOptional, result.Item1);
         }
 
+        // TODO 032: Confirm Test generation
         [TestMethod]
         public void It_generates_the_correct_class_for_an_object_type_with_a_multivalued_binary_attribute()
         {
@@ -1023,6 +1037,7 @@ fd333
             ExAssert.AreEqual(TestData.ClassOutputWithMultivaluedBinaryAttribute, result.Item1);
         }
 
+        // TODO 033: Confirm Test generation
         [TestMethod]
         [ExpectedException(typeof(ApplicationException))]
         public void It_throws_for_an_unrecognized_single_value_type()
@@ -1049,6 +1064,7 @@ fd333
             it.GeneratePropertyAndTests(bindingDescription);
         }
 
+        // TODO 034: Confirm Test generation
         [TestMethod]
         [ExpectedException(typeof(ApplicationException))]
         public void It_throws_for_an_unrecognized_multi_value_type()
@@ -1074,27 +1090,5 @@ fd333
             // Act
             it.GeneratePropertyAndTests(bindingDescription);
         }
-
-
-        [TestMethod]
-        public void It_can_generate_a_test_class()
-        {
-            // Arrange
-            var it = new IdmCodeGenerator(new Schema
-            {
-                Name = "Foo-Bar",
-                Description = "Bat",
-                BindingDescriptions = new List<BindingDescription>()
-            });
-
-            // Act
-            Tuple<string, string> result = it.Generate();
-
-            // Assert
-            ExAssert.AreEqual(TestData.TestClassTemplate, result.Item2);
-        }
-
-
-
     }
 }

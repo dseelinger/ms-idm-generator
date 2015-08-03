@@ -11,26 +11,26 @@ using System.Linq;
 namespace IdmNet.Models
 {
     /// <summary>
-    /// Foo - Bar
+    /// Foo-Bar - Bat
     /// </summary>
-    public class Foo : IdmResource
+    public class Foo_Bar : IdmResource
     {
         /// <summary>
         /// Parameterless CTOR
         /// </summary>
-        public Foo()
+        public Foo_Bar()
         {
-            ObjectType = ForcedObjType = ""Foo"";
+            ObjectType = ForcedObjType = ""Foo-Bar"";
         }
 
         /// <summary>
-        /// Build a Foo object from a IdmResource object
+        /// Build a Foo_Bar object from a IdmResource object
         /// </summary>
         /// <param name=""resource"">base class</param>
-        public Foo(IdmResource resource)
+        public Foo_Bar(IdmResource resource)
         {
             Attributes = resource.Attributes;
-            ObjectType = ForcedObjType = ""Foo"";
+            ObjectType = ForcedObjType = ""Foo-Bar"";
             if (resource.Creator == null)
                 return;
             Creator = resource.Creator;
@@ -39,7 +39,7 @@ namespace IdmNet.Models
         readonly string ForcedObjType;
 
         /// <summary>
-        /// Object Type (can only be Foo)
+        /// Object Type (can only be Foo-Bar)
         /// </summary>
         [Required]
         public override sealed string ObjectType
@@ -48,7 +48,7 @@ namespace IdmNet.Models
             set
             {
                 if (value != ForcedObjType)
-                    throw new InvalidOperationException(""Object Type of Foo can only be 'Foo'"");
+                    throw new InvalidOperationException(""Object Type of Foo_Bar can only be 'Foo-Bar'"");
                 SetAttrValue(""ObjectType"", value);
             }
         }
@@ -292,14 +292,41 @@ namespace IdmNet.Models
         {
             get { return GetAttrValue(""PropertyName""); }
             set {
-                var regEx = new RegEx(""*."");
+                var regEx = new RegEx("".*"");
                 if (!regEx.IsMatch(value))
-                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression '*.'"");
+                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression '.*'"");
                 SetAttrValue(""PropertyName"", value); 
             }
         }
 
 ";
+
+        public const string BindingWithDifferentDisplayNameTests = @"
+
+";
+
+        //        [TestMethod]
+        //        public void It_can_get_and_set_PropertyName()
+        //        {
+        //            // Act
+        //            _it.PropertyName = "*㣋";
+
+        //            // Assert
+        //            Assert.AreEqual("*㣋", _it.PropertyName);
+        //        }
+
+        //        [TestMethod]
+        //        [ExpectedException(typeof(ArgumentException))]
+        //        public void It_throws_when_PropertyName_set_to_invalid_value()
+        //        {
+        //            // Act
+        //            _it.PropertyName = "flkj3332@!!!$
+
+        //fd333
+        //";
+        //        }
+
+
 
         public const string BindingWithDifferentDescription = @"
         /// <summary>

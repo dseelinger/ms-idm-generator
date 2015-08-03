@@ -5,7 +5,7 @@ namespace IdmGenerateModels.Tests
 {
     public static class ExAssert
     {
-        public static void AreEqual(string expected, string actual)
+        public static void AreEqual(string expected, string actual) 
         {
             if (expected != actual)
             {
@@ -27,13 +27,16 @@ namespace IdmGenerateModels.Tests
                         string actualContext = actual.Substring(start, endActual - start).Replace(Environment.NewLine, "");
 
                         var spaces = new string(' ', contextSize - (i - start) + contextSize);
-                        var msg = string.Format("Text not equal:{0}{1}{0}{2}{0}{3}^",
+                        var msg = string.Format("Text not equal at:{0}Exp:{1}{0}Act:{2}{0}    {3}^{0}{4}{0}{5}",
                             Environment.NewLine,
                             expectedContext,
                             actualContext,
-                            spaces);
+                            spaces,
+                            expected,
+                            actual);
 
-                        Assert.AreEqual(expected, actual, msg);
+                        //Assert.AreEqual(expected, actual, msg);
+                        Assert.Fail(msg);
                     }
                 }
             }
