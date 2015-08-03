@@ -389,7 +389,9 @@ fd333
         [TestMethod]
         public void It_generates_the_correct_property_for_a_standard_reference_attribute_that_matches_an_item_in_the_json_environment_variable()
         {
+            // Where's the environment variable
             // Arrange
+            var it = new IdmCodeGenerator(null);
             var bindingDescription = new BindingDescription
             {
                 DisplayName = "Reference Attrbute",
@@ -404,9 +406,6 @@ fd333
                     Name = "PropertyName"
                 },
             };
-
-            var it = new IdmCodeGenerator(null);
-
 
             // Act
             Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
@@ -875,7 +874,7 @@ fd333
             Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.MultiValuedBinary, result.Item1);
+            ExAssert.AreEqual(TestData.MultiValuedBinary, result.Item1);
         }
 
         [TestMethod]
@@ -991,7 +990,7 @@ fd333
         }
 
         [TestMethod]
-        public void It_generates_the_correct_class_for_an_object_type_with_a_string_attribute()
+        public void It_generates_the_correct_class_for_an_object_type_with_a_multivalued_binary_attribute()
         {
             // Arrange
             var it = new IdmCodeGenerator(new Schema
@@ -1021,7 +1020,7 @@ fd333
             var result = it.Generate();
 
             // Assert
-            ExAssert.AreEqual(TestData.ClassOutputWithAttribute, result.Item1);
+            ExAssert.AreEqual(TestData.ClassOutputWithMultivaluedBinaryAttribute, result.Item1);
         }
 
         [TestMethod]

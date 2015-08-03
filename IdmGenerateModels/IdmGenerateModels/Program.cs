@@ -21,7 +21,7 @@ namespace IdmGenerateModels
         {
             MainAsync().Wait();
 
-            Console.WriteLine("Completeion: Schema Update Complete.  Hit enter to close.");
+            Console.WriteLine("Completeion: Code generation.  Hit enter to close.");
             Console.ReadLine();
         }
 
@@ -41,7 +41,6 @@ namespace IdmGenerateModels
             Console.WriteLine("Querying Object Types.");
             var objectTypeResource =
                 await
-                    //Client.SearchAsync(new SearchCriteria("/ObjectTypeDescription[Name='BindingDescription']")
                     Client.SearchAsync(new SearchCriteria("/ObjectTypeDescription")
                     {
                         Selection = new List<string> { "Name" }
@@ -75,6 +74,7 @@ namespace IdmGenerateModels
 
         public static void ClearOutputDirectory()
         {
+            Console.WriteLine("Cleaning output directory.");
             TargetDirectoryPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\output\";
             if (Directory.Exists(TargetDirectoryPath))
             {

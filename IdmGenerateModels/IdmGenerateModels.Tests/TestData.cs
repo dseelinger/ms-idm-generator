@@ -688,7 +688,7 @@ namespace IdmNet.Models
         [Required]
         public List<byte[]> Property_Name
         {
-            get { return GetAttr(""Property-Name"").ToBinaries(); }
+            get { return GetAttr(""Property-Name"") == null ? new List<byte[]>() : GetAttr(""Property-Name"").ToBinaries(); }
             set { SetAttrValues(""Property-Name"", value.Select(Convert.ToBase64String).ToList()); }
         }
 
@@ -828,7 +828,7 @@ namespace IdmNet.Models.Tests
 }
 ";
 
-        public const string ClassOutputWithAttribute = @"using System;
+        public const string ClassOutputWithMultivaluedBinaryAttribute = @"using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -885,7 +885,7 @@ namespace IdmNet.Models
         [Required]
         public List<byte[]> Property_Name
         {
-            get { return GetAttr(""Property-Name"").ToBinaries(); }
+            get { return GetAttr(""Property-Name"") == null ? new List<byte[]>() : GetAttr(""Property-Name"").ToBinaries(); }
             set { SetAttrValues(""Property-Name"", value.Select(Convert.ToBase64String).ToList()); }
         }
 

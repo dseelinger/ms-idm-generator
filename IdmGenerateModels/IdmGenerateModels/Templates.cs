@@ -124,7 +124,7 @@
         /// </summary>
         {2}public List<byte[]> {4}
         {{
-            get {{ return GetAttr(""{3}"").ToBinaries(); }}
+            get {{ return GetAttr(""{3}"") == null ? new List<byte[]>() : GetAttr(""{3}"").ToBinaries(); }}
             set {{ SetAttrValues(""{3}"", value.Select(Convert.ToBase64String).ToList()); }}
         }}
 

@@ -19,6 +19,7 @@ namespace IdmGenerateModels
         {
             _schemaObject = schemaObject;
             _objectTypeNames = objectTypeNames;
+            // Bad - tight coupling to system environment variables
             _customSchemaJson = Environment.GetEnvironmentVariable("CUSTOM_ATTR_TO_OBJ_MAPPINGS");
 
             if (!string.IsNullOrWhiteSpace(json))
@@ -144,7 +145,7 @@ namespace IdmGenerateModels
 
         private string GenerateMultiValuedBinaryProperty(BindingDescription bindingDescription)
         {
-            return String.Format(Templates.MultiValuedBinaryFormat,
+            return string.Format(Templates.MultiValuedBinaryFormat,
                 GetDisplayName(bindingDescription),
                 GetDescription(bindingDescription),
                 GetRequired(bindingDescription),
@@ -154,7 +155,7 @@ namespace IdmGenerateModels
 
         private string GenerateMultiValuedReferenceProperty(BindingDescription bindingDescription)
         {
-            return String.Format(Templates.MultiValuedReferenceFormat,
+            return string.Format(Templates.MultiValuedReferenceFormat,
                 GetDisplayName(bindingDescription),
                 GetDescription(bindingDescription),
                 bindingDescription.BoundAttributeType.Name,
@@ -165,7 +166,7 @@ namespace IdmGenerateModels
 
         private string GenerateMultiValuedDateTimeProperty(BindingDescription bindingDescription)
         {
-            return String.Format(Templates.MultiValuedDateTimeFormat,
+            return string.Format(Templates.MultiValuedDateTimeFormat,
                 GetDisplayName(bindingDescription),
                 GetDescription(bindingDescription),
                 GetRequired(bindingDescription),
@@ -188,7 +189,7 @@ namespace IdmGenerateModels
 
         private string GenerateMultiValuedStringProperty(BindingDescription bindingDescription)
         {
-            return String.Format(Templates.MultiValuedStringFormat,
+            return string.Format(Templates.MultiValuedStringFormat,
                 GetDisplayName(bindingDescription),
                 GetDescription(bindingDescription),
                 GetRequired(bindingDescription),
@@ -199,7 +200,7 @@ namespace IdmGenerateModels
 
         private string GenerateSingleValuedBinaryProperty(BindingDescription bindingDescription)
         {
-            return String.Format(Templates.SingleValuedBinaryFormat,
+            return string.Format(Templates.SingleValuedBinaryFormat,
                 GetDisplayName(bindingDescription),
                 GetDescription(bindingDescription),
                 GetRequired(bindingDescription),
@@ -209,7 +210,7 @@ namespace IdmGenerateModels
 
         private string GenerateSingleValuedReferenceProperty(BindingDescription bindingDescription)
         {
-            return String.Format(Templates.SingleValuedReferenceFormat,
+            return string.Format(Templates.SingleValuedReferenceFormat,
                 GetDisplayName(bindingDescription),
                 GetDescription(bindingDescription),
                 bindingDescription.BoundAttributeType.Name,
@@ -250,7 +251,7 @@ namespace IdmGenerateModels
 
         private string GetObjectTypeFromJson(BindingDescription bindingDescription, string returnVal)
         {
-            if (returnVal == null) throw new ArgumentNullException("returnVal");
+            if (returnVal == null) throw new ArgumentNullException(nameof(returnVal));
             returnVal = (from r in _referenceMap
                 where r.AttrName == bindingDescription.BoundAttributeType.Name
                 select r.ObjType).First();
@@ -433,7 +434,7 @@ fd333
         {
             var required = "";
             if (bindingDescription.Required == true)
-                required = string.Format("[Required]{0}        ", Environment.NewLine);
+                required = $"[Required]{Environment.NewLine}        ";
             return required;
         }
     }
