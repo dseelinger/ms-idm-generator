@@ -91,10 +91,10 @@ namespace IdmGenerateModels
             IdmCodeGenerator generator = new IdmCodeGenerator(objectTypeDescription, objTypeNames, _json);
 
             Tuple<string, string> classAndTests = generator.Generate();
-            var classFile = string.Format(@"{0}{1}.cs", TargetDirectoryPath, objectTypeDescription.Name);
+            var classFile = $@"{TargetDirectoryPath}{objectTypeDescription.Name}.cs";
             File.WriteAllText(classFile, classAndTests.Item1);
 
-            var testsFile = string.Format(@"{0}Tests\{1}Tests.cs", TargetDirectoryPath, objectTypeDescription.Name);
+            var testsFile = $@"{TargetDirectoryPath}Tests\{objectTypeDescription.Name}Tests.cs";
             File.WriteAllText(testsFile, classAndTests.Item2);
         }
     }

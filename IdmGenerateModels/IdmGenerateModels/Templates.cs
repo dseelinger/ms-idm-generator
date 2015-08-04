@@ -94,7 +94,7 @@
 
 ";
 
-        public const string SingleValuedValueTestsFormat = @"
+        public const string SingleValuedValueTestsFormat = @"{2}
         [TestMethod]
         public void It_can_get_and_set_{0}()
         {{
@@ -105,6 +105,28 @@
             Assert.AreEqual({1}, _it.{0});
         }}
 
+";
+
+        public const string SingleValuedValueNullTestFormat = @"
+        [TestMethod]
+        public void It_has_{0}_which_is_null_by_default()
+        {{
+            // Assert
+            Assert.IsNull(_it.{0});
+        }}
+
+        [TestMethod]
+        public void It_has_{0}_which_can_be_set_back_to_null()
+        {{
+            // Arrange
+            _it.{0} = {1};
+
+            // Act
+            _it.{0} = null;
+
+            // Assert
+            Assert.IsNull(_it.{0});
+        }}
 ";
 
         public const string SingleValuedDateTimeFormat = @"

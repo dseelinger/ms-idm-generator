@@ -287,7 +287,14 @@ namespace IdmGenerateModels
             var propertyCode = GenerateASingleValuedValueProperty(bindingDescription, validCSharpIdentifier);
 
             string testValueString = bindingDescription.BoundAttributeType.DataType == "Boolean" ? "true" : "123";
-            var testsCode = string.Format(Templates.SingleValuedValueTestsFormat, validCSharpIdentifier, testValueString);
+            string nullTest = bindingDescription.Required == true
+                ? ""
+                : string.Format(Templates.SingleValuedValueNullTestFormat, validCSharpIdentifier, testValueString);
+            var testsCode = string.Format(
+                Templates.SingleValuedValueTestsFormat, 
+                validCSharpIdentifier, 
+                testValueString,
+                nullTest);
 
 
             return new Tuple<string, string>(propertyCode, testsCode);

@@ -6,6 +6,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IdmGenerateModels.Tests
 {
+    // TODO 001: Need to fix Ints so that we check for null before ... something. - look at IdmNet for an example of a failing test that we're genereating here.
+
     [TestClass]
     public class IdmCodeGeneratorTests
     {
@@ -313,6 +315,39 @@ fd333
             ExAssert.AreEqual(TestData.BoolAttributeTests, result.Item2);
         }
 
+        [TestMethod]
+        public void It_generates_the_correct_property_for_a_non_required_boolean()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName =
+                    "Boolean Attrbute",
+                Description =
+                    "A boolean attribute",
+                Required = false,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    Multivalued = false,
+                    DataType = "Boolean",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "PropertyName"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+            // Act
+            Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
+
+            // Assert
+            ExAssert.AreEqual(TestData.BoolAttributeNotRequired, result.Item1);
+            ExAssert.AreEqual(TestData.BoolAttributeNotRequiredTests, result.Item2);
+        }
+        // TODO 009.5: ***** Need an It_can_be_set_back_to_null test *****
+
+       
         [TestMethod]
         public void It_generates_the_correct_property_for_a_standard_reference_attribute_that_matches_an_object_type_name()
         {

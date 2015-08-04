@@ -608,6 +608,53 @@ fd333
 
 ";
 
+        public const string BoolAttributeNotRequired = @"
+        /// <summary>
+        /// Boolean Attrbute - A boolean attribute
+        /// </summary>
+        public bool? PropertyName
+        {
+            get { return AttrToNullableBool(""PropertyName""); }
+            set { 
+                SetAttrValue(""PropertyName"", value.ToString());
+            }
+        }
+
+";
+
+        public const string BoolAttributeNotRequiredTests = @"
+        [TestMethod]
+        public void It_has_PropertyName_which_is_null_by_default()
+        {
+            // Assert
+            Assert.IsNull(_it.PropertyName);
+        }
+
+        [TestMethod]
+        public void It_has_PropertyName_which_can_be_set_back_to_null()
+        {
+            // Arrange
+            _it.PropertyName = true;
+
+            // Act
+            _it.PropertyName = null;
+
+            // Assert
+            Assert.IsNull(_it.PropertyName);
+        }
+
+        [TestMethod]
+        public void It_can_get_and_set_PropertyName()
+        {
+            // Act
+            _it.PropertyName = true;
+
+            // Assert
+            Assert.AreEqual(true, _it.PropertyName);
+        }
+
+";
+
         public const string IntegerAttributeWithMin = @"
         /// <summary>
         /// My Display Name - My Description
