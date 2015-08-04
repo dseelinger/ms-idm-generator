@@ -334,16 +334,38 @@ fd333
         {
             get { return GetAttrValue(""PropertyName""); }
             set {
-                var regEx = new RegEx(""*."");
+                var regEx = new RegEx(""abc"");
                 if (!regEx.IsMatch(value))
-                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression '*.'"");
+                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression 'abc'"");
                 SetAttrValue(""PropertyName"", value); 
             }
         }
 
 ";
 
-        public const string BindingWithDifferentDescriptionTests = @"";
+        public const string BindingWithDifferentDescriptionTests = @"
+        [TestMethod]
+        public void It_can_get_and_set_PropertyName()
+        {
+            // Act
+            _it.PropertyName = ""abc"";
+
+            // Assert
+            Assert.AreEqual(""abc"", _it.PropertyName);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void It_throws_when_PropertyName_set_to_invalid_value()
+        {
+            // Act
+            _it.PropertyName = @""flkj3332@!!!$
+
+fd333
+"";
+        }
+
+";
 
         public const string BindingNotRequired = @"
         /// <summary>
@@ -371,11 +393,35 @@ fd333
         {
             get { return GetAttrValue(""PropertyName2""); }
             set {
-                var regEx = new RegEx(""*."");
+                var regEx = new RegEx(""abc"");
                 if (!regEx.IsMatch(value))
-                    throw new ArgumentException(""Invalid value for PropertyName2.  Must match regular expression '*.'"");
+                    throw new ArgumentException(""Invalid value for PropertyName2.  Must match regular expression 'abc'"");
                 SetAttrValue(""PropertyName2"", value); 
             }
+        }
+
+";
+
+        public const string StringAttributeWithDifferentPropertyNameTests = @"
+        [TestMethod]
+        public void It_can_get_and_set_PropertyName2()
+        {
+            // Act
+            _it.PropertyName2 = ""abc"";
+
+            // Assert
+            Assert.AreEqual(""abc"", _it.PropertyName2);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void It_throws_when_PropertyName2_set_to_invalid_value()
+        {
+            // Act
+            _it.PropertyName2 = @""flkj3332@!!!$
+
+fd333
+"";
         }
 
 ";
@@ -389,11 +435,35 @@ fd333
         {
             get { return GetAttrValue(""PropertyName""); }
             set {
-                var regEx = new RegEx(""*."");
+                var regEx = new RegEx(""abc"");
                 if (!regEx.IsMatch(value))
-                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression '*.'"");
+                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression 'abc'"");
                 SetAttrValue(""PropertyName"", value); 
             }
+        }
+
+";
+
+        public const string StringAttributeWithoutBindingDisplayNameTests = @"
+        [TestMethod]
+        public void It_can_get_and_set_PropertyName()
+        {
+            // Act
+            _it.PropertyName = ""abc"";
+
+            // Assert
+            Assert.AreEqual(""abc"", _it.PropertyName);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void It_throws_when_PropertyName_set_to_invalid_value()
+        {
+            // Act
+            _it.PropertyName = @""flkj3332@!!!$
+
+fd333
+"";
         }
 
 ";
@@ -407,11 +477,35 @@ fd333
         {
             get { return GetAttrValue(""PropertyName""); }
             set {
-                var regEx = new RegEx(""*."");
+                var regEx = new RegEx(""abc"");
                 if (!regEx.IsMatch(value))
-                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression '*.'"");
+                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression 'abc'"");
                 SetAttrValue(""PropertyName"", value); 
             }
+        }
+
+";
+
+        public const string StringAttributeWithoutABindingDescriptionTests = @"
+        [TestMethod]
+        public void It_can_get_and_set_PropertyName()
+        {
+            // Act
+            _it.PropertyName = ""abc"";
+
+            // Assert
+            Assert.AreEqual(""abc"", _it.PropertyName);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void It_throws_when_PropertyName_set_to_invalid_value()
+        {
+            // Act
+            _it.PropertyName = @""flkj3332@!!!$
+
+fd333
+"";
         }
 
 ";
@@ -431,6 +525,19 @@ fd333
 
 ";
 
+        public const string StringAttributeWithoutRegExTests = @"
+        [TestMethod]
+        public void It_can_get_and_set_PropertyName()
+        {
+            // Act
+            _it.PropertyName = ""A string"";
+
+            // Assert
+            Assert.AreEqual(""A string"", _it.PropertyName);
+        }
+
+";
+
         public const string StringAttributeWithAllStringFieldsPopulated = @"
         /// <summary>
         /// First Choice for Summary Part I - First Choice for Summary Part II
@@ -440,11 +547,35 @@ fd333
         {
             get { return GetAttrValue(""PropertyName""); }
             set {
-                var regEx = new RegEx(""*."");
+                var regEx = new RegEx(""abc"");
                 if (!regEx.IsMatch(value))
-                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression '*.'"");
+                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression 'abc'"");
                 SetAttrValue(""PropertyName"", value); 
             }
+        }
+
+";
+
+        public const string StringAttributeWithAllStringFieldsPopulatedTests = @"
+        [TestMethod]
+        public void It_can_get_and_set_PropertyName()
+        {
+            // Act
+            _it.PropertyName = ""abc"";
+
+            // Assert
+            Assert.AreEqual(""abc"", _it.PropertyName);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void It_throws_when_PropertyName_set_to_invalid_value()
+        {
+            // Act
+            _it.PropertyName = @""flkj3332@!!!$
+
+fd333
+"";
         }
 
 ";
@@ -460,6 +591,19 @@ fd333
             set { 
                 SetAttrValue(""PropertyName"", value.ToString());
             }
+        }
+
+";
+
+        public const string BoolAttributeTests = @"
+        [TestMethod]
+        public void It_can_get_and_set_PropertyName()
+        {
+            // Act
+            _it.PropertyName = true;
+
+            // Assert
+            Assert.AreEqual(true, _it.PropertyName);
         }
 
 ";
@@ -590,9 +734,9 @@ fd333
         {
             get { return GetAttrValue(""Property-Name""); }
             set {
-                var regEx = new RegEx(""*."");
+                var regEx = new RegEx(""abc"");
                 if (!regEx.IsMatch(value))
-                    throw new ArgumentException(""Invalid value for Property-Name.  Must match regular expression '*.'"");
+                    throw new ArgumentException(""Invalid value for Property-Name.  Must match regular expression 'abc'"");
                 SetAttrValue(""Property-Name"", value); 
             }
         }

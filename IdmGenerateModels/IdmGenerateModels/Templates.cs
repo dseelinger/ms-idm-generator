@@ -94,6 +94,19 @@
 
 ";
 
+        public const string SingleValuedValueTestsFormat = @"
+        [TestMethod]
+        public void It_can_get_and_set_{0}()
+        {{
+            // Act
+            _it.{0} = {1};
+
+            // Assert
+            Assert.AreEqual({1}, _it.{0});
+        }}
+
+";
+
         public const string SingleValuedDateTimeFormat = @"
         /// <summary>
         /// {0} - {1}
