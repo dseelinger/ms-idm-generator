@@ -35,7 +35,7 @@
         public void It_throws_when_{0}_set_to_invalid_value()
         {{
             // Act
-            _it.{0} = ""{1}"";
+            _it.{0} = @""{1}"";
         }}
 
 ";

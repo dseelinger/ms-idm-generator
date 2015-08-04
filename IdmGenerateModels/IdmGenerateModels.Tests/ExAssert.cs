@@ -9,9 +9,13 @@ namespace IdmGenerateModels.Tests
         {
             if (expected != actual)
             {
-                if (actual == null)
+                if (string.IsNullOrEmpty(actual))
                 {
-                    Assert.AreEqual(expected, actual, "Actual Value was null");
+                    Assert.AreEqual(expected, actual, "Actual Value was null or empty, Expected was not");
+                }
+                if (string.IsNullOrEmpty(expected))
+                {
+                    Assert.AreEqual(expected, actual, "Expected Value was null or empty, Actual value was not");
                 }
                 int max = Math.Max(expected.Length, actual.Length);
                 for (int i = 0; i < max; i++)

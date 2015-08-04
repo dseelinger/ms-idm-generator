@@ -37,7 +37,7 @@ namespace IdmGenerateModels.Tests
                 DisplayName = "Binding Display Name",
                 Description = "First Choice for Summary Part II",
                 Required = true,
-                StringRegex = ".*",
+                StringRegex = "abc",
                 BoundAttributeType = new AttributeTypeDescription
                 {
                     Multivalued = false,
@@ -55,11 +55,9 @@ namespace IdmGenerateModels.Tests
 
             // Assert
             ExAssert.AreEqual(TestData.BindingWithDifferentDisplayName, result.Item1);
-            // TODO 002: Make this test work
-            //ExAssert.AreEqual(TestData.BindingWithDifferentDisplayName, result.Item2);
+            ExAssert.AreEqual(TestData.BindingWithDifferentDisplayNameTests, result.Item2);
         }
 
-        // TODO 003: Confirm Test generation
         [TestMethod]
         public void It_generates_the_correct_property_for_a_binding_with_different_Description()
         {
@@ -86,7 +84,8 @@ namespace IdmGenerateModels.Tests
             Tuple<string, string> result = it.GeneratePropertyAndTests(bindingDescription);
 
             // Assert
-            Assert.AreEqual(TestData.BindingWithDifferentDescription, result.Item1);
+            ExAssert.AreEqual(TestData.BindingWithDifferentDescription, result.Item1);
+            ExAssert.AreEqual(TestData.BindingWithDifferentDescriptionTests, result.Item2);
         }
 
         [TestMethod]

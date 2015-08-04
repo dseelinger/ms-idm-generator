@@ -292,9 +292,9 @@ namespace IdmNet.Models
         {
             get { return GetAttrValue(""PropertyName""); }
             set {
-                var regEx = new RegEx("".*"");
+                var regEx = new RegEx(""abc"");
                 if (!regEx.IsMatch(value))
-                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression '.*'"");
+                    throw new ArgumentException(""Invalid value for PropertyName.  Must match regular expression 'abc'"");
                 SetAttrValue(""PropertyName"", value); 
             }
         }
@@ -302,31 +302,28 @@ namespace IdmNet.Models
 ";
 
         public const string BindingWithDifferentDisplayNameTests = @"
+        [TestMethod]
+        public void It_can_get_and_set_PropertyName()
+        {
+            // Act
+            _it.PropertyName = ""abc"";
+
+            // Assert
+            Assert.AreEqual(""abc"", _it.PropertyName);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void It_throws_when_PropertyName_set_to_invalid_value()
+        {
+            // Act
+            _it.PropertyName = @""flkj3332@!!!$
+
+fd333
+"";
+        }
 
 ";
-
-        //        [TestMethod]
-        //        public void It_can_get_and_set_PropertyName()
-        //        {
-        //            // Act
-        //            _it.PropertyName = "*㣋";
-
-        //            // Assert
-        //            Assert.AreEqual("*㣋", _it.PropertyName);
-        //        }
-
-        //        [TestMethod]
-        //        [ExpectedException(typeof(ArgumentException))]
-        //        public void It_throws_when_PropertyName_set_to_invalid_value()
-        //        {
-        //            // Act
-        //            _it.PropertyName = "flkj3332@!!!$
-
-        //fd333
-        //";
-        //        }
-
-
 
         public const string BindingWithDifferentDescription = @"
         /// <summary>
@@ -345,6 +342,8 @@ namespace IdmNet.Models
         }
 
 ";
+
+        public const string BindingWithDifferentDescriptionTests = @"";
 
         public const string BindingNotRequired = @"
         /// <summary>
@@ -938,7 +937,7 @@ namespace IdmNet.Models
         public void It_throws_when_PropertyName_set_to_invalid_value()
         {{
             // Act
-            _it.PropertyName = ""{1}"";
+            _it.PropertyName = @""{1}"";
         }}
 
 ";
