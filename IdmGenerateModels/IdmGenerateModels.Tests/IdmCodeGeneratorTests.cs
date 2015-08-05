@@ -435,8 +435,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.ReferenceAttributeWhereTypeNotFound, result.Item1);
-            // TODO 013: Confirm Test generation
-            Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.ReferenceAttributeWhereTypeNotFoundTests, result.Item2);
         }
 
         [TestMethod]
@@ -468,8 +467,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.BinaryAttribute, result.Item1);
-            // TODO 014: ***** Confirm Test generation, including setting it to null - Including Tests!!! *****
-            //Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.BinaryAttributeTests, result.Item2);
         }
 
         [TestMethod]

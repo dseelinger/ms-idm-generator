@@ -97,16 +97,16 @@ namespace IdmGenerateModels
                     break;
                 case "Boolean":
                 case "Integer":
-                    propertyAndTests = GenerateASingleValuedValuePropertyAndIts(bindingDescription);
+                    propertyAndTests = GenerateASingleValuedValuePropertyAndItsTests(bindingDescription);
                     break;
                 case "Reference":
-                    propertyAndTests = GenerateSingleValuedReferenceProperty(bindingDescription);
+                    propertyAndTests = GenerateSingleValuedReferencePropertyAndItsTests(bindingDescription);
                     break;
                 case "DateTime":
                     propertyAndTests = new Tuple<string, string>(GenerateSingleValuedDateTimeProperty(bindingDescription), null);
                     break;
                 case "Binary":
-                    propertyAndTests = new Tuple<string, string>(GenerateSingleValuedBinaryProperty(bindingDescription), null);
+                    propertyAndTests = GenerateSingleValuedBinaryPropertyAndItsTests(bindingDescription);
                     break;
                 default:
                     throw new ApplicationException();
@@ -197,17 +197,23 @@ namespace IdmGenerateModels
                 GetRegEx(bindingDescription));
         }
 
-        private string GenerateSingleValuedBinaryProperty(BindingDescription bindingDescription)
+        private Tuple<string, string> GenerateSingleValuedBinaryPropertyAndItsTests(BindingDescription bindingDescription)
         {
-            return string.Format(Templates.SingleValuedBinaryFormat,
+            var validCSharpIdentifier = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
+            var property = string.Format(Templates.SingleValuedBinaryFormat,
                 GetDisplayName(bindingDescription),
                 GetDescription(bindingDescription),
                 GetRequired(bindingDescription),
                 bindingDescription.BoundAttributeType.Name,
-                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
+                validCSharpIdentifier);
+
+            var tests = string.Format(Templates.SingleValuedBinaryTestsFormat,
+                validCSharpIdentifier);
+
+            return new Tuple<string, string>(property, tests);
         }
 
-        private Tuple<string, string> GenerateSingleValuedReferenceProperty(BindingDescription bindingDescription)
+        private Tuple<string, string> GenerateSingleValuedReferencePropertyAndItsTests(BindingDescription bindingDescription)
         {
             var displayName = GetDisplayName(bindingDescription);
             var description = GetDescription(bindingDescription);
@@ -292,7 +298,7 @@ namespace IdmGenerateModels
                 );
         }
 
-        public static Tuple<string, string> GenerateASingleValuedValuePropertyAndIts(BindingDescription bindingDescription)
+        public static Tuple<string, string> GenerateASingleValuedValuePropertyAndItsTests(BindingDescription bindingDescription)
         {
             var validCSharpIdentifier = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
 
