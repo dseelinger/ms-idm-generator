@@ -38,7 +38,7 @@ namespace IdmGenerateModels
         
         public static async Task<IEnumerable<IdmResource>> GetObjectTypes()
         {
-            Console.WriteLine("Querying Object Types.");
+            Console.WriteLine("Querying Object Types");
             var objectTypeResource =
                 await
                     Client.SearchAsync(new SearchCriteria("/ObjectTypeDescription")
@@ -53,11 +53,13 @@ namespace IdmGenerateModels
         {
             ClearOutputDirectory();
 
+            int totTypes = _objectTypes.Count();
+            int currentTypeIndex = 0;
             foreach (var idmResource in _objectTypes)
             {
                 var objectType = await GetSchema(idmResource);
 
-                Console.WriteLine("Generating model and tests for [{0}]", objectType.Name);
+                Console.WriteLine($"{++currentTypeIndex} of {totTypes} - {objectType.Name}");
                 GenerateModelAndTests(objectType);
             }
             return 1;
@@ -66,7 +68,6 @@ namespace IdmGenerateModels
         public static async Task<Schema> GetSchema(IdmResource idmResource)
         {
             var objTypeName = idmResource.GetAttrValue("Name");
-            Console.WriteLine("Getting Schema for ObjectTypeDescription: [{0}]", objTypeName);
             var objectType = await Client.GetSchemaAsync(objTypeName);
             return objectType;
         }
