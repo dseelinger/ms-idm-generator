@@ -103,7 +103,7 @@ namespace IdmGenerateModels
                     propertyAndTests = GenerateSingleValuedReferencePropertyAndItsTests(bindingDescription);
                     break;
                 case "DateTime":
-                    propertyAndTests = new Tuple<string, string>(GenerateSingleValuedDateTimeProperty(bindingDescription), null);
+                    propertyAndTests = GenerateSingleValuedDateTimeProperty(bindingDescription);
                     break;
                 case "Binary":
                     propertyAndTests = GenerateSingleValuedBinaryPropertyAndItsTests(bindingDescription);
@@ -285,17 +285,28 @@ namespace IdmGenerateModels
             return _objectTypeNames != null && _objectTypeNames.Contains(bindingDescription.BoundAttributeType.Name);
         }
 
-        private static string GenerateSingleValuedDateTimeProperty(BindingDescription bindingDescription)
+        private static Tuple<string, string> GenerateSingleValuedDateTimeProperty(BindingDescription bindingDescription)
         {
-            return String.Format(Templates.SingleValuedDateTimeFormat,
+            var validCSharpIdentifier = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
+            var property = string.Format(Templates.SingleValuedDateTimeFormat,
                 GetDisplayName(bindingDescription),
                 GetDescription(bindingDescription),
                 GetRequired(bindingDescription),
                 bindingDescription.BoundAttributeType.Name,
-                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
+                validCSharpIdentifier,
                 bindingDescription.Required == true ? "" : "?",
                 bindingDescription.Required == true ? "" : "Nullable"
                 );
+
+            string nullTest = bindingDescription.Required == true
+                ? ""
+                : string.Format(Templates.SingleValuedDateTimeNullTestFormat, validCSharpIdentifier);
+            var tests = string.Format(
+                Templates.SingleValuedDateTimeTestsFormat,
+                validCSharpIdentifier,
+                nullTest);
+
+            return new Tuple<string, string>(property, tests);
         }
 
         public static Tuple<string, string> GenerateASingleValuedValuePropertyAndItsTests(BindingDescription bindingDescription)

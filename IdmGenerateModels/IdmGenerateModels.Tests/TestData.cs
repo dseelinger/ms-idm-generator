@@ -113,6 +113,70 @@ namespace IdmNet.Models
 }
 ";
 
+        public const string ClassWithDashTests = @"using System;
+using System.Collections.Generic;
+using IdmNet.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable ObjectCreationAsStatement
+// ReSharper disable UseObjectOrCollectionInitializer
+
+namespace IdmNet.Models.Tests
+{
+    [TestClass]
+    public class Foo_BarTests
+    {
+        private Foo_Bar _it;
+
+        public Foo_BarTests()
+        {
+            _it = new Foo_Bar();
+        }
+
+        [TestMethod]
+        public void It_has_a_paremeterless_constructor()
+        {
+            Assert.AreEqual(""Foo-Bar"", _it.ObjectType);
+        }
+
+        [TestMethod]
+        public void It_has_a_constructor_that_takes_an_IdmResource()
+        {
+            var resource = new IdmResource
+            {
+                DisplayName = ""My Display Name"",
+                Creator = new Person { DisplayName = ""Creator Display Name"", ObjectID = ""Creator ObjectID""},
+            };
+            var it = new Foo_Bar(resource);
+
+            Assert.AreEqual(""Foo-Bar"", it.ObjectType);
+            Assert.AreEqual(""My Display Name"", it.DisplayName);
+            Assert.AreEqual(""Creator Display Name"", it.Creator.DisplayName);
+        }
+
+        [TestMethod]
+        public void It_has_a_constructor_that_takes_an_IdmResource_without_Creator()
+        {
+            var resource = new IdmResource
+            {
+                DisplayName = ""My Display Name"",
+            };
+            var it = new Foo_Bar(resource);
+
+            Assert.AreEqual(""My Display Name"", it.DisplayName);
+            Assert.IsNull(it.Creator);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void It_throws_when_you_try_to_set_ObjectType_to_anything_other_than_its_primary_ObjectType()
+        {
+            _it.ObjectType = ""Invalid Object Type"";
+        }
+
+    }
+}
+";
+
 
         public const string GroupExpectedOutput = @"using System;
 using System.Collections.Generic;
@@ -937,6 +1001,30 @@ fd333
 
 ";
 
+        public const string StringAttributeWithDashInNameTests = @"
+        [TestMethod]
+        public void It_can_get_and_set_Property_Name()
+        {
+            // Act
+            _it.Property_Name = ""abc"";
+
+            // Assert
+            Assert.AreEqual(""abc"", _it.Property_Name);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void It_throws_when_Property_Name_set_to_invalid_value()
+        {
+            // Act
+            _it.Property_Name = @""flkj3332@!!!$
+
+fd333
+"";
+        }
+
+";
+
         public const string BoolAttributeWithDash = @"
         /// <summary>
         /// Boolean Attrbute - A boolean attribute
@@ -948,6 +1036,19 @@ fd333
             set { 
                 SetAttrValue(""Property-Name"", value.ToString());
             }
+        }
+
+";
+
+        public const string BoolAttributeWithDashTests = @"
+        [TestMethod]
+        public void It_can_get_and_set_Property_Name()
+        {
+            // Act
+            _it.Property_Name = true;
+
+            // Assert
+            Assert.AreEqual(true, _it.Property_Name);
         }
 
 ";
@@ -1096,6 +1197,20 @@ fd333
         {
             get { return AttrToDateTime(""Property-Name""); }
             set { SetAttrValue(""Property-Name"", value.ToString()); }
+        }
+
+";
+        public const string DateTimeAttributeWithDashTests = @"
+        [TestMethod]
+        public void It_can_get_and_set_Property_Name()
+        {
+            // Act
+            var now = DateTime.Now;
+            var testTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+            _it.Property_Name = testTime;
+
+            // Assert
+            Assert.AreEqual(testTime, _it.Property_Name);
         }
 
 ";

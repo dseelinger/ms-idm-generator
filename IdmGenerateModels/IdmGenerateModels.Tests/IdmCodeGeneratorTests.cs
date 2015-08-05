@@ -486,8 +486,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.ClassWithDash, result.Item1);
-            // TODO 015: Confirm Test generation
-            Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.ClassWithDashTests, result.Item2);
         }
 
         [TestMethod]
@@ -519,8 +518,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.StringAttributeWithDashInName, result.Item1);
-            // TODO 016: Confirm Test generation
-            Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.StringAttributeWithDashInNameTests, result.Item2);
         }
 
         [TestMethod]
@@ -551,8 +549,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.BoolAttributeWithDash, result.Item1);
-            // TODO 017: Confirm Test generation
-            Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.BoolAttributeWithDashTests, result.Item2);
         }
 
         [TestMethod]
@@ -581,8 +578,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.DateTimeAttributeWithDash, result.Item1);
-            // TODO 018: ***** Add Test Generation for DateTime *****
-            //Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.DateTimeAttributeWithDashTests, result.Item2);
         }
 
         [TestMethod]
@@ -645,7 +641,7 @@ fd333
             // Assert
             ExAssert.AreEqual(TestData.BinaryAttributeWithDash, result.Item1);
             // TODO 020: Confirm Test generation
-            //Assert.IsNotNull(result.Item2);
+            Assert.IsNotNull(result.Item2);
         }
 
         [TestMethod]
