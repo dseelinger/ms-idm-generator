@@ -182,6 +182,41 @@
 
 ";
 
+        public const string SingleValuedReferenceTestsFormat = @"
+        [TestMethod]
+        public void It_has_{0}_which_is_null_by_default()
+        {{
+            // Assert
+            Assert.IsNull(_it.{0});
+        }}
+
+        [TestMethod]
+        public void It_has_{0}_which_can_be_set_back_to_null()
+        {{
+            // Arrange
+            var test{1} = new {1} {{ DisplayName = ""Test {1}"" }};			
+            _it.{0} = test{1}; 
+
+            // Act
+            _it.{0} = null;
+
+            // Assert
+            Assert.IsNull(_it.{0});
+        }}
+
+        [TestMethod]
+        public void It_can_get_and_set_{0}()
+        {{
+            // Act
+			var test{1} = new {1} {{ DisplayName = ""Test {1}"" }};			
+            _it.{0} = test{1}; 
+
+            // Assert
+            Assert.AreEqual(test{1}.DisplayName, _it.DisplayName);
+        }}
+
+";
+
         public const string MultiValuedReferenceFormat = @"
         /// <summary>
         /// {0} - {1}

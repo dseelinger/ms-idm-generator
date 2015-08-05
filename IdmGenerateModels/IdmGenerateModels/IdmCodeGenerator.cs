@@ -99,11 +99,11 @@ namespace IdmGenerateModels
                 case "Integer":
                     propertyAndTests = GenerateASingleValuedValuePropertyAndIts(bindingDescription);
                     break;
+                case "Reference":
+                    propertyAndTests = GenerateSingleValuedReferenceProperty(bindingDescription);
+                    break;
                 case "DateTime":
                     propertyAndTests = new Tuple<string, string>(GenerateSingleValuedDateTimeProperty(bindingDescription), null);
-                    break;
-                case "Reference":
-                    propertyAndTests = new Tuple<string, string>(GenerateSingleValuedReferenceProperty(bindingDescription), null);
                     break;
                 case "Binary":
                     propertyAndTests = new Tuple<string, string>(GenerateSingleValuedBinaryProperty(bindingDescription), null);
@@ -207,14 +207,26 @@ namespace IdmGenerateModels
                 GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
         }
 
-        private string GenerateSingleValuedReferenceProperty(BindingDescription bindingDescription)
+        private Tuple<string, string> GenerateSingleValuedReferenceProperty(BindingDescription bindingDescription)
         {
-            return string.Format(Templates.SingleValuedReferenceFormat,
-                GetDisplayName(bindingDescription),
-                GetDescription(bindingDescription),
-                bindingDescription.BoundAttributeType.Name,
-                GetObjTypeName(bindingDescription),
-                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
+            var displayName = GetDisplayName(bindingDescription);
+            var description = GetDescription(bindingDescription);
+            var originalAttributeName = bindingDescription.BoundAttributeType.Name;
+            var className = GetObjTypeName(bindingDescription);
+            var propertyName = GetValidCSharpIdentifier(originalAttributeName);
+
+            var property = string.Format(Templates.SingleValuedReferenceFormat,
+                displayName,
+                description,
+                originalAttributeName,
+                className,
+                propertyName);
+
+            var tests = string.Format(Templates.SingleValuedReferenceTestsFormat,
+                propertyName,
+                className);
+
+            return new Tuple<string, string>(property, tests);
         }
 
         private string GetObjTypeName(BindingDescription bindingDescription)

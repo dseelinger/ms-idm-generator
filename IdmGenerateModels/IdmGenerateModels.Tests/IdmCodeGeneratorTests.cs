@@ -6,8 +6,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IdmGenerateModels.Tests
 {
-    // TODO 001: Need to fix Ints so that we check for null before ... something. - look at IdmNet for an example of a failing test that we're genereating here.
-
     [TestClass]
     public class IdmCodeGeneratorTests
     {
@@ -345,9 +343,7 @@ fd333
             ExAssert.AreEqual(TestData.BoolAttributeNotRequired, result.Item1);
             ExAssert.AreEqual(TestData.BoolAttributeNotRequiredTests, result.Item2);
         }
-        // TODO 009.5: ***** Need an It_can_be_set_back_to_null test *****
 
-       
         [TestMethod]
         public void It_generates_the_correct_property_for_a_standard_reference_attribute_that_matches_an_object_type_name()
         {
@@ -367,51 +363,18 @@ fd333
                     Description = "Doesn't matter",
                     Name = "PropertyName"
                 },
+                // The generator needs the smarts of the generator or,
+                // "How do I know that a "DisplayedOwner" is a "Person" object?
             };
 
-            var it = new IdmCodeGenerator(null, new List<string> { "PropertyName" });
+            var it = new IdmCodeGenerator(null, null, @"[ { ""AttrName"": ""PropertyName"", ""ObjType"": ""Person"" } ]");
 
             // Act
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
             ExAssert.AreEqual(TestData.StandardReferenceAttributeWhereTypeMatchesName, result.Item1);
-            // TODO 010: ***** Generate Tests for single-valued reference attribute *****
-            //Assert.IsNotNull(result.Item2);
-        }
-
-        [TestMethod]
-        public void It_generates_the_correct_property_for_a_standard_reference_attribute_that_matches_an_item_in_the_json_file()
-        {
-            // Arrange
-            var bindingDescription = new BindingDescription
-            {
-                DisplayName =
-                    "Reference Attrbute",
-                Description =
-                    "A standard reference attribute",
-                Required = true, // should be ignored - reference attributes can't be required
-                BoundAttributeType = new AttributeTypeDescription
-                {
-                    Multivalued = false,
-                    DataType = "Reference",
-                    DisplayName = "Doesn't matter",
-                    Description = "Doesn't matter",
-                    Name = "PropertyName"
-                },
-            };
-
-            var it = new IdmCodeGenerator(null, new List<string> { "foo" },
-                @"[ { ""AttrName"": ""ActionWorkflowInstance"", ""ObjType"": ""WorkflowInstance"" }, { ""AttrName"": ""PropertyName"", ""ObjType"": ""ModelType"" } ]");
-
-
-            // Act
-            Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
-
-            // Assert
-            ExAssert.AreEqual(TestData.StandardReferenceAttributeWhereTypeFoundInJsonFile, result.Item1);
-            // TODO 011: Confirm Test generation
-            //Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.StandardReferenceAttributeWhereTypeMatchesNameTests, result.Item2);
         }
 
         [TestMethod]
@@ -440,8 +403,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.StandardReferenceAttributeWhereTypeFoundInJsonFile, result.Item1);
-            // TODO 012: Confirm Test generation
-            //Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.StandardReferenceAttributeWhereTypeFoundInJsonFileTests, result.Item2);
         }
 
         [TestMethod]
@@ -474,7 +436,7 @@ fd333
             // Assert
             ExAssert.AreEqual(TestData.ReferenceAttributeWhereTypeNotFound, result.Item1);
             // TODO 013: Confirm Test generation
-            //Assert.IsNotNull(result.Item2);
+            Assert.IsNotNull(result.Item2);
         }
 
         [TestMethod]
@@ -592,7 +554,7 @@ fd333
             // Assert
             ExAssert.AreEqual(TestData.BoolAttributeWithDash, result.Item1);
             // TODO 017: Confirm Test generation
-            //Assert.IsNotNull(result.Item2);
+            Assert.IsNotNull(result.Item2);
         }
 
         [TestMethod]
@@ -652,7 +614,7 @@ fd333
             // Assert
             ExAssert.AreEqual(TestData.ReferenceAttrWithDashInName, result.Item1);
             // TODO 019: Confirm Test generation
-            //Assert.IsNotNull(result.Item2);
+            Assert.IsNotNull(result.Item2);
         }
 
         [TestMethod]
@@ -748,7 +710,7 @@ fd333
             // Assert
             ExAssert.AreEqual(TestData.IntegerAttributeWithMin, result.Item1);
             // TODO 022: ***** Create Tests for IntegerMinimum *****
-            //Assert.IsNotNull(result.Item2);
+            Assert.IsNotNull(result.Item2);
         }
 
         [TestMethod]
@@ -779,7 +741,7 @@ fd333
             // Assert
             ExAssert.AreEqual(TestData.IntegerAttributeWithMax, result.Item1);
             // TODO 023: ***** Create Tests for IntegerMaximum *****
-            //Assert.IsNotNull(result.Item2);
+            Assert.IsNotNull(result.Item2);
         }
 
         [TestMethod]
@@ -811,7 +773,7 @@ fd333
             // Assert
             ExAssert.AreEqual(TestData.IntegerAttributeWithMinMax, result.Item1);
             // TODO 024: ***** Create Tests for Integer Max & Min *****
-            //Assert.IsNotNull(result.Item2);
+            Assert.IsNotNull(result.Item2);
         }
 
         [TestMethod]
@@ -965,7 +927,7 @@ fd333
             // Assert
             ExAssert.AreEqual(TestData.IntegerAttribute, result.Item1);
             // TODO 029: ***** Create Tests for required Int *****
-            //Assert.IsNotNull(result.Item2);
+            Assert.IsNotNull(result.Item2);
         }
 
         [TestMethod]
@@ -995,7 +957,7 @@ fd333
             // Assert
             ExAssert.AreEqual(TestData.IntegerAttributeNotRequired, result.Item1);
             // TODO 030: ***** Create Tests for non-required Int *****
-            //Assert.IsNotNull(result.Item2);
+            Assert.IsNotNull(result.Item2);
         }
 
         [TestMethod]

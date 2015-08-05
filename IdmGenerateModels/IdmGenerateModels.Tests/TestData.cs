@@ -712,7 +712,7 @@ fd333
         /// <summary>
         /// Reference Attrbute - A standard reference attribute
         /// </summary>
-        public PropertyName PropertyName
+        public Person PropertyName
         {
             get { return GetAttr(""PropertyName"", _thePropertyName); }
             set 
@@ -721,7 +721,42 @@ fd333
                 SetAttrValue(""PropertyName"", ObjectIdOrNull(value)); 
             }
         }
-        private PropertyName _thePropertyName;
+        private Person _thePropertyName;
+
+";
+
+        public const string StandardReferenceAttributeWhereTypeMatchesNameTests = @"
+        [TestMethod]
+        public void It_has_PropertyName_which_is_null_by_default()
+        {
+            // Assert
+            Assert.IsNull(_it.PropertyName);
+        }
+
+        [TestMethod]
+        public void It_has_PropertyName_which_can_be_set_back_to_null()
+        {
+            // Arrange
+            var testPerson = new Person { DisplayName = ""Test Person"" };			
+            _it.PropertyName = testPerson; 
+
+            // Act
+            _it.PropertyName = null;
+
+            // Assert
+            Assert.IsNull(_it.PropertyName);
+        }
+
+        [TestMethod]
+        public void It_can_get_and_set_PropertyName()
+        {
+            // Act
+			var testPerson = new Person { DisplayName = ""Test Person"" };			
+            _it.PropertyName = testPerson; 
+
+            // Assert
+            Assert.AreEqual(testPerson.DisplayName, _it.DisplayName);
+        }
 
 ";
 
@@ -739,6 +774,41 @@ fd333
             }
         }
         private ModelType _thePropertyName;
+
+";
+
+        public const string StandardReferenceAttributeWhereTypeFoundInJsonFileTests = @"
+        [TestMethod]
+        public void It_has_PropertyName_which_is_null_by_default()
+        {
+            // Assert
+            Assert.IsNull(_it.PropertyName);
+        }
+
+        [TestMethod]
+        public void It_has_PropertyName_which_can_be_set_back_to_null()
+        {
+            // Arrange
+            var testModelType = new ModelType { DisplayName = ""Test ModelType"" };			
+            _it.PropertyName = testModelType; 
+
+            // Act
+            _it.PropertyName = null;
+
+            // Assert
+            Assert.IsNull(_it.PropertyName);
+        }
+
+        [TestMethod]
+        public void It_can_get_and_set_PropertyName()
+        {
+            // Act
+			var testModelType = new ModelType { DisplayName = ""Test ModelType"" };			
+            _it.PropertyName = testModelType; 
+
+            // Assert
+            Assert.AreEqual(testModelType.DisplayName, _it.DisplayName);
+        }
 
 ";
 
