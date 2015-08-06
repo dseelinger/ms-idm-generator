@@ -607,8 +607,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.ReferenceAttrWithDashInName, result.Item1);
-            // TODO 019: Confirm Test generation
-            Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.ReferenceAttrWithDashInNameTests, result.Item2);
         }
 
         [TestMethod]
@@ -640,8 +639,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.BinaryAttributeWithDash, result.Item1);
-            // TODO 020: Confirm Test generation
-            Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.BinaryAttributeWithDashTests, result.Item2);
         }
 
         [TestMethod]
@@ -672,8 +670,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.MultiValuedString, result.Item1);
-            // TODO 021: ***** Generate Tests for Multi-valued strings *****
-            //Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.MultiValuedStringTests, result.Item2);
         }
 
         [TestMethod]

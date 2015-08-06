@@ -88,61 +88,69 @@ namespace IdmGenerateModels
 
         public Tuple<string, string> GenerateSingleValuedPropertyAndTests(BindingDescription bindingDescription)
         {
-            Tuple<string, string> propertyAndTests;
+            string property;
+            string tests;
             switch (bindingDescription.BoundAttributeType.DataType)
             {
                 case "String":
                 case "Text":
-                    propertyAndTests = GenerateASingleValuedStringPropertyAndItsTests(bindingDescription);
+                    property = GenerateASingleValuedString(bindingDescription);
+                    tests = GenerateSingleValuedStringTests(bindingDescription);
                     break;
                 case "Boolean":
                 case "Integer":
-                    propertyAndTests = GenerateASingleValuedValuePropertyAndItsTests(bindingDescription);
+                    property = GenerateSingleValuedValue(bindingDescription);
+                    tests = GenerateSingleValuedValueTests(bindingDescription);
                     break;
                 case "Reference":
-                    propertyAndTests = GenerateSingleValuedReferencePropertyAndItsTests(bindingDescription);
+                    property = GenerateSingleValuedReference(bindingDescription);
+                    tests = GenerateSingleValuedReferenceTests(bindingDescription);
                     break;
                 case "DateTime":
-                    propertyAndTests = GenerateSingleValuedDateTimeProperty(bindingDescription);
+                    property = GenerateSingleValuedDateTime(bindingDescription);
+                    tests = GenerateSingleValuedDateTimeTests(bindingDescription);
                     break;
                 case "Binary":
-                    propertyAndTests = GenerateSingleValuedBinaryPropertyAndItsTests(bindingDescription);
+                    property = GenerateSingleValuedBinary(bindingDescription);
+                    tests = GenerateSingleValuedBinaryTests(bindingDescription);
                     break;
                 default:
                     throw new ApplicationException();
             }
-            return propertyAndTests;
+            return new Tuple<string, string>(property, tests);
         }
 
         private Tuple<string, string> GenerateMultiValuedPropertyAndTests(BindingDescription bindingDescription)
         {
-            string prop;
+            string property;
+            string tests = null;
             switch (bindingDescription.BoundAttributeType.DataType)
             {
                 case "String":
                 case "Text":
-                    prop = GenerateMultiValuedStringProperty(bindingDescription);
+                    property = GenerateMultiValuedString(bindingDescription);
+                    tests = GenerateMultiValuedStringTests(bindingDescription);
                     break;
                 case "Integer":
-                    prop = GenerateMultiValuedValueProperty(bindingDescription);
+                    property = GenerateMultiValuedValue(bindingDescription);
                     break;
                 case "DateTime":
-                    prop = GenerateMultiValuedDateTimeProperty(bindingDescription);
+                    property = GenerateMultiValuedDateTime(bindingDescription);
                     break;
                 case "Reference":
-                    prop = GenerateMultiValuedReferenceProperty(bindingDescription);
+                    property = GenerateMultiValuedReference(bindingDescription);
                     break;
                 case "Binary":
-                    prop = GenerateMultiValuedBinaryProperty(bindingDescription);
+                    property = GenerateMultiValuedBinary(bindingDescription);
                     break;
                 default:
                     throw new ApplicationException();
             }
-            return new Tuple<string, string>(prop, null);
+            return new Tuple<string, string>(property, tests);
         }
 
 
-        private string GenerateMultiValuedBinaryProperty(BindingDescription bindingDescription)
+        private string GenerateMultiValuedBinary(BindingDescription bindingDescription)
         {
             return string.Format(Templates.MultiValuedBinaryFormat,
                 GetDisplayName(bindingDescription),
@@ -152,7 +160,7 @@ namespace IdmGenerateModels
                 GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
         }
 
-        private string GenerateMultiValuedReferenceProperty(BindingDescription bindingDescription)
+        private string GenerateMultiValuedReference(BindingDescription bindingDescription)
         {
             return string.Format(Templates.MultiValuedReferenceFormat,
                 GetDisplayName(bindingDescription),
@@ -163,7 +171,7 @@ namespace IdmGenerateModels
         }
 
 
-        private string GenerateMultiValuedDateTimeProperty(BindingDescription bindingDescription)
+        private string GenerateMultiValuedDateTime(BindingDescription bindingDescription)
         {
             return string.Format(Templates.MultiValuedDateTimeFormat,
                 GetDisplayName(bindingDescription),
@@ -173,7 +181,7 @@ namespace IdmGenerateModels
                 GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
         }
 
-        private string GenerateMultiValuedValueProperty(BindingDescription bindingDescription)
+        private string GenerateMultiValuedValue(BindingDescription bindingDescription)
         {
             var minMax = GetMinMax(bindingDescription);
             var propertyCode = String.Format(Templates.MultiValuedIntegerFormat,
@@ -186,7 +194,7 @@ namespace IdmGenerateModels
             return propertyCode;
         }
 
-        private string GenerateMultiValuedStringProperty(BindingDescription bindingDescription)
+        private string GenerateMultiValuedString(BindingDescription bindingDescription)
         {
             return string.Format(Templates.MultiValuedStringFormat,
                 GetDisplayName(bindingDescription),
@@ -197,42 +205,55 @@ namespace IdmGenerateModels
                 GetRegEx(bindingDescription));
         }
 
+        private string GenerateMultiValuedStringTests(BindingDescription bindingDescription)
+        {
+            return string.Format(Templates.MultiValuedStringFormatTests,
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
+        }
+
         private Tuple<string, string> GenerateSingleValuedBinaryPropertyAndItsTests(BindingDescription bindingDescription)
         {
-            var validCSharpIdentifier = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
+            var property = GenerateSingleValuedBinary(bindingDescription);
+            var tests = GenerateSingleValuedBinaryTests(bindingDescription);
+
+            return new Tuple<string, string>(property, tests);
+        }
+
+        private static string GenerateSingleValuedBinaryTests(BindingDescription bindingDescription)
+        {
+            var tests = string.Format(Templates.SingleValuedBinaryFormatTests,
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
+            return tests;
+        }
+
+        private static string GenerateSingleValuedBinary(BindingDescription bindingDescription)
+        {
             var property = string.Format(Templates.SingleValuedBinaryFormat,
                 GetDisplayName(bindingDescription),
                 GetDescription(bindingDescription),
                 GetRequired(bindingDescription),
                 bindingDescription.BoundAttributeType.Name,
-                validCSharpIdentifier);
-
-            var tests = string.Format(Templates.SingleValuedBinaryTestsFormat,
-                validCSharpIdentifier);
-
-            return new Tuple<string, string>(property, tests);
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
+            return property;
         }
 
-        private Tuple<string, string> GenerateSingleValuedReferencePropertyAndItsTests(BindingDescription bindingDescription)
+        private string GenerateSingleValuedReferenceTests(BindingDescription bindingDescription)
         {
-            var displayName = GetDisplayName(bindingDescription);
-            var description = GetDescription(bindingDescription);
-            var originalAttributeName = bindingDescription.BoundAttributeType.Name;
-            var className = GetObjTypeName(bindingDescription);
-            var propertyName = GetValidCSharpIdentifier(originalAttributeName);
+            var tests = string.Format(Templates.SingleValuedReferenceFormatTests,
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
+                GetObjTypeName(bindingDescription));
+            return tests;
+        }
 
+        private string GenerateSingleValuedReference(BindingDescription bindingDescription)
+        {
             var property = string.Format(Templates.SingleValuedReferenceFormat,
-                displayName,
-                description,
-                originalAttributeName,
-                className,
-                propertyName);
-
-            var tests = string.Format(Templates.SingleValuedReferenceTestsFormat,
-                propertyName,
-                className);
-
-            return new Tuple<string, string>(property, tests);
+                GetDisplayName(bindingDescription),
+                GetDescription(bindingDescription),
+                bindingDescription.BoundAttributeType.Name,
+                GetObjTypeName(bindingDescription),
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
+            return property;
         }
 
         private string GetObjTypeName(BindingDescription bindingDescription)
@@ -285,52 +306,56 @@ namespace IdmGenerateModels
             return _objectTypeNames != null && _objectTypeNames.Contains(bindingDescription.BoundAttributeType.Name);
         }
 
-        private static Tuple<string, string> GenerateSingleValuedDateTimeProperty(BindingDescription bindingDescription)
+        private static string GenerateSingleValuedDateTimeTests(BindingDescription bindingDescription)
         {
-            var validCSharpIdentifier = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
+            string nullTest = bindingDescription.Required == true
+                ? ""
+                : string.Format(Templates.SingleValuedDateTimeNullTestFormat,
+                    GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
+            var tests = string.Format(
+                Templates.SingleValuedDateTimeFormatTests,
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
+                nullTest);
+            return tests;
+        }
+
+        private static string GenerateSingleValuedDateTime(BindingDescription bindingDescription)
+        {
             var property = string.Format(Templates.SingleValuedDateTimeFormat,
                 GetDisplayName(bindingDescription),
                 GetDescription(bindingDescription),
                 GetRequired(bindingDescription),
                 bindingDescription.BoundAttributeType.Name,
-                validCSharpIdentifier,
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
                 bindingDescription.Required == true ? "" : "?",
                 bindingDescription.Required == true ? "" : "Nullable"
                 );
-
-            string nullTest = bindingDescription.Required == true
-                ? ""
-                : string.Format(Templates.SingleValuedDateTimeNullTestFormat, validCSharpIdentifier);
-            var tests = string.Format(
-                Templates.SingleValuedDateTimeTestsFormat,
-                validCSharpIdentifier,
-                nullTest);
-
-            return new Tuple<string, string>(property, tests);
+            return property;
         }
 
         public static Tuple<string, string> GenerateASingleValuedValuePropertyAndItsTests(BindingDescription bindingDescription)
         {
-            var validCSharpIdentifier = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
-
-            var propertyCode = GenerateASingleValuedValueProperty(bindingDescription, validCSharpIdentifier);
-
-            string testValueString = bindingDescription.BoundAttributeType.DataType == "Boolean" ? "true" : "123";
-            string nullTest = bindingDescription.Required == true
-                ? ""
-                : string.Format(Templates.SingleValuedValueNullTestFormat, validCSharpIdentifier, testValueString);
-            var testsCode = string.Format(
-                Templates.SingleValuedValueTestsFormat, 
-                validCSharpIdentifier, 
-                testValueString,
-                nullTest);
-
-
+            var propertyCode = GenerateSingleValuedValue(bindingDescription);
+            var testsCode = GenerateSingleValuedValueTests(bindingDescription);
             return new Tuple<string, string>(propertyCode, testsCode);
         }
 
-        private static string GenerateASingleValuedValueProperty(BindingDescription bindingDescription,
-            string validCSharpIdentifier)
+        private static string GenerateSingleValuedValueTests(BindingDescription bindingDescription)
+        {
+            string testValueString = bindingDescription.BoundAttributeType.DataType == "Boolean" ? "true" : "123";
+            string nullTest = bindingDescription.Required == true
+                ? ""
+                : string.Format(Templates.SingleValuedValueNullTestFormat,
+                    GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name), testValueString);
+            var testsCode = string.Format(
+                Templates.SingleValuedValueFormatTests,
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
+                testValueString,
+                nullTest);
+            return testsCode;
+        }
+
+        private static string GenerateSingleValuedValue(BindingDescription bindingDescription)
         {
             string conversionMethodString;
             string typeString = bindingDescription.BoundAttributeType.DataType == "Boolean" ? "bool" : "int";
@@ -349,6 +374,7 @@ namespace IdmGenerateModels
             }
 
             var minMax = GetMinMax(bindingDescription);
+            var validCSharpIdentifier = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
             var propertyCode = string.Format(Templates.SingleValuedValueFormat,
                 GetDisplayName(bindingDescription),
                 GetDescription(bindingDescription),
@@ -406,15 +432,14 @@ namespace IdmGenerateModels
 
         public static Tuple<string, string> GenerateASingleValuedStringPropertyAndItsTests(BindingDescription bindingDescription)
         {
-            var propName = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
-            string property = string.Format(Templates.SingleValuedStringFormat,
-                GetDisplayName(bindingDescription),
-                GetDescription(bindingDescription),
-                GetRequired(bindingDescription),
-                bindingDescription.BoundAttributeType.Name,
-                propName,
-                GetRegEx(bindingDescription));
+            var property = GenerateASingleValuedString(bindingDescription);
+            var tests = GenerateSingleValuedStringTests(bindingDescription);
 
+            return new Tuple<string, string>(property, tests);
+        }
+
+        private static string GenerateSingleValuedStringTests(BindingDescription bindingDescription)
+        {
             var nonMatchTest = "";
             var val = "A string";
             if (!string.IsNullOrEmpty(bindingDescription.StringRegex))
@@ -427,16 +452,27 @@ namespace IdmGenerateModels
 fd333
 ";
                 nonMatchTest = string.Format(Templates.NonMatchTest,
-                    propName,
+                    GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
                     nonMatch);
             }
 
-            string tests = string.Format(Templates.SingleValuedStringTestsFormat,
-                propName,
+            string tests = string.Format(Templates.SingleValuedStringFormatTests,
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
                 val,
                 nonMatchTest);
+            return tests;
+        }
 
-            return new Tuple<string, string>(property, tests);
+        private static string GenerateASingleValuedString(BindingDescription bindingDescription)
+        {
+            string property = string.Format(Templates.SingleValuedStringFormat,
+                GetDisplayName(bindingDescription),
+                GetDescription(bindingDescription),
+                GetRequired(bindingDescription),
+                bindingDescription.BoundAttributeType.Name,
+                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
+                GetRegEx(bindingDescription));
+            return property;
         }
 
         private static string GetDescription(BindingDescription bindingDescription)
