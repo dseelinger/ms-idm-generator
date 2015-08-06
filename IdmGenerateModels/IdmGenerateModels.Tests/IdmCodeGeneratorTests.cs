@@ -700,8 +700,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.IntegerAttributeWithMin, result.Item1);
-            // TODO 022: ***** Create Tests for IntegerMinimum *****
-            Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.IntegerAttributeWithMinTests, result.Item2);
         }
 
         [TestMethod]

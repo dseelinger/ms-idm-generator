@@ -735,6 +735,26 @@ fd333
         }
 
 ";
+        public const string IntegerAttributeWithMinTests = @"
+        [TestMethod]
+        public void It_can_get_and_set_Property_Name()
+        {
+            // Act
+            _it.Property_Name = 5;
+
+            // Assert
+            Assert.AreEqual(5, _it.Property_Name);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void It_throws_when_Property_Name_is_too_small()
+        {
+            // Act
+            _it.Property_Name = 4;
+        }
+
+";
 
         public const string IntegerAttributeWithMax = @"
         /// <summary>

@@ -343,15 +343,26 @@ namespace IdmGenerateModels
         private static string GenerateSingleValuedValueTests(BindingDescription bindingDescription)
         {
             string testValueString = bindingDescription.BoundAttributeType.DataType == "Boolean" ? "true" : "123";
+            var validCSharpIdentifier = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
             string nullTest = bindingDescription.Required == true
                 ? ""
                 : string.Format(Templates.SingleValuedValueNullTestFormat,
-                    GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name), testValueString);
-            var testsCode = string.Format(
-                Templates.SingleValuedValueFormatTests,
-                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
+                    validCSharpIdentifier, testValueString);
+
+            string minTest = "";
+            if (testValueString == "123" && bindingDescription.IntegerMinimum != null)
+            {
+                testValueString = bindingDescription.IntegerMinimum.ToString();
+                minTest = string.Format(Templates.MinTest,
+                    validCSharpIdentifier,
+                    bindingDescription.IntegerMinimum - 1);
+            }
+
+            var testsCode = string.Format(Templates.SingleValuedValueFormatTests,
+                validCSharpIdentifier,
                 testValueString,
-                nullTest);
+                nullTest,
+                minTest);
             return testsCode;
         }
 
