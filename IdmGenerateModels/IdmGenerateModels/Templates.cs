@@ -185,15 +185,26 @@
         }}
 ";
 
-        public const string MinTest = @"
-        [TestMethod]
+        public const string MinTest = @"        [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_{0}_is_too_small()
         {{
             // Act
             _it.Property_Name = {1};
         }}
+
 ";
+
+        public const string MaxTest = @"        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void It_throws_when_{0}_is_too_big()
+        {{
+            // Act
+            _it.Property_Name = {1};
+        }}
+
+";
+
         public const string SingleValuedDateTimeNullTestFormat = @"
         [TestMethod]
         public void It_has_{0}_which_is_null_by_default()

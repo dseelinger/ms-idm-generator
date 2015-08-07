@@ -350,19 +350,27 @@ namespace IdmGenerateModels
                     validCSharpIdentifier, testValueString);
 
             string minTest = "";
-            if (testValueString == "123" && bindingDescription.IntegerMinimum != null)
+            if (testValueString != "true" && bindingDescription.IntegerMinimum != null)
             {
                 testValueString = bindingDescription.IntegerMinimum.ToString();
                 minTest = string.Format(Templates.MinTest,
                     validCSharpIdentifier,
                     bindingDescription.IntegerMinimum - 1);
             }
+            string maxTest = "";
+            if (testValueString != "true" && bindingDescription.IntegerMaximum != null)
+            {
+                testValueString = bindingDescription.IntegerMaximum.ToString();
+                maxTest = string.Format(Templates.MaxTest,
+                    validCSharpIdentifier,
+                    bindingDescription.IntegerMaximum + 1);
+            }
 
             var testsCode = string.Format(Templates.SingleValuedValueFormatTests,
                 validCSharpIdentifier,
                 testValueString,
                 nullTest,
-                minTest);
+                minTest + maxTest);
             return testsCode;
         }
 

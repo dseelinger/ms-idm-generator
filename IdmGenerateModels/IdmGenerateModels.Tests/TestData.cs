@@ -765,14 +765,34 @@ fd333
         {
             get { return AttrToInteger(""Property-Name""); }
             set { 
-                if (value > 5)
-                    throw new ArgumentException(""Invalid value for Property-Name.  Maximum value is 5"");
+                if (value > 10)
+                    throw new ArgumentException(""Invalid value for Property-Name.  Maximum value is 10"");
                 SetAttrValue(""Property-Name"", value.ToString());
             }
         }
 
 ";
 
+        public const string IntegerAttributeWithMaxTests = @"
+        [TestMethod]
+        public void It_can_get_and_set_Property_Name()
+        {
+            // Act
+            _it.Property_Name = 10;
+
+            // Assert
+            Assert.AreEqual(10, _it.Property_Name);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void It_throws_when_Property_Name_is_too_big()
+        {
+            // Act
+            _it.Property_Name = 11;
+        }
+
+";
         public const string IntegerAttributeWithMinMax = @"
         /// <summary>
         /// My Display Name - My Description
@@ -788,6 +808,35 @@ fd333
                     throw new ArgumentException(""Invalid value for Property-Name.  Maximum value is 5"");
                 SetAttrValue(""Property-Name"", value.ToString());
             }
+        }
+
+";
+
+        public const string IntegerAttributeWithMinMaxTests = @"
+        [TestMethod]
+        public void It_can_get_and_set_Property_Name()
+        {
+            // Act
+            _it.Property_Name = 5;
+
+            // Assert
+            Assert.AreEqual(5, _it.Property_Name);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void It_throws_when_Property_Name_is_too_small()
+        {
+            // Act
+            _it.Property_Name = 1;
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void It_throws_when_Property_Name_is_too_big()
+        {
+            // Act
+            _it.Property_Name = 6;
         }
 
 ";

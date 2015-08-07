@@ -31,13 +31,16 @@ namespace IdmGenerateModels.Tests
                         string actualContext = actual.Substring(start, endActual - start).Replace(Environment.NewLine, "");
 
                         var spaces = new string(' ', contextSize - (i - start) + contextSize);
-                        var msg = string.Format("Text not equal at:{0}Exp:{1}{0}Act:{2}{0}    {3}^{0}{4}{0}{5}",
+                        var msg = string.Format("Text not equal at:{0}Exp:{1}{0}Act:{2}{0}    {3}^{0}{6} != {7} - char {8}{0}{4}{0}{5}",
                             Environment.NewLine,
                             expectedContext,
                             actualContext,
                             spaces,
                             expected,
-                            actual);
+                            actual,
+                            (int)expected[i],
+                            (int)actual[i],
+                            i);
 
                         //Assert.AreEqual(expected, actual, msg);
                         Assert.Fail(msg);

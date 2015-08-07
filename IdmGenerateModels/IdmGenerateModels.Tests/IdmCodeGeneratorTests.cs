@@ -712,7 +712,7 @@ fd333
                 DisplayName = "My Display Name",
                 Description = "My Description",
                 Required = true,
-                IntegerMaximum = 5,
+                IntegerMaximum = 10,
                 BoundAttributeType = new AttributeTypeDescription
                 {
                     Multivalued = false,
@@ -730,8 +730,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.IntegerAttributeWithMax, result.Item1);
-            // TODO 023: ***** Create Tests for IntegerMaximum *****
-            Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.IntegerAttributeWithMaxTests, result.Item2);
         }
 
         [TestMethod]
@@ -762,8 +761,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.IntegerAttributeWithMinMax, result.Item1);
-            // TODO 024: ***** Create Tests for Integer Max & Min *****
-            Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.IntegerAttributeWithMinMaxTests, result.Item2);
         }
 
         [TestMethod]
