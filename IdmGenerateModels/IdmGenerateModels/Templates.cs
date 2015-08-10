@@ -148,6 +148,25 @@
 
 {3}";
 
+        public const string MultiValuedValueFormatTests = @"{2}
+        [TestMethod]
+        public void It_can_get_and_set_{0}()
+        {{
+            // Arrange
+            var subObject1 = {1};
+            var subObject2 = {1};
+            var list = new List<int> {{ subObject1, subObject2 }};
+
+            // Act
+            _it.{0} = list;
+
+            // Assert
+            Assert.AreEqual({1}, _it.{0}[0]);
+            Assert.AreEqual({1}, _it.{0}[1]);
+        }}
+
+{3}";
+
         public const string SingleValuedDateTimeFormatTests = @"{1}
         [TestMethod]
         public void It_can_get_and_set_{0}()
@@ -185,12 +204,67 @@
         }}
 ";
 
+        public const string MultiValuedValueNullTestFormat = @"
+        [TestMethod]
+        public void It_has_{0}_which_is_null_by_default()
+        {{
+            // Assert
+            Assert.IsNull(_it.{0});
+        }}
+
+        [TestMethod]
+        public void It_has_{0}_which_can_be_set_back_to_null()
+        {{
+            // Arrange
+            var subObject1 = {1};
+            var subObject2 = {1};
+            var list = new List<int> {{ subObject1, subObject2 }};
+            _it.{0} = list; 
+
+            // Act
+            _it.{0} = null;
+
+            // Assert
+            Assert.IsNull(_it.{0});
+        }}
+";
+
         public const string MinTest = @"        [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_{0}_is_too_small()
         {{
             // Act
-            _it.Property_Name = {1};
+            _it.{0} = {1};
+        }}
+
+";
+
+        public const string MinTestMultivalued = @"        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void It_throws_when_{0}_is_too_small()
+        {{
+            // Arrange
+            var subObject1 = {1};
+            var subObject2 = {1};
+            var list = new List<int> {{ subObject1, subObject2 }};
+
+            // Act
+            _it.{0} = list;
+        }}
+
+";
+
+        public const string MaxTestMultivalued = @"        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void It_throws_when_{0}_is_too_big()
+        {{
+            // Arrange
+            var subObject1 = {1};
+            var subObject2 = {1};
+            var list = new List<int> {{ subObject1, subObject2 }};
+
+            // Act
+            _it.{0} = list;
         }}
 
 ";
@@ -200,7 +274,7 @@
         public void It_throws_when_{0}_is_too_big()
         {{
             // Act
-            _it.Property_Name = {1};
+            _it.{0} = {1};
         }}
 
 ";

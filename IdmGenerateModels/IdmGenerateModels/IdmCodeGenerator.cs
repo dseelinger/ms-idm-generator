@@ -133,6 +133,7 @@ namespace IdmGenerateModels
                     break;
                 case "Integer":
                     property = GenerateMultiValuedValue(bindingDescription);
+                    tests = GenerateMultiValuedValueTests(bindingDescription);
                     break;
                 case "DateTime":
                     property = GenerateMultiValuedDateTime(bindingDescription);
@@ -147,6 +148,21 @@ namespace IdmGenerateModels
                     throw new ApplicationException();
             }
             return new Tuple<string, string>(property, tests);
+        }
+
+        private string GenerateMultiValuedValueTests(BindingDescription bindingDescription)
+        {
+            var validCSharpIdentifier = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
+            var testValueString = GetTestValueString(bindingDescription);
+            var nullTest = GetNullTestMultivalued(bindingDescription, validCSharpIdentifier, testValueString);
+            var minTest = GetMinTest(bindingDescription, testValueString, validCSharpIdentifier, Templates.MinTestMultivalued);
+            var maxTest = GetMaxTest(bindingDescription, testValueString, validCSharpIdentifier, Templates.MaxTestMultivalued);
+
+            return string.Format(Templates.MultiValuedValueFormatTests,
+                validCSharpIdentifier,
+                testValueString,
+                nullTest,
+                minTest + maxTest);
         }
 
 
@@ -184,7 +200,7 @@ namespace IdmGenerateModels
         private string GenerateMultiValuedValue(BindingDescription bindingDescription)
         {
             var minMax = GetMinMax(bindingDescription);
-            var propertyCode = String.Format(Templates.MultiValuedIntegerFormat,
+            var propertyCode = string.Format(Templates.MultiValuedIntegerFormat,
                 GetDisplayName(bindingDescription),
                 GetDescription(bindingDescription),
                 GetRequired(bindingDescription),
@@ -209,14 +225,6 @@ namespace IdmGenerateModels
         {
             return string.Format(Templates.MultiValuedStringFormatTests,
                 GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
-        }
-
-        private Tuple<string, string> GenerateSingleValuedBinaryPropertyAndItsTests(BindingDescription bindingDescription)
-        {
-            var property = GenerateSingleValuedBinary(bindingDescription);
-            var tests = GenerateSingleValuedBinaryTests(bindingDescription);
-
-            return new Tuple<string, string>(property, tests);
         }
 
         private static string GenerateSingleValuedBinaryTests(BindingDescription bindingDescription)
@@ -333,45 +341,73 @@ namespace IdmGenerateModels
             return property;
         }
 
-        public static Tuple<string, string> GenerateASingleValuedValuePropertyAndItsTests(BindingDescription bindingDescription)
-        {
-            var propertyCode = GenerateSingleValuedValue(bindingDescription);
-            var testsCode = GenerateSingleValuedValueTests(bindingDescription);
-            return new Tuple<string, string>(propertyCode, testsCode);
-        }
-
         private static string GenerateSingleValuedValueTests(BindingDescription bindingDescription)
         {
-            string testValueString = bindingDescription.BoundAttributeType.DataType == "Boolean" ? "true" : "123";
             var validCSharpIdentifier = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
-            string nullTest = bindingDescription.Required == true
-                ? ""
-                : string.Format(Templates.SingleValuedValueNullTestFormat,
-                    validCSharpIdentifier, testValueString);
+            var testValueString = GetTestValueString(bindingDescription);
+            var nullTest = GetNullTest(bindingDescription, validCSharpIdentifier, testValueString);
+            var minTest = GetMinTest(bindingDescription, testValueString, validCSharpIdentifier, Templates.MinTest);
+            var maxTest = GetMaxTest(bindingDescription, testValueString, validCSharpIdentifier, Templates.MaxTest);
 
-            string minTest = "";
-            if (testValueString != "true" && bindingDescription.IntegerMinimum != null)
-            {
-                testValueString = bindingDescription.IntegerMinimum.ToString();
-                minTest = string.Format(Templates.MinTest,
-                    validCSharpIdentifier,
-                    bindingDescription.IntegerMinimum - 1);
-            }
-            string maxTest = "";
-            if (testValueString != "true" && bindingDescription.IntegerMaximum != null)
-            {
-                testValueString = bindingDescription.IntegerMaximum.ToString();
-                maxTest = string.Format(Templates.MaxTest,
-                    validCSharpIdentifier,
-                    bindingDescription.IntegerMaximum + 1);
-            }
-
-            var testsCode = string.Format(Templates.SingleValuedValueFormatTests,
+            return string.Format(Templates.SingleValuedValueFormatTests,
                 validCSharpIdentifier,
                 testValueString,
                 nullTest,
                 minTest + maxTest);
-            return testsCode;
+        }
+
+        private static string GetNullTest(BindingDescription bindingDescription, string validCSharpIdentifier,
+            string testValueString)
+        {
+            string nullTest = bindingDescription.Required == true
+                ? ""
+                : string.Format(Templates.SingleValuedValueNullTestFormat,
+                    validCSharpIdentifier, testValueString);
+            return nullTest;
+        }
+
+        private static string GetNullTestMultivalued(BindingDescription bindingDescription, string validCSharpIdentifier,
+            string testValueString)
+        {
+            string nullTest = bindingDescription.Required == true
+                ? ""
+                : string.Format(Templates.MultiValuedValueNullTestFormat,
+                    validCSharpIdentifier, testValueString);
+            return nullTest;
+        }
+
+        private static string GetMaxTest(BindingDescription bindingDescription, string testValueString,
+            string validCSharpIdentifier, string format)
+        {
+            string maxTest = "";
+            if (testValueString != "true" && bindingDescription.IntegerMaximum != null)
+            {
+                maxTest = string.Format(format, validCSharpIdentifier, bindingDescription.IntegerMaximum + 1);
+            }
+            return maxTest;
+        }
+
+        private static string GetMinTest(BindingDescription bindingDescription, string testValueString,
+            string validCSharpIdentifier, string format)
+        {
+            string minTest = "";
+            if (testValueString != "true" && bindingDescription.IntegerMinimum != null)
+            {
+                minTest = string.Format(format,
+                    validCSharpIdentifier,
+                    bindingDescription.IntegerMinimum - 1);
+            }
+            return minTest;
+        }
+
+        private static string GetTestValueString(BindingDescription bindingDescription)
+        {
+            string testValueString = bindingDescription.BoundAttributeType.DataType == "Boolean" ? "true" : "123";
+            if (testValueString != "true" && bindingDescription.IntegerMinimum != null)
+                testValueString = bindingDescription.IntegerMinimum.ToString();
+            if (testValueString != "true" && bindingDescription.IntegerMaximum != null)
+                testValueString = bindingDescription.IntegerMaximum.ToString();
+            return testValueString;
         }
 
         private static string GenerateSingleValuedValue(BindingDescription bindingDescription)
@@ -447,14 +483,6 @@ namespace IdmGenerateModels
                 }
             }
             return minMax;
-        }
-
-        public static Tuple<string, string> GenerateASingleValuedStringPropertyAndItsTests(BindingDescription bindingDescription)
-        {
-            var property = GenerateASingleValuedString(bindingDescription);
-            var tests = GenerateSingleValuedStringTests(bindingDescription);
-
-            return new Tuple<string, string>(property, tests);
         }
 
         private static string GenerateSingleValuedStringTests(BindingDescription bindingDescription)

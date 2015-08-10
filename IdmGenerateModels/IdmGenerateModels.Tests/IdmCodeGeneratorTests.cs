@@ -765,14 +765,45 @@ fd333
         }
 
         [TestMethod]
-        public void It_can_handle_MultiValuedIntegerMaxAndMin()
+        public void It_can_handle_non_required_IntegerMaxAndMin()
         {
             // Arrange
             var bindingDescription = new BindingDescription
             {
                 DisplayName = "My Display Name",
                 Description = "My Description",
-                Required = true,
+                Required = false,
+                IntegerMinimum = 2,
+                IntegerMaximum = 5,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    Multivalued = false,
+                    DataType = "Integer",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "Property-Name"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+            // Act
+            Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
+
+            // Assert
+            ExAssert.AreEqual(TestData.IntegerAttributeWithMinMaxNotRequired, result.Item1);
+            ExAssert.AreEqual(TestData.IntegerAttributeWithMinMaxNotRequiredTests, result.Item2);
+        }
+
+       [TestMethod]
+        public void It_can_handle_non_required_multiValued_Integer_with_MaxAndMin()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName = "My Display Name",
+                Description = "My Description",
+                Required = false,
                 IntegerMinimum = 2,
                 IntegerMaximum = 5,
                 BoundAttributeType = new AttributeTypeDescription
@@ -792,8 +823,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.MultiValuedIntegerAttributeWithMinMax, result.Item1);
-            // TODO 025: ***** Create Tests for Multi-valued Integer Max & Min *****
-            //Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.MultiValuedIntegerAttributeWithMinMaxTests, result.Item2);
         }
 
         [TestMethod]
@@ -975,7 +1005,7 @@ fd333
             // Assert
             ExAssert.AreEqual(TestData.DateTimeAttribute, result.Item1);
             // TODO 031: ***** Create Tests for required DateTime *****
-            //Assert.IsNotNull(result.Item2);
+            Assert.IsNotNull(result.Item2);
         }
 
         [TestMethod]
@@ -1005,7 +1035,7 @@ fd333
             // Assert
             ExAssert.AreEqual(TestData.DateTimeAttributeOptional, result.Item1);
             // TODO 033: ***** Create Tests for non-required DateTime *****
-            //Assert.IsNotNull(result.Item2);
+            Assert.IsNotNull(result.Item2);
         }
 
         [TestMethod]

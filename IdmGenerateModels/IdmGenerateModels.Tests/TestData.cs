@@ -812,7 +812,73 @@ fd333
 
 ";
 
+        public const string IntegerAttributeWithMinMaxNotRequired = @"
+        /// <summary>
+        /// My Display Name - My Description
+        /// </summary>
+        public int? Property_Name
+        {
+            get { return AttrToNullableInteger(""Property-Name""); }
+            set { 
+                if (value < 2)
+                    throw new ArgumentException(""Invalid value for Property-Name.  Minimum value is 2"");
+                if (value > 5)
+                    throw new ArgumentException(""Invalid value for Property-Name.  Maximum value is 5"");
+                SetAttrValue(""Property-Name"", value.ToString());
+            }
+        }
+
+";
         public const string IntegerAttributeWithMinMaxTests = @"
+        [TestMethod]
+        public void It_can_get_and_set_Property_Name()
+        {
+            // Act
+            _it.Property_Name = 5;
+
+            // Assert
+            Assert.AreEqual(5, _it.Property_Name);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void It_throws_when_Property_Name_is_too_small()
+        {
+            // Act
+            _it.Property_Name = 1;
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void It_throws_when_Property_Name_is_too_big()
+        {
+            // Act
+            _it.Property_Name = 6;
+        }
+
+";
+
+        public const string IntegerAttributeWithMinMaxNotRequiredTests = @"
+        [TestMethod]
+        public void It_has_Property_Name_which_is_null_by_default()
+        {
+            // Assert
+            Assert.IsNull(_it.Property_Name);
+        }
+
+        [TestMethod]
+        public void It_has_Property_Name_which_can_be_set_back_to_null()
+        {
+            // Arrange
+            _it.Property_Name = 5;
+
+            // Act
+            _it.Property_Name = null;
+
+            // Assert
+            Assert.IsNull(_it.Property_Name);
+        }
+
         [TestMethod]
         public void It_can_get_and_set_Property_Name()
         {
@@ -1292,7 +1358,6 @@ fd333
         /// <summary>
         /// My Display Name - My Description
         /// </summary>
-        [Required]
         public List<int> Property_Name
         {
             get { return GetAttr(""Property-Name"").Values.Select(int.Parse).ToList(); }
@@ -1303,6 +1368,74 @@ fd333
                     throw new ArgumentException(""One or more invalid values for Property-Name.  Maximum value for each is 5"");
                 SetAttrValues(""Property-Name"", value.Select(v => v.ToString());
             }
+        }
+
+";
+
+        public const string MultiValuedIntegerAttributeWithMinMaxTests = @"
+        [TestMethod]
+        public void It_has_Property_Name_which_is_null_by_default()
+        {
+            // Assert
+            Assert.IsNull(_it.Property_Name);
+        }
+
+        [TestMethod]
+        public void It_has_Property_Name_which_can_be_set_back_to_null()
+        {
+            // Arrange
+            var subObject1 = 5;
+            var subObject2 = 5;
+            var list = new List<int> { subObject1, subObject2 };
+            _it.Property_Name = list; 
+
+            // Act
+            _it.Property_Name = null;
+
+            // Assert
+            Assert.IsNull(_it.Property_Name);
+        }
+
+        [TestMethod]
+        public void It_can_get_and_set_Property_Name()
+        {
+            // Arrange
+            var subObject1 = 5;
+            var subObject2 = 5;
+            var list = new List<int> { subObject1, subObject2 };
+
+            // Act
+            _it.Property_Name = list;
+
+            // Assert
+            Assert.AreEqual(5, _it.Property_Name[0]);
+            Assert.AreEqual(5, _it.Property_Name[1]);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void It_throws_when_Property_Name_is_too_small()
+        {
+            // Arrange
+            var subObject1 = 1;
+            var subObject2 = 1;
+            var list = new List<int> { subObject1, subObject2 };
+
+            // Act
+            _it.Property_Name = list;
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void It_throws_when_Property_Name_is_too_big()
+        {
+            // Arrange
+            var subObject1 = 6;
+            var subObject2 = 6;
+            var list = new List<int> { subObject1, subObject2 };
+
+            // Act
+            _it.Property_Name = list;
         }
 
 ";
