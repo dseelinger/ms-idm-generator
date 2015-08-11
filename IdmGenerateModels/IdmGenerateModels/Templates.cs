@@ -167,6 +167,23 @@
 
 {3}";
 
+        public const string MultiValuedDateTimeFormatTests = @"{1}
+        [TestMethod]
+        public void It_can_get_and_set_{0}()
+        {{
+            // Arrange
+            var now = DateTime.Now;
+            var testTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+
+            // Act
+            _it.{0} = testTime;
+
+            // Assert
+            Assert.AreEqual(testTime, _it.{0});
+        }}
+
+";
+
         public const string SingleValuedDateTimeFormatTests = @"{1}
         [TestMethod]
         public void It_can_get_and_set_{0}()
@@ -204,7 +221,7 @@
         }}
 ";
 
-        public const string MultiValuedValueNullTestFormat = @"
+        public const string MultiValuedValueValueNullTestFormat = @"
         [TestMethod]
         public void It_has_{0}_which_is_null_by_default()
         {{
@@ -220,6 +237,30 @@
             var subObject2 = {1};
             var list = new List<int> {{ subObject1, subObject2 }};
             _it.{0} = list; 
+
+            // Act
+            _it.{0} = null;
+
+            // Assert
+            Assert.IsNull(_it.{0});
+        }}
+";
+
+        public const string MultiValuedDateTimeNullTestFormat = @"
+        [TestMethod]
+        public void It_has_{0}_which_is_null_by_default()
+        {{
+            // Assert
+            Assert.IsNull(_it.{0});
+        }}
+
+        [TestMethod]
+        public void It_has_{0}_which_can_be_set_back_to_null()
+        {{
+            // Arrange
+            var now = DateTime.Now;
+            var testTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+            _it.{0} = testTime;
 
             // Act
             _it.{0} = null;

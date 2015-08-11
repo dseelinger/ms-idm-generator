@@ -137,6 +137,7 @@ namespace IdmGenerateModels
                     break;
                 case "DateTime":
                     property = GenerateMultiValuedDateTime(bindingDescription);
+                    tests = GenerateMultiValuedDateTimeTests(bindingDescription);
                     break;
                 case "Reference":
                     property = GenerateMultiValuedReference(bindingDescription);
@@ -154,7 +155,7 @@ namespace IdmGenerateModels
         {
             var validCSharpIdentifier = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
             var testValueString = GetTestValueString(bindingDescription);
-            var nullTest = GetNullTestMultivalued(bindingDescription, validCSharpIdentifier, testValueString);
+            var nullTest = GetNullTestMultivaluedValue(bindingDescription, validCSharpIdentifier, testValueString);
             var minTest = GetMinTest(bindingDescription, testValueString, validCSharpIdentifier, Templates.MinTestMultivalued);
             var maxTest = GetMaxTest(bindingDescription, testValueString, validCSharpIdentifier, Templates.MaxTestMultivalued);
 
@@ -163,6 +164,16 @@ namespace IdmGenerateModels
                 testValueString,
                 nullTest,
                 minTest + maxTest);
+        }
+
+        private string GenerateMultiValuedDateTimeTests(BindingDescription bindingDescription)
+        {
+            var validCSharpIdentifier = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
+            var nullTest = GetNullTestMultivaluedDateTime(bindingDescription, validCSharpIdentifier);
+
+            return string.Format(Templates.MultiValuedDateTimeFormatTests,
+                validCSharpIdentifier,
+                nullTest);
         }
 
 
@@ -366,13 +377,21 @@ namespace IdmGenerateModels
             return nullTest;
         }
 
-        private static string GetNullTestMultivalued(BindingDescription bindingDescription, string validCSharpIdentifier,
+        private static string GetNullTestMultivaluedValue(BindingDescription bindingDescription, string validCSharpIdentifier,
             string testValueString)
         {
             string nullTest = bindingDescription.Required == true
                 ? ""
-                : string.Format(Templates.MultiValuedValueNullTestFormat,
+                : string.Format(Templates.MultiValuedValueValueNullTestFormat,
                     validCSharpIdentifier, testValueString);
+            return nullTest;
+        }
+
+        private static string GetNullTestMultivaluedDateTime(BindingDescription bindingDescription, string validCSharpIdentifier)
+        {
+            string nullTest = bindingDescription.Required == true
+                ? ""
+                : string.Format(Templates.MultiValuedDateTimeNullTestFormat, validCSharpIdentifier);
             return nullTest;
         }
 

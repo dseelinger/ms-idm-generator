@@ -827,14 +827,14 @@ fd333
         }
 
         [TestMethod]
-        public void It_handles_Multivalued_DateTimes()
+        public void It_handles_Multivalued_DateTimes_not_required()
         {
             // Arrange
             var bindingDescription = new BindingDescription
             {
                 DisplayName = "My Display Name",
                 Description = "My Description",
-                Required = true,
+                Required = false,
                 BoundAttributeType = new AttributeTypeDescription
                 {
                     Multivalued = true,
@@ -852,8 +852,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.MultiValuedDateTime, result.Item1);
-            // TODO 026: ***** Create Tests for Multi-valued DateTime *****
-            //Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.MultiValuedDateTimeTests, result.Item2);
         }
 
         [TestMethod]

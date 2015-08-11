@@ -1444,11 +1444,49 @@ fd333
         /// <summary>
         /// My Display Name - My Description
         /// </summary>
-        [Required]
         public List<DateTime> Property_Name
         {
             get { return GetAttr(""Property-Name"").Values.Select(DateTime.Parse).ToList(); }
             set { SetAttrValues(""Property-Name"", value.Select(v => v.ToString()); }
+        }
+
+";
+
+        public const string MultiValuedDateTimeTests = @"
+        [TestMethod]
+        public void It_has_Property_Name_which_is_null_by_default()
+        {
+            // Assert
+            Assert.IsNull(_it.Property_Name);
+        }
+
+        [TestMethod]
+        public void It_has_Property_Name_which_can_be_set_back_to_null()
+        {
+            // Arrange
+            var now = DateTime.Now;
+            var testTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+            _it.Property_Name = testTime;
+
+            // Act
+            _it.Property_Name = null;
+
+            // Assert
+            Assert.IsNull(_it.Property_Name);
+        }
+
+        [TestMethod]
+        public void It_can_get_and_set_Property_Name()
+        {
+            // Arrange
+            var now = DateTime.Now;
+            var testTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+
+            // Act
+            _it.Property_Name = testTime;
+
+            // Assert
+            Assert.AreEqual(testTime, _it.Property_Name);
         }
 
 ";
