@@ -368,7 +368,7 @@
 
 ";
 
-        public const string SingleValuedBinaryFormatTests = @"
+        public const string SingleValuedBinaryNullTestFormat = @"
         [TestMethod]
         public void It_has_{0}_which_is_null_by_default()
         {{
@@ -390,7 +390,9 @@
             // Assert
             Assert.IsNull(_it.{0});
         }}
+";
 
+        public const string SingleValuedBinaryFormatTests = @"{1}
         [TestMethod]
         public void It_can_get_and_set_{0}()
         {{

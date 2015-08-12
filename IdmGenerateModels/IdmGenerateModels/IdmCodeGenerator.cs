@@ -145,6 +145,7 @@ namespace IdmGenerateModels
                     break;
                 case "Binary":
                     property = GenerateMultiValuedBinary(bindingDescription);
+                    //tests = GenerateMultivaluedBinaryTests(bindingDescription);
                     break;
                 default:
                     throw new ApplicationException();
@@ -253,8 +254,14 @@ namespace IdmGenerateModels
 
         private static string GenerateSingleValuedBinaryTests(BindingDescription bindingDescription)
         {
+            var validCSharpIdentifier = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
+            string nullTest = bindingDescription.Required == true
+                ? ""
+                : string.Format(Templates.SingleValuedBinaryNullTestFormat,
+                    validCSharpIdentifier);
             var tests = string.Format(Templates.SingleValuedBinaryFormatTests,
-                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
+                validCSharpIdentifier,
+                nullTest);
             return tests;
         }
 
@@ -340,13 +347,14 @@ namespace IdmGenerateModels
 
         private static string GenerateSingleValuedDateTimeTests(BindingDescription bindingDescription)
         {
+            var validCSharpIdentifier = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
             string nullTest = bindingDescription.Required == true
                 ? ""
                 : string.Format(Templates.SingleValuedDateTimeNullTestFormat,
-                    GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
+                    validCSharpIdentifier);
             var tests = string.Format(
                 Templates.SingleValuedDateTimeFormatTests,
-                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name),
+                validCSharpIdentifier,
                 nullTest);
             return tests;
         }
