@@ -145,7 +145,7 @@ namespace IdmGenerateModels
                     break;
                 case "Binary":
                     property = GenerateMultiValuedBinary(bindingDescription);
-                    //tests = GenerateMultivaluedBinaryTests(bindingDescription);
+                    tests = GenerateMultivaluedBinaryTests(bindingDescription);
                     break;
                 default:
                     throw new ApplicationException();
@@ -260,6 +260,19 @@ namespace IdmGenerateModels
                 : string.Format(Templates.SingleValuedBinaryNullTestFormat,
                     validCSharpIdentifier);
             var tests = string.Format(Templates.SingleValuedBinaryFormatTests,
+                validCSharpIdentifier,
+                nullTest);
+            return tests;
+        }
+
+        private static string GenerateMultivaluedBinaryTests(BindingDescription bindingDescription)
+        {
+            var validCSharpIdentifier = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
+            string nullTest = bindingDescription.Required == true
+                ? ""
+                : string.Format(Templates.MultialuedBinaryNullTestFormat,
+                    validCSharpIdentifier);
+            var tests = string.Format(Templates.MultivaluedBinaryFormatTests,
                 validCSharpIdentifier,
                 nullTest);
             return tests;

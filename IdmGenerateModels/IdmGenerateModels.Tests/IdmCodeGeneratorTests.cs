@@ -917,38 +917,35 @@ fd333
             ExAssert.AreEqual(TestData.MultiValuedReferenceTests, result.Item2);
         }
 
-        // TODO: Make required Binary attributes work.
+        [TestMethod]
+        public void It_handles_Multivalued_Binary_attributes()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName = "My Display Name",
+                Description = "My Description",
+                Required = false,
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    Multivalued = true,
+                    DataType = "Binary",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "Property-Name"
+                },
+            };
 
-        // TODO: Make this work after making required binary attributes work.
-        //[TestMethod]
-        //public void It_handles_Multivalued_Binary_attributes()
-        //{
-        //    // Arrange
-        //    var bindingDescription = new BindingDescription
-        //    {
-        //        DisplayName = "My Display Name",
-        //        Description = "My Description",
-        //        Required = true,
-        //        BoundAttributeType = new AttributeTypeDescription
-        //        {
-        //            Multivalued = true,
-        //            DataType = "Binary",
-        //            DisplayName = "Doesn't matter",
-        //            Description = "Doesn't matter",
-        //            Name = "Property-Name"
-        //        },
-        //    };
-
-        //    var it = new IdmCodeGenerator(null);
+            var it = new IdmCodeGenerator(null);
 
 
-        //    // Act
-        //    Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
+            // Act
+            Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
-        //    // Assert
-        //    ExAssert.AreEqual(TestData.MultiValuedBinary, result.Item1);
-        //    ExAssert.AreEqual(TestData.MultivaluedBinaryTests, result.Item2);
-        //}
+            // Assert
+            ExAssert.AreEqual(TestData.MultiValuedBinary, result.Item1);
+            ExAssert.AreEqual(TestData.MultivaluedBinaryTests, result.Item2);
+        }
 
         [TestMethod]
         public void It_generates_the_correct_property_for_an_integer_thats_required()
@@ -976,8 +973,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.IntegerAttribute, result.Item1);
-            // TODO 029: ***** Create Tests for required Int *****
-            Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.IntegerAttributeTests, result.Item2);
         }
 
         [TestMethod]
@@ -1006,8 +1002,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.IntegerAttributeNotRequired, result.Item1);
-            // TODO 030: ***** Create Tests for non-required Int *****
-            Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.IntegerAttributeNotRequiredTests, result.Item2);
         }
 
         [TestMethod]
@@ -1036,8 +1031,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.DateTimeAttribute, result.Item1);
-            // TODO 031: ***** Create Tests for required DateTime *****
-            Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.DateTimeAttributeTests, result.Item2);
         }
 
         [TestMethod]
@@ -1066,8 +1060,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.DateTimeAttributeOptional, result.Item1);
-            // TODO 033: ***** Create Tests for non-required DateTime *****
-            Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.DateTimeAttributeOptionalTests, result.Item2);
         }
 
         [TestMethod]
@@ -1102,8 +1095,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.ClassOutputWithMultivaluedBinaryAttribute, result.Item1);
-            // TODO 034: ***** Create Tests for class with multi-valued binary *****
-            Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.ClassOutputWithMultivaluedBinaryAttributeTests, result.Item2);
         }
 
         [TestMethod]
@@ -1157,5 +1149,8 @@ fd333
             // Act
             it.GenerateAPropertyAndItsTests(bindingDescription);
         }
+
+        // TODO: Lists (multi-valued attributes) should be null by default
+        // TODO: Lists (multi-valued attributes) should be settable to null 
     }
 }
