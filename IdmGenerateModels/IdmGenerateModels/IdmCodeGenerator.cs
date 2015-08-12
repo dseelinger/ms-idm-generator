@@ -141,6 +141,7 @@ namespace IdmGenerateModels
                     break;
                 case "Reference":
                     property = GenerateMultiValuedReference(bindingDescription);
+                    tests = GenerateMultiValuedReferenceTests(bindingDescription);
                     break;
                 case "Binary":
                     property = GenerateMultiValuedBinary(bindingDescription);
@@ -175,6 +176,18 @@ namespace IdmGenerateModels
                 validCSharpIdentifier,
                 nullTest);
         }
+
+        private string GenerateMultiValuedReferenceTests(BindingDescription bindingDescription)
+        {
+            var validCSharpIdentifier = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
+
+            var tests = string.Format(Templates.MultivaluedReferenceFormatTests,
+                validCSharpIdentifier,
+                GetObjTypeName(bindingDescription));
+            return tests;
+        }
+
+
 
 
         private string GenerateMultiValuedBinary(BindingDescription bindingDescription)

@@ -882,8 +882,7 @@ fd333
 
             // Assert
             ExAssert.AreEqual(TestData.MultiValuedReference, result.Item1);
-            // TODO 027: ***** Create Tests for Multi-valued Reference *****
-            //Assert.IsNotNull(result.Item2);
+            ExAssert.AreEqual(TestData.MultiValuedReferenceTests, result.Item2);
         }
 
         [TestMethod]

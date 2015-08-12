@@ -1491,6 +1491,52 @@ fd333
 
 ";
 
+        public const string MultiValuedReferenceTests = @"
+        [TestMethod]
+        public void It_has_Property_Name_which_is_null_by_default()
+        {
+            // Assert
+            Assert.IsNull(_it.Property_Name);
+        }
+
+        [TestMethod]
+        public void It_has_Property_Name_which_can_be_set_back_to_null()
+        {
+            // Arrange
+            var list = new List<Model_Type>
+            {
+                new Model_Type { DisplayName = ""Test Model_Type1"", ObjectID = ""guid1"" },
+                new Model_Type { DisplayName = ""Test Model_Type2"", ObjectID = ""guid2"" }
+            };
+            _it.Property_Name = list;
+
+            // Act
+            _it.Property_Name = null;
+
+            // Assert
+            Assert.IsNull(_it.Property_Name);
+        }
+
+        [TestMethod]
+        public void It_can_get_and_set_Property_Name()
+        {
+            // Arrange
+            var list = new List<Model_Type>
+            {
+                new Model_Type { DisplayName = ""Test Model_Type1"", ObjectID = ""guid1"" },
+                new Model_Type { DisplayName = ""Test Model_Type2"", ObjectID = ""guid2"" }
+            };
+
+            // Act
+            _it.Property_Name = list;
+
+            // Assert
+            Assert.AreEqual(list[0].DisplayName, _it.Property_Name[0].DisplayName);
+            Assert.AreEqual(list[1].DisplayName, _it.Property_Name[1].DisplayName);
+        }
+
+";
+
         public const string MultiValuedReference = @"
         /// <summary>
         /// My Display Name - My Description

@@ -473,6 +473,52 @@
 
 ";
 
+        public const string MultivaluedReferenceFormatTests = @"
+        [TestMethod]
+        public void It_has_{0}_which_is_null_by_default()
+        {{
+            // Assert
+            Assert.IsNull(_it.{0});
+        }}
+
+        [TestMethod]
+        public void It_has_{0}_which_can_be_set_back_to_null()
+        {{
+            // Arrange
+            var list = new List<{1}>
+            {{
+                new {1} {{ DisplayName = ""Test {1}1"", ObjectID = ""guid1"" }},
+                new {1} {{ DisplayName = ""Test {1}2"", ObjectID = ""guid2"" }}
+            }};
+            _it.{0} = list;
+
+            // Act
+            _it.{0} = null;
+
+            // Assert
+            Assert.IsNull(_it.{0});
+        }}
+
+        [TestMethod]
+        public void It_can_get_and_set_{0}()
+        {{
+            // Arrange
+            var list = new List<{1}>
+            {{
+                new {1} {{ DisplayName = ""Test {1}1"", ObjectID = ""guid1"" }},
+                new {1} {{ DisplayName = ""Test {1}2"", ObjectID = ""guid2"" }}
+            }};
+
+            // Act
+            _it.{0} = list;
+
+            // Assert
+            Assert.AreEqual(list[0].DisplayName, _it.{0}[0].DisplayName);
+            Assert.AreEqual(list[1].DisplayName, _it.{0}[1].DisplayName);
+        }}
+
+";
+
         public const string MultiValuedReferenceFormat = @"
         /// <summary>
         /// {0} - {1}
