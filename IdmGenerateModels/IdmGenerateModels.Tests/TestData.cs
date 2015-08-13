@@ -1359,7 +1359,7 @@ fd333
 
 ";
 
-        public const string MultiValuedString = @"
+        public const string MultiValuedStringRequired = @"
         /// <summary>
         /// My Display Name - My Description
         /// </summary>
@@ -1377,7 +1377,42 @@ fd333
 
 ";
 
-        public const string MultiValuedStringTests = @"
+        public const string MultiValuedStringNonRequired = @"
+        /// <summary>
+        /// My Display Name - My Description
+        /// </summary>
+        public List<string> Property_Name
+        {
+            get { return GetAttrValues(""Property-Name""); }
+            set {
+                var regEx = new RegEx(""[0-9]"");
+                if (value.Any(x => !regEx.IsMatch(x))
+                    throw new ArgumentException(""One or more invalid values for Property-Name.  Each value must match regular expression '[0-9]'"");
+                SetAttrValues(""Property-Name"", value); 
+            }
+        }
+
+";
+
+        public const string MultiValuedStringTestsRequired = @"
+        [TestMethod]
+        public void It_can_get_and_set_Property_Name()
+        {
+            var subObject1 = ""foo1"";
+            var subObject2 = ""foo2"";
+            var list = new List<string> { subObject1, subObject2 };
+
+            // Act
+            _it.Property_Name = list; 
+
+            // Assert
+            Assert.AreEqual(""foo1"", _it.Property_Name[0]);
+            Assert.AreEqual(""foo2"", _it.Property_Name[1]);
+        }
+
+";
+
+        public const string MultiValuedStringTestsNonRequired = @"
         [TestMethod]
         public void It_has_Property_Name_which_is_null_by_default()
         {
@@ -1620,8 +1655,8 @@ fd333
         /// </summary>
         public List<byte[]> Property_Name
         {
-            get { return GetAttr(""Property-Name"") == null ? new List<byte[]>() : GetAttr(""Property-Name"").ToBinaries(); }
-            set { SetAttrValues(""Property-Name"", value.Select(Convert.ToBase64String).ToList()); }
+            get { return GetAttr(""Property-Name"")?.ToBinaries(); }
+            set { SetAttrValues(""Property-Name"", value?.Select(Convert.ToBase64String).ToList()); }
         }
 
 ";
@@ -1928,8 +1963,8 @@ namespace IdmNet.Models
         [Required]
         public List<byte[]> Property_Name
         {
-            get { return GetAttr(""Property-Name"") == null ? new List<byte[]>() : GetAttr(""Property-Name"").ToBinaries(); }
-            set { SetAttrValues(""Property-Name"", value.Select(Convert.ToBase64String).ToList()); }
+            get { return GetAttr(""Property-Name"")?.ToBinaries(); }
+            set { SetAttrValues(""Property-Name"", value?.Select(Convert.ToBase64String).ToList()); }
         }
 
 

@@ -675,7 +675,7 @@ fd333
         }
 
         [TestMethod]
-        public void It_can_handle_multi_valued_strings()
+        public void It_can_handle_required_multi_valued_strings()
         {
             // Arrange
             var bindingDescription = new BindingDescription
@@ -701,9 +701,41 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.MultiValuedString, result.Item1);
-            ExAssert.AreEqual(TestData.MultiValuedStringTests, result.Item2);
+            ExAssert.AreEqual(TestData.MultiValuedStringRequired, result.Item1);
+            ExAssert.AreEqual(TestData.MultiValuedStringTestsRequired, result.Item2);
         }
+
+        [TestMethod]
+        public void It_can_handle_non_required_multi_valued_strings()
+        {
+            // Arrange
+            var bindingDescription = new BindingDescription
+            {
+                DisplayName = "My Display Name",
+                Description = "My Description",
+                Required = false,
+                StringRegex = "[0-9]",
+                BoundAttributeType = new AttributeTypeDescription
+                {
+                    Multivalued = true,
+                    DataType = "String",
+                    DisplayName = "Doesn't matter",
+                    Description = "Doesn't matter",
+                    Name = "Property-Name"
+                },
+            };
+
+            var it = new IdmCodeGenerator(null);
+
+
+            // Act
+            Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
+
+            // Assert
+            ExAssert.AreEqual(TestData.MultiValuedStringNonRequired, result.Item1);
+            ExAssert.AreEqual(TestData.MultiValuedStringTestsNonRequired, result.Item2);
+        }
+
 
         [TestMethod]
         public void It_can_handle_IntegerMinimum()
@@ -1149,8 +1181,5 @@ fd333
             // Act
             it.GenerateAPropertyAndItsTests(bindingDescription);
         }
-
-        // TODO: Lists (multi-valued attributes) should be null by default
-        // TODO: Lists (multi-valued attributes) should be settable to null 
     }
 }

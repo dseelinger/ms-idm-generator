@@ -248,8 +248,14 @@ namespace IdmGenerateModels
 
         private string GenerateMultiValuedStringTests(BindingDescription bindingDescription)
         {
+            var validCSharpIdentifier = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
+            string nullTest = bindingDescription.Required == true
+                ? ""
+                : string.Format(Templates.MultiValuedStringFormatNullTests,
+                    validCSharpIdentifier);
             return string.Format(Templates.MultiValuedStringFormatTests,
-                GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name));
+               validCSharpIdentifier,
+               nullTest);
         }
 
         private static string GenerateSingleValuedBinaryTests(BindingDescription bindingDescription)

@@ -54,7 +54,25 @@
 
 ";
 
-        public const string MultiValuedStringFormatTests = @"
+        public const string MultiValuedStringFormatTests = @"{1}
+        [TestMethod]
+        public void It_can_get_and_set_{0}()
+        {{
+            var subObject1 = ""foo1"";
+            var subObject2 = ""foo2"";
+            var list = new List<string> {{ subObject1, subObject2 }};
+
+            // Act
+            _it.{0} = list; 
+
+            // Assert
+            Assert.AreEqual(""foo1"", _it.{0}[0]);
+            Assert.AreEqual(""foo2"", _it.{0}[1]);
+        }}
+
+";
+
+        public const string MultiValuedStringFormatNullTests = @"
         [TestMethod]
         public void It_has_{0}_which_is_null_by_default()
         {{
@@ -77,22 +95,6 @@
             // Assert
             Assert.IsNull(_it.{0});
         }}
-
-        [TestMethod]
-        public void It_can_get_and_set_{0}()
-        {{
-            var subObject1 = ""foo1"";
-            var subObject2 = ""foo2"";
-            var list = new List<string> {{ subObject1, subObject2 }};
-
-            // Act
-            _it.{0} = list; 
-
-            // Assert
-            Assert.AreEqual(""foo1"", _it.{0}[0]);
-            Assert.AreEqual(""foo2"", _it.{0}[1]);
-        }}
-
 ";
 
         public const string MultiValuedIntegerFormat = @"
@@ -474,8 +476,8 @@
         /// </summary>
         {2}public List<byte[]> {4}
         {{
-            get {{ return GetAttr(""{3}"") == null ? new List<byte[]>() : GetAttr(""{3}"").ToBinaries(); }}
-            set {{ SetAttrValues(""{3}"", value.Select(Convert.ToBase64String).ToList()); }}
+            get {{ return GetAttr(""{3}"")?.ToBinaries(); }}
+            set {{ SetAttrValues(""{3}"", value?.Select(Convert.ToBase64String).ToList()); }}
         }}
 
 ";
