@@ -3,16 +3,13 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using IdmNet;
 using IdmNet.SoapModels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace IdmGenerateModels.Tests.Spikes
 {
-    [TestClass]
-    [Ignore]
     public class ModelSpikes
     {
-        [TestMethod]
-        [TestCategory("Integration")]
+        [Fact]
         public async Task AllObjectTypeNames()
         {
             var client = IdmNetClientFactory.BuildClient();
@@ -29,8 +26,7 @@ namespace IdmGenerateModels.Tests.Spikes
             }
         }
 
-        [TestMethod]
-        [TestCategory("Integration")]
+        [Fact]
         public async Task AllReferenceAttributes()
         {
             var client = IdmNetClientFactory.BuildClient();

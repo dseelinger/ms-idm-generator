@@ -5,6 +5,7 @@ using System.Text;
 using Fare;
 using IdmNet.Models;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace IdmGenerateModels
 {
@@ -20,8 +21,9 @@ namespace IdmGenerateModels
             _schemaObject = schemaObject;
             _objectTypeNames = objectTypeNames;
 
-            // TODO later 001: eliminate dependency on system environment variables
-            _customSchemaJson = Environment.GetEnvironmentVariable("CUSTOM_ATTR_TO_OBJ_MAPPINGS");
+            // TODO later 001: eliminate dependency on system environment variables.  This is dumb.
+            //_customSchemaJson = Environment.GetEnvironmentVariable("CUSTOM_ATTR_TO_OBJ_MAPPINGS");
+            _customSchemaJson = File.ReadAllText("CustomObjectMappings.json");
 
             if (!string.IsNullOrWhiteSpace(json))
                 _referenceMap = JsonConvert.DeserializeObject<List<ReferenceToObjectTypeMap>>(json);

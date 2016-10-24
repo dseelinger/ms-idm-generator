@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using Fare;
 using IdmNet.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using FluentAssertions;
 
 namespace IdmGenerateModels.Tests
 {
-    [TestClass]
     public class IdmCodeGeneratorTests
     {
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_classes_for_an_empty_object_type()
         {
             // Arrange
@@ -24,11 +24,11 @@ namespace IdmGenerateModels.Tests
             var result = it.Generate();
 
             // Assert
-            ExAssert.AreEqual(TestData.EmptyClassOutput, result.Item1);
-            ExAssert.AreEqual(TestData.TestClassTemplate, result.Item2);
+            result.Item1.Should().Be(TestData.EmptyClassOutput);
+            result.Item2.Should().Be(TestData.TestClassTemplate);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_property_for_a_binding_with_different_DisplayName()
         {
             // Arrange
@@ -54,11 +54,11 @@ namespace IdmGenerateModels.Tests
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.BindingWithDifferentDisplayName, result.Item1);
-            ExAssert.AreEqual(TestData.BindingWithDifferentDisplayNameTests, result.Item2);
+            result.Item1.Should().Be(TestData.BindingWithDifferentDisplayName);
+            result.Item2.Should().Be(TestData.BindingWithDifferentDisplayNameTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_property_for_a_binding_with_different_Description()
         {
             // Arrange
@@ -84,11 +84,11 @@ namespace IdmGenerateModels.Tests
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.BindingWithDifferentDescription, result.Item1);
-            ExAssert.AreEqual(TestData.BindingWithDifferentDescriptionTests, result.Item2);
+            result.Item1.Should().Be(TestData.BindingWithDifferentDescription);
+            result.Item2.Should().Be(TestData.BindingWithDifferentDescriptionTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_property_and_tests_for_a_binding_thats_not_required()
         {
             // Arrange
@@ -122,11 +122,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.BindingNotRequired, result.Item1);
-            ExAssert.AreEqual(expectedTests, result.Item2);
+            result.Item1.Should().Be(TestData.BindingNotRequired);
+            result.Item2.Should().Be(expectedTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_property_for_a_string_attribute_with_a_different_property_name()
         {
             // Arrange
@@ -154,12 +154,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.StringAttributeWithDifferentPropertyName, result.Item1);
-            ExAssert.AreEqual(TestData.StringAttributeWithDifferentPropertyNameTests, result.Item2);
-
+            result.Item1.Should().Be(TestData.StringAttributeWithDifferentPropertyName);
+            result.Item2.Should().Be(TestData.StringAttributeWithDifferentPropertyNameTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_property_for_a_string_attribute_without_a_binding_displayName()
         {
             // Arrange
@@ -185,11 +184,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.StringAttributeWithoutBindingDisplayName, result.Item1);
-            ExAssert.AreEqual(TestData.StringAttributeWithoutBindingDisplayNameTests, result.Item2);
+            result.Item1.Should().Be(TestData.StringAttributeWithoutBindingDisplayName);
+            result.Item2.Should().Be(TestData.StringAttributeWithoutBindingDisplayNameTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_property_for_a_string_attribute_without_a_binding_description()
         {
             // Arrange
@@ -215,11 +214,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.StringAttributeWithoutABindingDescription, result.Item1);
-            ExAssert.AreEqual(TestData.StringAttributeWithoutABindingDescriptionTests, result.Item2);
+            result.Item1.Should().Be(TestData.StringAttributeWithoutABindingDescription);
+            result.Item2.Should().Be(TestData.StringAttributeWithoutABindingDescriptionTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_property_for_a_string_attribute_without_a_regular_expression()
         {
             // Arrange
@@ -246,11 +245,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.StringAttributeWithoutRegEx, result.Item1);
-            ExAssert.AreEqual(TestData.StringAttributeWithoutRegExTests, result.Item2);
+            result.Item1.Should().Be(TestData.StringAttributeWithoutRegEx);
+            result.Item2.Should().Be(TestData.StringAttributeWithoutRegExTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_property_for_a_string_attribute_with_all_string_fields_populated()
         {
             // Arrange
@@ -278,11 +277,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.StringAttributeWithAllStringFieldsPopulated, result.Item1);
-            ExAssert.AreEqual(TestData.StringAttributeWithAllStringFieldsPopulatedTests, result.Item2);
+            result.Item1.Should().Be(TestData.StringAttributeWithAllStringFieldsPopulated);
+            result.Item2.Should().Be(TestData.StringAttributeWithAllStringFieldsPopulatedTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_property_for_a_boolean()
         {
             // Arrange
@@ -309,11 +308,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.BoolAttribute, result.Item1);
-            ExAssert.AreEqual(TestData.BoolAttributeTests, result.Item2);
+            result.Item1.Should().Be(TestData.BoolAttribute);
+            result.Item2.Should().Be(TestData.BoolAttributeTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_property_for_a_non_required_boolean()
         {
             // Arrange
@@ -340,11 +339,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.BoolAttributeNotRequired, result.Item1);
-            ExAssert.AreEqual(TestData.BoolAttributeNotRequiredTests, result.Item2);
+            result.Item1.Should().Be(TestData.BoolAttributeNotRequired);
+            result.Item2.Should().Be(TestData.BoolAttributeNotRequiredTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_property_for_a_standard_reference_attribute_that_matches_an_object_type_name()
         {
             // Arrange
@@ -373,11 +372,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.StandardReferenceAttributeWhereTypeMatchesName, result.Item1);
-            ExAssert.AreEqual(TestData.StandardReferenceAttributeWhereTypeMatchesNameTests, result.Item2);
+            result.Item1.Should().Be(TestData.StandardReferenceAttributeWhereTypeMatchesName);
+            result.Item2.Should().Be(TestData.StandardReferenceAttributeWhereTypeMatchesNameTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_property_for_a_standard_reference_attribute_that_matches_an_item_in_the_json_environment_variable()
         {
             // Where's the environment variable
@@ -402,11 +401,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.StandardReferenceAttributeWhereTypeFoundInJsonFile, result.Item1);
-            ExAssert.AreEqual(TestData.StandardReferenceAttributeWhereTypeFoundInJsonFileTests, result.Item2);
+            result.Item1.Should().Be(TestData.StandardReferenceAttributeWhereTypeFoundInJsonFile);
+            result.Item2.Should().Be(TestData.StandardReferenceAttributeWhereTypeFoundInJsonFileTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_property_for_a_reference_attribute_doesnt_match_any_object_type()
         {
             // Arrange
@@ -434,11 +433,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.ReferenceAttributeWhereTypeNotFound, result.Item1);
-            ExAssert.AreEqual(TestData.ReferenceAttributeWhereTypeNotFoundTests, result.Item2);
+            result.Item1.Should().Be(TestData.ReferenceAttributeWhereTypeNotFound);
+            result.Item2.Should().Be(TestData.ReferenceAttributeWhereTypeNotFoundTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_property_and_tests_for_a_non_required_binary_attr()
         {
             // Arrange
@@ -466,11 +465,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.BinaryAttribute, result.Item1);
-            ExAssert.AreEqual(TestData.BinaryAttributeTests, result.Item2);
+            result.Item1.Should().Be(TestData.BinaryAttribute);
+            result.Item2.Should().Be(TestData.BinaryAttributeTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_property_and_tests_for_a_required_binary_attr()
         {
             // Arrange
@@ -498,11 +497,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.BinaryAttributeRequired, result.Item1);
-            ExAssert.AreEqual(TestData.BinaryAttributeTestsRequired, result.Item2);
+            result.Item1.Should().Be(TestData.BinaryAttributeRequired);
+            result.Item2.Should().Be(TestData.BinaryAttributeTestsRequired);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_handle_class_names_that_have_dash()
         {
             // Arrange
@@ -517,11 +516,11 @@ fd333
             Tuple<string, string> result = it.Generate();
 
             // Assert
-            ExAssert.AreEqual(TestData.ClassWithDash, result.Item1);
-            ExAssert.AreEqual(TestData.ClassWithDashTests, result.Item2);
+            result.Item1.Should().Be(TestData.ClassWithDash);
+            result.Item2.Should().Be(TestData.ClassWithDashTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_handle_attributes_with_dashes_in_the_name()
         {
             // Arrange
@@ -549,11 +548,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.StringAttributeWithDashInName, result.Item1);
-            ExAssert.AreEqual(TestData.StringAttributeWithDashInNameTests, result.Item2);
+            result.Item1.Should().Be(TestData.StringAttributeWithDashInName);
+            result.Item2.Should().Be(TestData.StringAttributeWithDashInNameTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_handles_booleans_with_dashes()
         {
             // Arrange
@@ -580,11 +579,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.BoolAttributeWithDash, result.Item1);
-            ExAssert.AreEqual(TestData.BoolAttributeWithDashTests, result.Item2);
+            result.Item1.Should().Be(TestData.BoolAttributeWithDash);
+            result.Item2.Should().Be(TestData.BoolAttributeWithDashTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_handles_dashes_in_DateTime_attrName()
         {
             // Arrange
@@ -609,11 +608,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.DateTimeAttributeWithDash, result.Item1);
-            ExAssert.AreEqual(TestData.DateTimeAttributeWithDashTests, result.Item2);
+            result.Item1.Should().Be(TestData.DateTimeAttributeWithDash);
+            result.Item2.Should().Be(TestData.DateTimeAttributeWithDashTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_handles_dashes_in_reference_AttrName()
         {
             // Arrange
@@ -638,11 +637,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.ReferenceAttrWithDashInName, result.Item1);
-            ExAssert.AreEqual(TestData.ReferenceAttrWithDashInNameTests, result.Item2);
+            result.Item1.Should().Be(TestData.ReferenceAttrWithDashInName);
+            result.Item2.Should().Be(TestData.ReferenceAttrWithDashInNameTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_handle_binary_attributes_with_dashes_in_the_name()
         {
             // Arrange
@@ -670,11 +669,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.BinaryAttributeWithDash, result.Item1);
-            ExAssert.AreEqual(TestData.BinaryAttributeWithDashTests, result.Item2);
+            result.Item1.Should().Be(TestData.BinaryAttributeWithDash);
+            result.Item2.Should().Be(TestData.BinaryAttributeWithDashTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_handle_required_multi_valued_strings()
         {
             // Arrange
@@ -701,11 +700,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.MultiValuedStringRequired, result.Item1);
-            ExAssert.AreEqual(TestData.MultiValuedStringTestsRequired, result.Item2);
+            result.Item1.Should().Be(TestData.MultiValuedStringRequired);
+            result.Item2.Should().Be(TestData.MultiValuedStringTestsRequired);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_handle_non_required_multi_valued_strings()
         {
             // Arrange
@@ -732,12 +731,12 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.MultiValuedStringNonRequired, result.Item1);
-            ExAssert.AreEqual(TestData.MultiValuedStringTestsNonRequired, result.Item2);
+            result.Item1.Should().Be(TestData.MultiValuedStringNonRequired);
+            result.Item2.Should().Be(TestData.MultiValuedStringTestsNonRequired);
         }
 
 
-        [TestMethod]
+        [Fact]
         public void It_can_handle_IntegerMinimum()
         {
             // Arrange
@@ -763,11 +762,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.IntegerAttributeWithMin, result.Item1);
-            ExAssert.AreEqual(TestData.IntegerAttributeWithMinTests, result.Item2);
+            result.Item1.Should().Be(TestData.IntegerAttributeWithMin);
+            result.Item2.Should().Be(TestData.IntegerAttributeWithMinTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_handle_IntegerMaximum()
         {
             // Arrange
@@ -793,11 +792,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.IntegerAttributeWithMax, result.Item1);
-            ExAssert.AreEqual(TestData.IntegerAttributeWithMaxTests, result.Item2);
+            result.Item1.Should().Be(TestData.IntegerAttributeWithMax);
+            result.Item2.Should().Be(TestData.IntegerAttributeWithMaxTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_handle_IntegerMaxAndMin()
         {
             // Arrange
@@ -824,11 +823,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.IntegerAttributeWithMinMax, result.Item1);
-            ExAssert.AreEqual(TestData.IntegerAttributeWithMinMaxTests, result.Item2);
+            result.Item1.Should().Be(TestData.IntegerAttributeWithMinMax);
+            result.Item2.Should().Be(TestData.IntegerAttributeWithMinMaxTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_handle_non_required_IntegerMaxAndMin()
         {
             // Arrange
@@ -855,11 +854,12 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.IntegerAttributeWithMinMaxNotRequired, result.Item1);
-            ExAssert.AreEqual(TestData.IntegerAttributeWithMinMaxNotRequiredTests, result.Item2);
+            result.Item1.Should().Be(TestData.IntegerAttributeWithMinMaxNotRequired);
+            result.Item2.Should().Be(TestData.IntegerAttributeWithMinMaxNotRequiredTests);
+
         }
 
-       [TestMethod]
+        [Fact]
         public void It_can_handle_non_required_multiValued_Integer_with_MaxAndMin()
         {
             // Arrange
@@ -886,11 +886,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.MultiValuedIntegerAttributeWithMinMax, result.Item1);
-            ExAssert.AreEqual(TestData.MultiValuedIntegerAttributeWithMinMaxTests, result.Item2);
+            result.Item1.Should().Be(TestData.MultiValuedIntegerAttributeWithMinMax);
+            result.Item2.Should().Be(TestData.MultiValuedIntegerAttributeWithMinMaxTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_handles_Multivalued_DateTimes_not_required()
         {
             // Arrange
@@ -915,11 +915,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.MultiValuedDateTime, result.Item1);
-            ExAssert.AreEqual(TestData.MultiValuedDateTimeTests, result.Item2);
+            result.Item1.Should().Be(TestData.MultiValuedDateTime);
+            result.Item2.Should().Be(TestData.MultiValuedDateTimeTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_handles_Multivalued_Reference_attributes()
         {
             // Arrange
@@ -945,11 +945,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.MultiValuedReference, result.Item1);
-            ExAssert.AreEqual(TestData.MultiValuedReferenceTests, result.Item2);
+            result.Item1.Should().Be(TestData.MultiValuedReference);
+            result.Item2.Should().Be(TestData.MultiValuedReferenceTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_handles_Multivalued_Binary_attributes()
         {
             // Arrange
@@ -975,11 +975,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.MultiValuedBinary, result.Item1);
-            ExAssert.AreEqual(TestData.MultivaluedBinaryTests, result.Item2);
+            result.Item1.Should().Be(TestData.MultiValuedBinary);
+            result.Item2.Should().Be(TestData.MultivaluedBinaryTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_property_for_an_integer_thats_required()
         {
             // Arrange
@@ -1004,11 +1004,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.IntegerAttribute, result.Item1);
-            ExAssert.AreEqual(TestData.IntegerAttributeTests, result.Item2);
+            result.Item1.Should().Be(TestData.IntegerAttribute);
+            result.Item2.Should().Be(TestData.IntegerAttributeTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_property_for_an_integer_thats_not_required()
         {
             // Arrange
@@ -1033,11 +1033,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.IntegerAttributeNotRequired, result.Item1);
-            ExAssert.AreEqual(TestData.IntegerAttributeNotRequiredTests, result.Item2);
+            result.Item1.Should().Be(TestData.IntegerAttributeNotRequired);
+            result.Item2.Should().Be(TestData.IntegerAttributeNotRequiredTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_property_for_a_required_DateTime()
         {
             // Arrange
@@ -1062,11 +1062,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.DateTimeAttribute, result.Item1);
-            ExAssert.AreEqual(TestData.DateTimeAttributeTests, result.Item2);
+            result.Item1.Should().Be(TestData.DateTimeAttribute);
+            result.Item2.Should().Be(TestData.DateTimeAttributeTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_property_for_an_optional_DateTime()
         {
             // Arrange
@@ -1091,11 +1091,11 @@ fd333
             Tuple<string, string> result = it.GenerateAPropertyAndItsTests(bindingDescription);
 
             // Assert
-            ExAssert.AreEqual(TestData.DateTimeAttributeOptional, result.Item1);
-            ExAssert.AreEqual(TestData.DateTimeAttributeOptionalTests, result.Item2);
+            result.Item1.Should().Be(TestData.DateTimeAttributeOptional);
+            result.Item2.Should().Be(TestData.DateTimeAttributeOptionalTests);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_generates_the_correct_class_for_an_object_type_with_a_multivalued_binary_attribute()
         {
             // Arrange
@@ -1126,12 +1126,12 @@ fd333
             var result = it.Generate();
 
             // Assert
-            ExAssert.AreEqual(TestData.ClassOutputWithMultivaluedBinaryAttribute, result.Item1);
-            ExAssert.AreEqual(TestData.ClassOutputWithMultivaluedBinaryAttributeTests, result.Item2);
+            result.Item1.Should().Be(TestData.ClassOutputWithMultivaluedBinaryAttribute);
+            result.Item2.Should().Be(TestData.ClassOutputWithMultivaluedBinaryAttributeTests);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ApplicationException))]
+        [Fact]
+        //[ExpectedException(typeof(ApplicationException))]
         public void It_throws_for_an_unrecognized_single_value_type()
         {
             // Arrange
@@ -1153,11 +1153,11 @@ fd333
             var it = new IdmCodeGenerator(null);
 
             // Act
-            it.GenerateAPropertyAndItsTests(bindingDescription);
+            Action a = () => it.GenerateAPropertyAndItsTests(bindingDescription);
+            a.ShouldThrow<ApplicationException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ApplicationException))]
+        [Fact]
         public void It_throws_for_an_unrecognized_multi_value_type()
         {
             // Arrange
@@ -1175,11 +1175,12 @@ fd333
                     Name = "PropertyName"
                 },
             };
-
+            
             var it = new IdmCodeGenerator(null);
 
             // Act
-            it.GenerateAPropertyAndItsTests(bindingDescription);
+            Action a = () => it.GenerateAPropertyAndItsTests(bindingDescription);
+            a.ShouldThrow<ApplicationException>();
         }
     }
 }
