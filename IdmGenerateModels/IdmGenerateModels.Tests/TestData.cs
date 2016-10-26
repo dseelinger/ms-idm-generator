@@ -116,13 +116,13 @@ namespace IdmNet.Models
         public const string ClassWithDashTests = @"using System;
 using System.Collections.Generic;
 using IdmNet.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using FluentAssertions;
 // ReSharper disable ObjectCreationAsStatement
 // ReSharper disable UseObjectOrCollectionInitializer
 
 namespace IdmNet.Models.Tests
 {
-    [TestClass]
     public class Foo_BarTests
     {
         private Foo_Bar _it;
@@ -132,13 +132,13 @@ namespace IdmNet.Models.Tests
             _it = new Foo_Bar();
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_a_paremeterless_constructor()
         {
-            Assert.AreEqual(""Foo-Bar"", _it.ObjectType);
+            _it.ObjectType.Should().Be(""Foo-Bar"");
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_a_constructor_that_takes_an_IdmResource()
         {
             var resource = new IdmResource
@@ -148,12 +148,12 @@ namespace IdmNet.Models.Tests
             };
             var it = new Foo_Bar(resource);
 
-            Assert.AreEqual(""Foo-Bar"", it.ObjectType);
-            Assert.AreEqual(""My Display Name"", it.DisplayName);
-            Assert.AreEqual(""Creator Display Name"", it.Creator.DisplayName);
+            it.ObjectType.Should().Be(""Foo-Bar"");
+            it.DisplayName.Should().Be(""My Display Name"");
+            it.Creator.DisplayName.Should().Be(""Creator Display Name"");
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_a_constructor_that_takes_an_IdmResource_without_Creator()
         {
             var resource = new IdmResource
@@ -162,11 +162,11 @@ namespace IdmNet.Models.Tests
             };
             var it = new Foo_Bar(resource);
 
-            Assert.AreEqual(""My Display Name"", it.DisplayName);
-            Assert.IsNull(it.Creator);
+            it.DisplayName.Should().Be(""My Display Name"");
+            it.Creator.Should().BeNull();
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(InvalidOperationException))]
         public void It_throws_when_you_try_to_set_ObjectType_to_anything_other_than_its_primary_ObjectType()
         {
@@ -366,17 +366,17 @@ namespace IdmNet.Models
 ";
 
         public const string BindingWithDifferentDisplayNameTests = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_PropertyName()
         {
             // Act
             _it.PropertyName = ""abc"";
 
             // Assert
-            Assert.AreEqual(""abc"", _it.PropertyName);
+            _it.PropertyName.Should().Be(""abc"");
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_PropertyName_set_to_invalid_value()
         {
@@ -408,17 +408,17 @@ fd333
 ";
 
         public const string BindingWithDifferentDescriptionTests = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_PropertyName()
         {
             // Act
             _it.PropertyName = ""abc"";
 
             // Assert
-            Assert.AreEqual(""abc"", _it.PropertyName);
+            _it.PropertyName.Should().Be(""abc"");
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_PropertyName_set_to_invalid_value()
         {
@@ -467,17 +467,17 @@ fd333
 ";
 
         public const string StringAttributeWithDifferentPropertyNameTests = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_PropertyName2()
         {
             // Act
             _it.PropertyName2 = ""abc"";
 
             // Assert
-            Assert.AreEqual(""abc"", _it.PropertyName2);
+            _it.PropertyName2.Should().Be(""abc"");
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_PropertyName2_set_to_invalid_value()
         {
@@ -509,17 +509,17 @@ fd333
 ";
 
         public const string StringAttributeWithoutBindingDisplayNameTests = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_PropertyName()
         {
             // Act
             _it.PropertyName = ""abc"";
 
             // Assert
-            Assert.AreEqual(""abc"", _it.PropertyName);
+            _it.PropertyName.Should().Be(""abc"");
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_PropertyName_set_to_invalid_value()
         {
@@ -551,17 +551,17 @@ fd333
 ";
 
         public const string StringAttributeWithoutABindingDescriptionTests = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_PropertyName()
         {
             // Act
             _it.PropertyName = ""abc"";
 
             // Assert
-            Assert.AreEqual(""abc"", _it.PropertyName);
+            _it.PropertyName.Should().Be(""abc"");
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_PropertyName_set_to_invalid_value()
         {
@@ -590,14 +590,14 @@ fd333
 ";
 
         public const string StringAttributeWithoutRegExTests = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_PropertyName()
         {
             // Act
             _it.PropertyName = ""A string"";
 
             // Assert
-            Assert.AreEqual(""A string"", _it.PropertyName);
+            _it.PropertyName.Should().Be(""A string"");
         }
 
 ";
@@ -621,17 +621,17 @@ fd333
 ";
 
         public const string StringAttributeWithAllStringFieldsPopulatedTests = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_PropertyName()
         {
             // Act
             _it.PropertyName = ""abc"";
 
             // Assert
-            Assert.AreEqual(""abc"", _it.PropertyName);
+            _it.PropertyName.Should().Be(""abc"");
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_PropertyName_set_to_invalid_value()
         {
@@ -660,7 +660,7 @@ fd333
 ";
 
         public const string BoolAttributeTests = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_PropertyName()
         {
             // Act
@@ -687,14 +687,14 @@ fd333
 ";
 
         public const string BoolAttributeNotRequiredTests = @"
-        [TestMethod]
+        [Fact]
         public void It_has_PropertyName_which_is_null_by_default()
         {
             // Assert
             Assert.IsNull(_it.PropertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_PropertyName_which_can_be_set_back_to_null()
         {
             // Arrange
@@ -707,7 +707,7 @@ fd333
             Assert.IsNull(_it.PropertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_PropertyName()
         {
             // Act
@@ -736,7 +736,7 @@ fd333
 
 ";
         public const string IntegerAttributeWithMinTests = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_Property_Name()
         {
             // Act
@@ -746,7 +746,7 @@ fd333
             Assert.AreEqual(5, _it.Property_Name);
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_Property_Name_is_too_small()
         {
@@ -774,7 +774,7 @@ fd333
 ";
 
         public const string IntegerAttributeWithMaxTests = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_Property_Name()
         {
             // Act
@@ -784,7 +784,7 @@ fd333
             Assert.AreEqual(10, _it.Property_Name);
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_Property_Name_is_too_big()
         {
@@ -830,7 +830,7 @@ fd333
 
 ";
         public const string IntegerAttributeWithMinMaxTests = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_Property_Name()
         {
             // Act
@@ -840,7 +840,7 @@ fd333
             Assert.AreEqual(5, _it.Property_Name);
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_Property_Name_is_too_small()
         {
@@ -848,7 +848,7 @@ fd333
             _it.Property_Name = 1;
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_Property_Name_is_too_big()
         {
@@ -859,14 +859,14 @@ fd333
 ";
 
         public const string IntegerAttributeWithMinMaxNotRequiredTests = @"
-        [TestMethod]
+        [Fact]
         public void It_has_Property_Name_which_is_null_by_default()
         {
             // Assert
             Assert.IsNull(_it.Property_Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_Property_Name_which_can_be_set_back_to_null()
         {
             // Arrange
@@ -879,7 +879,7 @@ fd333
             Assert.IsNull(_it.Property_Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_Property_Name()
         {
             // Act
@@ -889,7 +889,7 @@ fd333
             Assert.AreEqual(5, _it.Property_Name);
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_Property_Name_is_too_small()
         {
@@ -897,7 +897,7 @@ fd333
             _it.Property_Name = 1;
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_Property_Name_is_too_big()
         {
@@ -925,14 +925,14 @@ fd333
 ";
 
         public const string StandardReferenceAttributeWhereTypeMatchesNameTests = @"
-        [TestMethod]
+        [Fact]
         public void It_has_PropertyName_which_is_null_by_default()
         {
             // Assert
             Assert.IsNull(_it.PropertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_PropertyName_which_can_be_set_back_to_null()
         {
             // Arrange
@@ -946,7 +946,7 @@ fd333
             Assert.IsNull(_it.PropertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_PropertyName()
         {
             // Act
@@ -977,14 +977,14 @@ fd333
 ";
 
         public const string StandardReferenceAttributeWhereTypeFoundInJsonFileTests = @"
-        [TestMethod]
+        [Fact]
         public void It_has_PropertyName_which_is_null_by_default()
         {
             // Assert
             Assert.IsNull(_it.PropertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_PropertyName_which_can_be_set_back_to_null()
         {
             // Arrange
@@ -998,7 +998,7 @@ fd333
             Assert.IsNull(_it.PropertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_PropertyName()
         {
             // Act
@@ -1029,14 +1029,14 @@ fd333
 ";
 
         public const string ReferenceAttributeWhereTypeNotFoundTests = @"
-        [TestMethod]
+        [Fact]
         public void It_has_PropertyName2_which_is_null_by_default()
         {
             // Assert
             Assert.IsNull(_it.PropertyName2);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_PropertyName2_which_can_be_set_back_to_null()
         {
             // Arrange
@@ -1050,7 +1050,7 @@ fd333
             Assert.IsNull(_it.PropertyName2);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_PropertyName2()
         {
             // Act
@@ -1089,14 +1089,14 @@ fd333
 ";
 
         public const string BinaryAttributeTests = @"
-        [TestMethod]
+        [Fact]
         public void It_has_PropertyName_which_is_null_by_default()
         {
             // Assert
             Assert.IsNull(_it.PropertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_PropertyName_which_can_be_set_back_to_null()
         {
             // Arrange
@@ -1111,7 +1111,7 @@ fd333
             Assert.IsNull(_it.PropertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_PropertyName()
         {
             // Arrange
@@ -1131,7 +1131,7 @@ fd333
 ";
 
         public const string BinaryAttributeTestsRequired = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_PropertyName()
         {
             // Arrange
@@ -1151,14 +1151,14 @@ fd333
 ";
 
         public const string MultivaluedBinaryTests = @"
-        [TestMethod]
+        [Fact]
         public void It_has_Property_Name_which_is_null_by_default()
         {
             // Assert
             Assert.IsNull(_it.Property_Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_Property_Name_which_can_be_set_back_to_null()
         {
             // Arrange
@@ -1177,7 +1177,7 @@ fd333
             Assert.IsNull(_it.Property_Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_Property_Name()
         {
             // Arrange
@@ -1223,17 +1223,17 @@ fd333
 ";
 
         public const string StringAttributeWithDashInNameTests = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_Property_Name()
         {
             // Act
             _it.Property_Name = ""abc"";
 
             // Assert
-            Assert.AreEqual(""abc"", _it.Property_Name);
+            _it.Property_Name.Should().Be(""abc"");
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_Property_Name_set_to_invalid_value()
         {
@@ -1262,7 +1262,7 @@ fd333
 ";
 
         public const string BoolAttributeWithDashTests = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_Property_Name()
         {
             // Act
@@ -1292,14 +1292,14 @@ fd333
 ";
 
         public const string ReferenceAttrWithDashInNameTests = @"
-        [TestMethod]
+        [Fact]
         public void It_has_Property_Name_which_is_null_by_default()
         {
             // Assert
             Assert.IsNull(_it.Property_Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_Property_Name_which_can_be_set_back_to_null()
         {
             // Arrange
@@ -1313,7 +1313,7 @@ fd333
             Assert.IsNull(_it.Property_Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_Property_Name()
         {
             // Act
@@ -1340,7 +1340,7 @@ fd333
 ";
 
         public const string BinaryAttributeWithDashTests = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_Property_Name()
         {
             // Arrange
@@ -1395,7 +1395,7 @@ fd333
 ";
 
         public const string MultiValuedStringTestsRequired = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_Property_Name()
         {
             var subObject1 = ""foo1"";
@@ -1413,14 +1413,14 @@ fd333
 ";
 
         public const string MultiValuedStringTestsNonRequired = @"
-        [TestMethod]
+        [Fact]
         public void It_has_Property_Name_which_is_null_by_default()
         {
             // Assert
             Assert.IsNull(_it.Property_Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_Property_Name_which_can_be_set_back_to_null()
         {
             // Arrange
@@ -1436,7 +1436,7 @@ fd333
             Assert.IsNull(_it.Property_Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_Property_Name()
         {
             var subObject1 = ""foo1"";
@@ -1472,14 +1472,14 @@ fd333
 ";
 
         public const string MultiValuedIntegerAttributeWithMinMaxTests = @"
-        [TestMethod]
+        [Fact]
         public void It_has_Property_Name_which_is_null_by_default()
         {
             // Assert
             Assert.IsNull(_it.Property_Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_Property_Name_which_can_be_set_back_to_null()
         {
             // Arrange
@@ -1495,7 +1495,7 @@ fd333
             Assert.IsNull(_it.Property_Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_Property_Name()
         {
             // Arrange
@@ -1511,7 +1511,7 @@ fd333
             Assert.AreEqual(5, _it.Property_Name[1]);
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_Property_Name_is_too_small()
         {
@@ -1524,7 +1524,7 @@ fd333
             _it.Property_Name = list;
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_Property_Name_is_too_big()
         {
@@ -1552,14 +1552,14 @@ fd333
 ";
 
         public const string MultiValuedDateTimeTests = @"
-        [TestMethod]
+        [Fact]
         public void It_has_Property_Name_which_is_null_by_default()
         {
             // Assert
             Assert.IsNull(_it.Property_Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_Property_Name_which_can_be_set_back_to_null()
         {
             // Arrange
@@ -1574,7 +1574,7 @@ fd333
             Assert.IsNull(_it.Property_Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_Property_Name()
         {
             // Arrange
@@ -1591,14 +1591,14 @@ fd333
 ";
 
         public const string MultiValuedReferenceTests = @"
-        [TestMethod]
+        [Fact]
         public void It_has_Property_Name_which_is_null_by_default()
         {
             // Assert
             Assert.IsNull(_it.Property_Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_Property_Name_which_can_be_set_back_to_null()
         {
             // Arrange
@@ -1616,7 +1616,7 @@ fd333
             Assert.IsNull(_it.Property_Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_Property_Name()
         {
             // Arrange
@@ -1677,7 +1677,7 @@ fd333
 ";
 
         public const string IntegerAttributeTests = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_PropertyName()
         {
             // Act
@@ -1704,14 +1704,14 @@ fd333
 ";
 
         public const string IntegerAttributeNotRequiredTests = @"
-        [TestMethod]
+        [Fact]
         public void It_has_PropertyName_which_is_null_by_default()
         {
             // Assert
             Assert.IsNull(_it.PropertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_PropertyName_which_can_be_set_back_to_null()
         {
             // Arrange
@@ -1724,7 +1724,7 @@ fd333
             Assert.IsNull(_it.PropertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_PropertyName()
         {
             // Act
@@ -1749,7 +1749,7 @@ fd333
 
 ";
         public const string DateTimeAttributeWithDashTests = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_Property_Name()
         {
             // Act
@@ -1777,7 +1777,7 @@ fd333
 ";
 
         public const string DateTimeAttributeTests = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_PropertyName()
         {
             // Act
@@ -1805,14 +1805,14 @@ fd333
 
 
         public const string DateTimeAttributeOptionalTests = @"
-        [TestMethod]
+        [Fact]
         public void It_has_PropertyName_which_is_null_by_default()
         {
             // Assert
             Assert.IsNull(_it.PropertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_PropertyName_which_can_be_set_back_to_null()
         {
             // Arrange
@@ -1827,7 +1827,7 @@ fd333
             Assert.IsNull(_it.PropertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_PropertyName()
         {
             // Act
@@ -1845,13 +1845,13 @@ fd333
         public const string TestClassTemplate = @"using System;
 using System.Collections.Generic;
 using IdmNet.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using FluentAssertions;
 // ReSharper disable ObjectCreationAsStatement
 // ReSharper disable UseObjectOrCollectionInitializer
 
 namespace IdmNet.Models.Tests
 {
-    [TestClass]
     public class Foo_BarTests
     {
         private Foo_Bar _it;
@@ -1861,13 +1861,13 @@ namespace IdmNet.Models.Tests
             _it = new Foo_Bar();
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_a_paremeterless_constructor()
         {
-            Assert.AreEqual(""Foo-Bar"", _it.ObjectType);
+            _it.ObjectType.Should().Be(""Foo-Bar"");
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_a_constructor_that_takes_an_IdmResource()
         {
             var resource = new IdmResource
@@ -1877,12 +1877,12 @@ namespace IdmNet.Models.Tests
             };
             var it = new Foo_Bar(resource);
 
-            Assert.AreEqual(""Foo-Bar"", it.ObjectType);
-            Assert.AreEqual(""My Display Name"", it.DisplayName);
-            Assert.AreEqual(""Creator Display Name"", it.Creator.DisplayName);
+            it.ObjectType.Should().Be(""Foo-Bar"");
+            it.DisplayName.Should().Be(""My Display Name"");
+            it.Creator.DisplayName.Should().Be(""Creator Display Name"");
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_a_constructor_that_takes_an_IdmResource_without_Creator()
         {
             var resource = new IdmResource
@@ -1891,11 +1891,11 @@ namespace IdmNet.Models.Tests
             };
             var it = new Foo_Bar(resource);
 
-            Assert.AreEqual(""My Display Name"", it.DisplayName);
-            Assert.IsNull(it.Creator);
+            it.DisplayName.Should().Be(""My Display Name"");
+            it.Creator.Should().BeNull();
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(InvalidOperationException))]
         public void It_throws_when_you_try_to_set_ObjectType_to_anything_other_than_its_primary_ObjectType()
         {
@@ -1975,13 +1975,13 @@ namespace IdmNet.Models
         public const string ClassOutputWithMultivaluedBinaryAttributeTests = @"using System;
 using System.Collections.Generic;
 using IdmNet.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using FluentAssertions;
 // ReSharper disable ObjectCreationAsStatement
 // ReSharper disable UseObjectOrCollectionInitializer
 
 namespace IdmNet.Models.Tests
 {
-    [TestClass]
     public class FooTests
     {
         private Foo _it;
@@ -1991,13 +1991,13 @@ namespace IdmNet.Models.Tests
             _it = new Foo();
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_a_paremeterless_constructor()
         {
-            Assert.AreEqual(""Foo"", _it.ObjectType);
+            _it.ObjectType.Should().Be(""Foo"");
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_a_constructor_that_takes_an_IdmResource()
         {
             var resource = new IdmResource
@@ -2007,12 +2007,12 @@ namespace IdmNet.Models.Tests
             };
             var it = new Foo(resource);
 
-            Assert.AreEqual(""Foo"", it.ObjectType);
-            Assert.AreEqual(""My Display Name"", it.DisplayName);
-            Assert.AreEqual(""Creator Display Name"", it.Creator.DisplayName);
+            it.ObjectType.Should().Be(""Foo"");
+            it.DisplayName.Should().Be(""My Display Name"");
+            it.Creator.DisplayName.Should().Be(""Creator Display Name"");
         }
 
-        [TestMethod]
+        [Fact]
         public void It_has_a_constructor_that_takes_an_IdmResource_without_Creator()
         {
             var resource = new IdmResource
@@ -2021,18 +2021,18 @@ namespace IdmNet.Models.Tests
             };
             var it = new Foo(resource);
 
-            Assert.AreEqual(""My Display Name"", it.DisplayName);
-            Assert.IsNull(it.Creator);
+            it.DisplayName.Should().Be(""My Display Name"");
+            it.Creator.Should().BeNull();
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(InvalidOperationException))]
         public void It_throws_when_you_try_to_set_ObjectType_to_anything_other_than_its_primary_ObjectType()
         {
             _it.ObjectType = ""Invalid Object Type"";
         }
 
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_Property_Name()
         {
             // Arrange
@@ -2064,17 +2064,17 @@ namespace IdmNet.Models.Tests
 
 
         public const string BindingNotRequiredTests = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_PropertyName()
         {{
             // Act
             _it.PropertyName = ""{0}"";
 
             // Assert
-            Assert.AreEqual(""{0}"", _it.PropertyName);
+            _it.PropertyName.Should().Be(""{0}"");
         }}
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_PropertyName_set_to_invalid_value()
         {{

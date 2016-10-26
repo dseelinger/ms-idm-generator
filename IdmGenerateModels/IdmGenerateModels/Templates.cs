@@ -18,19 +18,19 @@
 ";
 
         public const string SingleValuedStringFormatTests = @"
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_{0}()
         {{
             // Act
             _it.{0} = ""{1}"";
 
             // Assert
-            Assert.AreEqual(""{1}"", _it.{0});
+            _it.{0}.Should().Be(""{1}"");
         }}
 
 {2}";
 
-        public const string NonMatchTest = @"        [TestMethod]
+        public const string NonMatchTest = @"        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_{0}_set_to_invalid_value()
         {{
@@ -55,7 +55,7 @@
 ";
 
         public const string MultiValuedStringFormatTests = @"{1}
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_{0}()
         {{
             var subObject1 = ""foo1"";
@@ -73,14 +73,14 @@
 ";
 
         public const string MultiValuedStringFormatNullTests = @"
-        [TestMethod]
+        [Fact]
         public void It_has_{0}_which_is_null_by_default()
         {{
             // Assert
             Assert.IsNull(_it.{0});
         }}
 
-        [TestMethod]
+        [Fact]
         public void It_has_{0}_which_can_be_set_back_to_null()
         {{
             // Arrange
@@ -138,7 +138,7 @@
 ";
 
         public const string SingleValuedValueFormatTests = @"{2}
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_{0}()
         {{
             // Act
@@ -151,7 +151,7 @@
 {3}";
 
         public const string MultiValuedValueFormatTests = @"{2}
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_{0}()
         {{
             // Arrange
@@ -170,7 +170,7 @@
 {3}";
 
         public const string MultiValuedDateTimeFormatTests = @"{1}
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_{0}()
         {{
             // Arrange
@@ -187,7 +187,7 @@
 ";
 
         public const string SingleValuedDateTimeFormatTests = @"{1}
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_{0}()
         {{
             // Act
@@ -202,14 +202,14 @@
 ";
 
         public const string SingleValuedValueNullTestFormat = @"
-        [TestMethod]
+        [Fact]
         public void It_has_{0}_which_is_null_by_default()
         {{
             // Assert
             Assert.IsNull(_it.{0});
         }}
 
-        [TestMethod]
+        [Fact]
         public void It_has_{0}_which_can_be_set_back_to_null()
         {{
             // Arrange
@@ -224,14 +224,14 @@
 ";
 
         public const string MultiValuedValueValueNullTestFormat = @"
-        [TestMethod]
+        [Fact]
         public void It_has_{0}_which_is_null_by_default()
         {{
             // Assert
             Assert.IsNull(_it.{0});
         }}
 
-        [TestMethod]
+        [Fact]
         public void It_has_{0}_which_can_be_set_back_to_null()
         {{
             // Arrange
@@ -249,14 +249,14 @@
 ";
 
         public const string MultiValuedDateTimeNullTestFormat = @"
-        [TestMethod]
+        [Fact]
         public void It_has_{0}_which_is_null_by_default()
         {{
             // Assert
             Assert.IsNull(_it.{0});
         }}
 
-        [TestMethod]
+        [Fact]
         public void It_has_{0}_which_can_be_set_back_to_null()
         {{
             // Arrange
@@ -272,7 +272,7 @@
         }}
 ";
 
-        public const string MinTest = @"        [TestMethod]
+        public const string MinTest = @"        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_{0}_is_too_small()
         {{
@@ -282,7 +282,7 @@
 
 ";
 
-        public const string MinTestMultivalued = @"        [TestMethod]
+        public const string MinTestMultivalued = @"        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_{0}_is_too_small()
         {{
@@ -297,7 +297,7 @@
 
 ";
 
-        public const string MaxTestMultivalued = @"        [TestMethod]
+        public const string MaxTestMultivalued = @"        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_{0}_is_too_big()
         {{
@@ -312,7 +312,7 @@
 
 ";
 
-        public const string MaxTest = @"        [TestMethod]
+        public const string MaxTest = @"        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_{0}_is_too_big()
         {{
@@ -323,14 +323,14 @@
 ";
 
         public const string SingleValuedDateTimeNullTestFormat = @"
-        [TestMethod]
+        [Fact]
         public void It_has_{0}_which_is_null_by_default()
         {{
             // Assert
             Assert.IsNull(_it.{0});
         }}
 
-        [TestMethod]
+        [Fact]
         public void It_has_{0}_which_can_be_set_back_to_null()
         {{
             // Arrange
@@ -371,14 +371,14 @@
 ";
 
         public const string SingleValuedBinaryNullTestFormat = @"
-        [TestMethod]
+        [Fact]
         public void It_has_{0}_which_is_null_by_default()
         {{
             // Assert
             Assert.IsNull(_it.{0});
         }}
 
-        [TestMethod]
+        [Fact]
         public void It_has_{0}_which_can_be_set_back_to_null()
         {{
             // Arrange
@@ -395,14 +395,14 @@
 ";
 
         public const string MultialuedBinaryNullTestFormat = @"
-        [TestMethod]
+        [Fact]
         public void It_has_{0}_which_is_null_by_default()
         {{
             // Assert
             Assert.IsNull(_it.{0});
         }}
 
-        [TestMethod]
+        [Fact]
         public void It_has_{0}_which_can_be_set_back_to_null()
         {{
             // Arrange
@@ -423,7 +423,7 @@
 ";
 
         public const string SingleValuedBinaryFormatTests = @"{1}
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_{0}()
         {{
             // Arrange
@@ -443,7 +443,7 @@
 ";
 
         public const string MultivaluedBinaryFormatTests = @"{1}
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_{0}()
         {{
             // Arrange
@@ -499,14 +499,14 @@
 ";
 
         public const string SingleValuedReferenceFormatTests = @"
-        [TestMethod]
+        [Fact]
         public void It_has_{0}_which_is_null_by_default()
         {{
             // Assert
             Assert.IsNull(_it.{0});
         }}
 
-        [TestMethod]
+        [Fact]
         public void It_has_{0}_which_can_be_set_back_to_null()
         {{
             // Arrange
@@ -520,7 +520,7 @@
             Assert.IsNull(_it.{0});
         }}
 
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_{0}()
         {{
             // Act
@@ -534,14 +534,14 @@
 ";
 
         public const string MultivaluedReferenceFormatTests = @"
-        [TestMethod]
+        [Fact]
         public void It_has_{0}_which_is_null_by_default()
         {{
             // Assert
             Assert.IsNull(_it.{0});
         }}
 
-        [TestMethod]
+        [Fact]
         public void It_has_{0}_which_can_be_set_back_to_null()
         {{
             // Arrange
@@ -559,7 +559,7 @@
             Assert.IsNull(_it.{0});
         }}
 
-        [TestMethod]
+        [Fact]
         public void It_can_get_and_set_{0}()
         {{
             // Arrange
@@ -654,13 +654,13 @@ namespace IdmNet.Models
         public const string TestClassTemplate = @"using System;
 using System.Collections.Generic;
 using IdmNet.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using FluentAssertions;
 // ReSharper disable ObjectCreationAsStatement
 // ReSharper disable UseObjectOrCollectionInitializer
 
 namespace IdmNet.Models.Tests
 {{
-    [TestClass]
     public class {0}Tests
     {{
         private {0} _it;
@@ -670,13 +670,13 @@ namespace IdmNet.Models.Tests
             _it = new {0}();
         }}
 
-        [TestMethod]
+        [Fact]
         public void It_has_a_paremeterless_constructor()
         {{
-            Assert.AreEqual(""{1}"", _it.ObjectType);
+            _it.ObjectType.Should().Be(""{1}"");
         }}
 
-        [TestMethod]
+        [Fact]
         public void It_has_a_constructor_that_takes_an_IdmResource()
         {{
             var resource = new IdmResource
@@ -686,12 +686,12 @@ namespace IdmNet.Models.Tests
             }};
             var it = new {0}(resource);
 
-            Assert.AreEqual(""{1}"", it.ObjectType);
-            Assert.AreEqual(""My Display Name"", it.DisplayName);
-            Assert.AreEqual(""Creator Display Name"", it.Creator.DisplayName);
+            it.ObjectType.Should().Be(""{1}"");
+            it.DisplayName.Should().Be(""My Display Name"");
+            it.Creator.DisplayName.Should().Be(""Creator Display Name"");
         }}
 
-        [TestMethod]
+        [Fact]
         public void It_has_a_constructor_that_takes_an_IdmResource_without_Creator()
         {{
             var resource = new IdmResource
@@ -700,11 +700,11 @@ namespace IdmNet.Models.Tests
             }};
             var it = new {0}(resource);
 
-            Assert.AreEqual(""My Display Name"", it.DisplayName);
-            Assert.IsNull(it.Creator);
+            it.DisplayName.Should().Be(""My Display Name"");
+            it.Creator.Should().BeNull();
         }}
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(InvalidOperationException))]
         public void It_throws_when_you_try_to_set_ObjectType_to_anything_other_than_its_primary_ObjectType()
         {{
