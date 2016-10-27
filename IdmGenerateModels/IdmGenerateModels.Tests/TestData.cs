@@ -167,10 +167,10 @@ namespace IdmNet.Models.Tests
         }
 
         [Fact]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void It_throws_when_you_try_to_set_ObjectType_to_anything_other_than_its_primary_ObjectType()
         {
-            _it.ObjectType = ""Invalid Object Type"";
+            Action action = () => _it.ObjectType = ""Invalid Object Type"";
+            action.ShouldThrow<InvalidOperationException>();
         }
 
     }
@@ -377,14 +377,14 @@ namespace IdmNet.Models
         }
 
         [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_PropertyName_set_to_invalid_value()
         {
             // Act
-            _it.PropertyName = @""flkj3332@!!!$
+            Action action = () => _it.PropertyName = @""flkj3332@!!!$
 
 fd333
 "";
+            action.ShouldThrow<ArgumentException>();
         }
 
 ";
@@ -419,14 +419,14 @@ fd333
         }
 
         [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_PropertyName_set_to_invalid_value()
         {
             // Act
-            _it.PropertyName = @""flkj3332@!!!$
+            Action action = () => _it.PropertyName = @""flkj3332@!!!$
 
 fd333
 "";
+            action.ShouldThrow<ArgumentException>();
         }
 
 ";
@@ -478,14 +478,14 @@ fd333
         }
 
         [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_PropertyName2_set_to_invalid_value()
         {
             // Act
-            _it.PropertyName2 = @""flkj3332@!!!$
+            Action action = () => _it.PropertyName2 = @""flkj3332@!!!$
 
 fd333
 "";
+            action.ShouldThrow<ArgumentException>();
         }
 
 ";
@@ -520,14 +520,14 @@ fd333
         }
 
         [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_PropertyName_set_to_invalid_value()
         {
             // Act
-            _it.PropertyName = @""flkj3332@!!!$
+            Action action = () => _it.PropertyName = @""flkj3332@!!!$
 
 fd333
 "";
+            action.ShouldThrow<ArgumentException>();
         }
 
 ";
@@ -562,14 +562,14 @@ fd333
         }
 
         [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_PropertyName_set_to_invalid_value()
         {
             // Act
-            _it.PropertyName = @""flkj3332@!!!$
+            Action action = () => _it.PropertyName = @""flkj3332@!!!$
 
 fd333
 "";
+            action.ShouldThrow<ArgumentException>();
         }
 
 ";
@@ -632,14 +632,14 @@ fd333
         }
 
         [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_PropertyName_set_to_invalid_value()
         {
             // Act
-            _it.PropertyName = @""flkj3332@!!!$
+            Action action = () => _it.PropertyName = @""flkj3332@!!!$
 
 fd333
 "";
+            action.ShouldThrow<ArgumentException>();
         }
 
 ";
@@ -1234,14 +1234,14 @@ fd333
         }
 
         [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_Property_Name_set_to_invalid_value()
         {
             // Act
-            _it.Property_Name = @""flkj3332@!!!$
+            Action action = () => _it.Property_Name = @""flkj3332@!!!$
 
 fd333
 "";
+            action.ShouldThrow<ArgumentException>();
         }
 
 ";
@@ -1896,10 +1896,10 @@ namespace IdmNet.Models.Tests
         }
 
         [Fact]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void It_throws_when_you_try_to_set_ObjectType_to_anything_other_than_its_primary_ObjectType()
         {
-            _it.ObjectType = ""Invalid Object Type"";
+            Action action = () => _it.ObjectType = ""Invalid Object Type"";
+            action.ShouldThrow<InvalidOperationException>();
         }
 
     }
@@ -2026,10 +2026,10 @@ namespace IdmNet.Models.Tests
         }
 
         [Fact]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void It_throws_when_you_try_to_set_ObjectType_to_anything_other_than_its_primary_ObjectType()
         {
-            _it.ObjectType = ""Invalid Object Type"";
+            Action action = () => _it.ObjectType = ""Invalid Object Type"";
+            action.ShouldThrow<InvalidOperationException>();
         }
 
         [Fact]
@@ -2075,11 +2075,11 @@ namespace IdmNet.Models.Tests
         }}
 
         [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_PropertyName_set_to_invalid_value()
         {{
             // Act
-            _it.PropertyName = @""{1}"";
+            Action action = () => _it.PropertyName = @""{1}"";
+            action.ShouldThrow<ArgumentException>();
         }}
 
 ";

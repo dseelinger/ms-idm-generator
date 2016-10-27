@@ -31,11 +31,11 @@
 {2}";
 
         public const string NonMatchTest = @"        [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_{0}_set_to_invalid_value()
         {{
             // Act
-            _it.{0} = @""{1}"";
+            Action action = () => _it.{0} = @""{1}"";
+            action.ShouldThrow<ArgumentException>();
         }}
 
 ";
@@ -705,10 +705,10 @@ namespace IdmNet.Models.Tests
         }}
 
         [Fact]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void It_throws_when_you_try_to_set_ObjectType_to_anything_other_than_its_primary_ObjectType()
         {{
-            _it.ObjectType = ""Invalid Object Type"";
+            Action action = () => _it.ObjectType = ""Invalid Object Type"";
+            action.ShouldThrow<InvalidOperationException>();
         }}
 {2}
     }}
