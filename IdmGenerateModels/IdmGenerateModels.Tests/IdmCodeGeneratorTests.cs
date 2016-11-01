@@ -856,7 +856,6 @@ fd333
             // Assert
             result.Item1.Should().Be(TestData.IntegerAttributeWithMinMaxNotRequired);
             result.Item2.Should().Be(TestData.IntegerAttributeWithMinMaxNotRequiredTests);
-
         }
 
         [Fact]
