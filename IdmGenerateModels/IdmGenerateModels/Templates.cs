@@ -145,7 +145,7 @@
             _it.{0} = {1};
 
             // Assert
-            Assert.AreEqual({1}, _it.{0});
+            _it.{0}.Should().Be({1});
         }}
 
 {3}";

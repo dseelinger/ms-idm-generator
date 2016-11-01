@@ -667,7 +667,7 @@ fd333
             _it.PropertyName = true;
 
             // Assert
-            Assert.AreEqual(true, _it.PropertyName);
+            _it.PropertyName.Should().Be(true);
         }
 
 ";
@@ -714,7 +714,7 @@ fd333
             _it.PropertyName = true;
 
             // Assert
-            Assert.AreEqual(true, _it.PropertyName);
+            _it.PropertyName.Should().Be(true);
         }
 
 ";
@@ -743,7 +743,7 @@ fd333
             _it.Property_Name = 5;
 
             // Assert
-            Assert.AreEqual(5, _it.Property_Name);
+            _it.Property_Name.Should().Be(5);
         }
 
         [Fact]
@@ -781,7 +781,7 @@ fd333
             _it.Property_Name = 10;
 
             // Assert
-            Assert.AreEqual(10, _it.Property_Name);
+            _it.Property_Name.Should().Be(10);
         }
 
         [Fact]
@@ -837,7 +837,7 @@ fd333
             _it.Property_Name = 5;
 
             // Assert
-            Assert.AreEqual(5, _it.Property_Name);
+            _it.Property_Name.Should().Be(5);
         }
 
         [Fact]
@@ -886,7 +886,7 @@ fd333
             _it.Property_Name = 5;
 
             // Assert
-            Assert.AreEqual(5, _it.Property_Name);
+            _it.Property_Name.Should().Be(5);
         }
 
         [Fact]
@@ -1269,7 +1269,7 @@ fd333
             _it.Property_Name = true;
 
             // Assert
-            Assert.AreEqual(true, _it.Property_Name);
+            _it.Property_Name.Should().Be(true);
         }
 
 ";
@@ -1684,7 +1684,7 @@ fd333
             _it.PropertyName = 123;
 
             // Assert
-            Assert.AreEqual(123, _it.PropertyName);
+            _it.PropertyName.Should().Be(123);
         }
 
 ";
@@ -1731,7 +1731,7 @@ fd333
             _it.PropertyName = 123;
 
             // Assert
-            Assert.AreEqual(123, _it.PropertyName);
+            _it.PropertyName.Should().Be(123);
         }
 
 ";
