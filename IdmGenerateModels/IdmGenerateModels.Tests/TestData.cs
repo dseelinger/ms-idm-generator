@@ -954,7 +954,7 @@ fd333
             _it.PropertyName = testPerson; 
 
             // Assert
-            Assert.AreEqual(testPerson.DisplayName, _it.PropertyName.DisplayName);
+            _it.PropertyName.DisplayName.Should().Be(testPerson.DisplayName);
         }
 
 ";
@@ -1006,7 +1006,7 @@ fd333
             _it.PropertyName = testModelType; 
 
             // Assert
-            Assert.AreEqual(testModelType.DisplayName, _it.PropertyName.DisplayName);
+            _it.PropertyName.DisplayName.Should().Be(testModelType.DisplayName);
         }
 
 ";
@@ -1058,7 +1058,7 @@ fd333
             _it.PropertyName2 = testIdmResource; 
 
             // Assert
-            Assert.AreEqual(testIdmResource.DisplayName, _it.PropertyName2.DisplayName);
+            _it.PropertyName2.DisplayName.Should().Be(testIdmResource.DisplayName);
         }
 
 ";
@@ -1122,10 +1122,10 @@ fd333
             _it.PropertyName = byteArray; 
 
             // Assert
-            Assert.AreEqual(byteArray[0], _it.PropertyName[0]);
-            Assert.AreEqual(byteArray[1], _it.PropertyName[1]);
-            Assert.AreEqual(byteArray[2], _it.PropertyName[2]);
-            Assert.AreEqual(byteArray[byteArray.Length - 1], _it.PropertyName[_it.PropertyName.Length - 1]);
+            _it.PropertyName[0].Should().Be(byteArray[0]);
+            _it.PropertyName[1].Should().Be(byteArray[1]);
+            _it.PropertyName[2].Should().Be(byteArray[2]);
+            _it.PropertyName[_it.PropertyName.Length - 1].Should().Be(byteArray[byteArray.Length - 1]);
         }
 
 ";
@@ -1142,10 +1142,10 @@ fd333
             _it.PropertyName = byteArray; 
 
             // Assert
-            Assert.AreEqual(byteArray[0], _it.PropertyName[0]);
-            Assert.AreEqual(byteArray[1], _it.PropertyName[1]);
-            Assert.AreEqual(byteArray[2], _it.PropertyName[2]);
-            Assert.AreEqual(byteArray[byteArray.Length - 1], _it.PropertyName[_it.PropertyName.Length - 1]);
+            _it.PropertyName[0].Should().Be(byteArray[0]);
+            _it.PropertyName[1].Should().Be(byteArray[1]);
+            _it.PropertyName[2].Should().Be(byteArray[2]);
+            _it.PropertyName[_it.PropertyName.Length - 1].Should().Be(byteArray[byteArray.Length - 1]);
         }
 
 ";
@@ -1192,14 +1192,14 @@ fd333
             _it.Property_Name = list; 
 
             // Assert
-            Assert.AreEqual(byteArray[0], _it.Property_Name[0][0]);
-            Assert.AreEqual(byteArray[1], _it.Property_Name[0][1]);
-            Assert.AreEqual(byteArray[2], _it.Property_Name[0][2]);
-            Assert.AreEqual(byteArray[0], _it.Property_Name[1][0]);
-            Assert.AreEqual(byteArray[1], _it.Property_Name[1][1]);
-            Assert.AreEqual(byteArray[2], _it.Property_Name[1][2]);
-            Assert.AreEqual(byteArray[byteArray.Length - 1], _it.Property_Name[0][_it.Property_Name[0].Length - 1]);
-            Assert.AreEqual(byteArray[byteArray.Length - 1], _it.Property_Name[1][_it.Property_Name[1].Length - 1]);
+            _it.Property_Name[0][0].Should().Be(byteArray[0]);
+            _it.Property_Name[0][1].Should().Be(byteArray[1]);
+            _it.Property_Name[0][2].Should().Be(byteArray[2]);
+            _it.Property_Name[1][0].Should().Be(byteArray[0]);
+            _it.Property_Name[1][1].Should().Be(byteArray[1]);
+            _it.Property_Name[1][2].Should().Be(byteArray[2]);
+            _it.Property_Name[0][_it.Property_Name[0].Length - 1].Should().Be(byteArray[byteArray.Length - 1]);
+            _it.Property_Name[1][_it.Property_Name[0].Length - 1].Should().Be(byteArray[byteArray.Length - 1]);
         }
 
 ";
@@ -1321,7 +1321,7 @@ fd333
             _it.Property_Name = testProperty_Name; 
 
             // Assert
-            Assert.AreEqual(testProperty_Name.DisplayName, _it.Property_Name.DisplayName);
+            _it.Property_Name.DisplayName.Should().Be(testProperty_Name.DisplayName);
         }
 
 ";
@@ -1351,10 +1351,10 @@ fd333
             _it.Property_Name = byteArray; 
 
             // Assert
-            Assert.AreEqual(byteArray[0], _it.Property_Name[0]);
-            Assert.AreEqual(byteArray[1], _it.Property_Name[1]);
-            Assert.AreEqual(byteArray[2], _it.Property_Name[2]);
-            Assert.AreEqual(byteArray[byteArray.Length - 1], _it.Property_Name[_it.Property_Name.Length - 1]);
+            _it.Property_Name[0].Should().Be(byteArray[0]);
+            _it.Property_Name[1].Should().Be(byteArray[1]);
+            _it.Property_Name[2].Should().Be(byteArray[2]);
+            _it.Property_Name[_it.Property_Name.Length - 1].Should().Be(byteArray[byteArray.Length - 1]);
         }
 
 ";
@@ -1406,8 +1406,8 @@ fd333
             _it.Property_Name = list; 
 
             // Assert
-            Assert.AreEqual(""foo1"", _it.Property_Name[0]);
-            Assert.AreEqual(""foo2"", _it.Property_Name[1]);
+            _it.Property_Name[0].Should().Be(""foo1"");
+            _it.Property_Name[1].Should().Be(""foo2"");
         }
 
 ";
@@ -1447,8 +1447,8 @@ fd333
             _it.Property_Name = list; 
 
             // Assert
-            Assert.AreEqual(""foo1"", _it.Property_Name[0]);
-            Assert.AreEqual(""foo2"", _it.Property_Name[1]);
+            _it.Property_Name[0].Should().Be(""foo1"");
+            _it.Property_Name[1].Should().Be(""foo2"");
         }
 
 ";
@@ -1507,8 +1507,8 @@ fd333
             _it.Property_Name = list;
 
             // Assert
-            Assert.AreEqual(5, _it.Property_Name[0]);
-            Assert.AreEqual(5, _it.Property_Name[1]);
+            _it.Property_Name[0].Should().Be(""foo1"");
+            _it.Property_Name[1].Should().Be(""foo2"");
         }
 
         [Fact]
@@ -2047,14 +2047,14 @@ namespace IdmNet.Models.Tests
             _it.Property_Name = list; 
 
             // Assert
-            Assert.AreEqual(byteArray[0], _it.Property_Name[0][0]);
-            Assert.AreEqual(byteArray[1], _it.Property_Name[0][1]);
-            Assert.AreEqual(byteArray[2], _it.Property_Name[0][2]);
-            Assert.AreEqual(byteArray[0], _it.Property_Name[1][0]);
-            Assert.AreEqual(byteArray[1], _it.Property_Name[1][1]);
-            Assert.AreEqual(byteArray[2], _it.Property_Name[1][2]);
-            Assert.AreEqual(byteArray[byteArray.Length - 1], _it.Property_Name[0][_it.Property_Name[0].Length - 1]);
-            Assert.AreEqual(byteArray[byteArray.Length - 1], _it.Property_Name[1][_it.Property_Name[1].Length - 1]);
+            _it.Property_Name[0][0].Should().Be(byteArray[0]);
+            _it.Property_Name[0][1].Should().Be(byteArray[1]);
+            _it.Property_Name[0][2].Should().Be(byteArray[2]);
+            _it.Property_Name[1][0].Should().Be(byteArray[0]);
+            _it.Property_Name[1][1].Should().Be(byteArray[1]);
+            _it.Property_Name[1][2].Should().Be(byteArray[2]);
+            _it.Property_Name[0][_it.Property_Name[0].Length - 1].Should().Be(byteArray[byteArray.Length - 1]);
+            _it.Property_Name[1][_it.Property_Name[0].Length - 1].Should().Be(byteArray[byteArray.Length - 1]);
         }
 
 

@@ -66,8 +66,8 @@
             _it.{0} = list; 
 
             // Assert
-            Assert.AreEqual(""foo1"", _it.{0}[0]);
-            Assert.AreEqual(""foo2"", _it.{0}[1]);
+            _it.{0}[0].Should().Be(""foo1"");
+            _it.{0}[1].Should().Be(""foo2"");
         }}
 
 ";
@@ -163,8 +163,8 @@
             _it.{0} = list;
 
             // Assert
-            Assert.AreEqual({1}, _it.{0}[0]);
-            Assert.AreEqual({1}, _it.{0}[1]);
+            _it.{0}[0].Should().Be(""foo1"");
+            _it.{0}[1].Should().Be(""foo2"");
         }}
 
 {3}";
@@ -434,10 +434,10 @@
             _it.{0} = byteArray; 
 
             // Assert
-            Assert.AreEqual(byteArray[0], _it.{0}[0]);
-            Assert.AreEqual(byteArray[1], _it.{0}[1]);
-            Assert.AreEqual(byteArray[2], _it.{0}[2]);
-            Assert.AreEqual(byteArray[byteArray.Length - 1], _it.{0}[_it.{0}.Length - 1]);
+            _it.{0}[0].Should().Be(byteArray[0]);
+            _it.{0}[1].Should().Be(byteArray[1]);
+            _it.{0}[2].Should().Be(byteArray[2]);
+            _it.{0}[_it.{0}.Length - 1].Should().Be(byteArray[byteArray.Length - 1]);
         }}
 
 ";
@@ -458,14 +458,14 @@
             _it.{0} = list; 
 
             // Assert
-            Assert.AreEqual(byteArray[0], _it.{0}[0][0]);
-            Assert.AreEqual(byteArray[1], _it.{0}[0][1]);
-            Assert.AreEqual(byteArray[2], _it.{0}[0][2]);
-            Assert.AreEqual(byteArray[0], _it.{0}[1][0]);
-            Assert.AreEqual(byteArray[1], _it.{0}[1][1]);
-            Assert.AreEqual(byteArray[2], _it.{0}[1][2]);
-            Assert.AreEqual(byteArray[byteArray.Length - 1], _it.{0}[0][_it.{0}[0].Length - 1]);
-            Assert.AreEqual(byteArray[byteArray.Length - 1], _it.{0}[1][_it.{0}[1].Length - 1]);
+            _it.{0}[0][0].Should().Be(byteArray[0]);
+            _it.{0}[0][1].Should().Be(byteArray[1]);
+            _it.{0}[0][2].Should().Be(byteArray[2]);
+            _it.{0}[1][0].Should().Be(byteArray[0]);
+            _it.{0}[1][1].Should().Be(byteArray[1]);
+            _it.{0}[1][2].Should().Be(byteArray[2]);
+            _it.{0}[0][_it.{0}[0].Length - 1].Should().Be(byteArray[byteArray.Length - 1]);
+            _it.{0}[1][_it.{0}[0].Length - 1].Should().Be(byteArray[byteArray.Length - 1]);
         }}
 
 ";
@@ -528,7 +528,7 @@
             _it.{0} = test{1}; 
 
             // Assert
-            Assert.AreEqual(test{1}.DisplayName, _it.{0}.DisplayName);
+            _it.{0}.DisplayName.Should().Be(test{1}.DisplayName);
         }}
 
 ";
