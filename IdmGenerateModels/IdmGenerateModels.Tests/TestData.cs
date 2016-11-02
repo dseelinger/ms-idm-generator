@@ -704,7 +704,7 @@ fd333
             _it.PropertyName = null;
 
             // Assert
-            Assert.IsNull(_it.PropertyName);
+            _it.PropertyName.Should().BeNull();
         }
 
         [Fact]
@@ -876,7 +876,7 @@ fd333
             _it.Property_Name = null;
 
             // Assert
-            Assert.IsNull(_it.Property_Name);
+            _it.Property_Name.Should().BeNull();
         }
 
         [Fact]
@@ -929,7 +929,7 @@ fd333
         public void It_has_PropertyName_which_is_null_by_default()
         {
             // Assert
-            Assert.IsNull(_it.PropertyName);
+            _it.PropertyName.Should().BeNull();
         }
 
         [Fact]
@@ -943,7 +943,7 @@ fd333
             _it.PropertyName = null;
 
             // Assert
-            Assert.IsNull(_it.PropertyName);
+            _it.PropertyName.Should().BeNull();
         }
 
         [Fact]
@@ -981,7 +981,7 @@ fd333
         public void It_has_PropertyName_which_is_null_by_default()
         {
             // Assert
-            Assert.IsNull(_it.PropertyName);
+            _it.PropertyName.Should().BeNull();
         }
 
         [Fact]
@@ -995,7 +995,7 @@ fd333
             _it.PropertyName = null;
 
             // Assert
-            Assert.IsNull(_it.PropertyName);
+            _it.PropertyName.Should().BeNull();
         }
 
         [Fact]
@@ -1033,7 +1033,7 @@ fd333
         public void It_has_PropertyName2_which_is_null_by_default()
         {
             // Assert
-            Assert.IsNull(_it.PropertyName2);
+            _it.PropertyName2.Should().BeNull();
         }
 
         [Fact]
@@ -1047,7 +1047,7 @@ fd333
             _it.PropertyName2 = null;
 
             // Assert
-            Assert.IsNull(_it.PropertyName2);
+            _it.PropertyName2.Should().BeNull();
         }
 
         [Fact]
@@ -1093,7 +1093,7 @@ fd333
         public void It_has_PropertyName_which_is_null_by_default()
         {
             // Assert
-            Assert.IsNull(_it.PropertyName);
+            _it.PropertyName.Should().BeNull();
         }
 
         [Fact]
@@ -1108,7 +1108,7 @@ fd333
             _it.PropertyName = null;
 
             // Assert
-            Assert.IsNull(_it.PropertyName);
+            _it.PropertyName.Should().BeNull();
         }
 
         [Fact]
@@ -1155,7 +1155,7 @@ fd333
         public void It_has_Property_Name_which_is_null_by_default()
         {
             // Assert
-            Assert.IsNull(_it.Property_Name);
+            _it.Property_Name.Should().BeNull();
         }
 
         [Fact]
@@ -1174,7 +1174,7 @@ fd333
             _it.Property_Name = null;
 
             // Assert
-            Assert.IsNull(_it.Property_Name);
+            _it.Property_Name.Should().BeNull();
         }
 
         [Fact]
@@ -1296,7 +1296,7 @@ fd333
         public void It_has_Property_Name_which_is_null_by_default()
         {
             // Assert
-            Assert.IsNull(_it.Property_Name);
+            _it.Property_Name.Should().BeNull();
         }
 
         [Fact]
@@ -1310,7 +1310,7 @@ fd333
             _it.Property_Name = null;
 
             // Assert
-            Assert.IsNull(_it.Property_Name);
+            _it.Property_Name.Should().BeNull();
         }
 
         [Fact]
@@ -1417,7 +1417,7 @@ fd333
         public void It_has_Property_Name_which_is_null_by_default()
         {
             // Assert
-            Assert.IsNull(_it.Property_Name);
+            _it.Property_Name.Should().BeNull();
         }
 
         [Fact]
@@ -1433,7 +1433,7 @@ fd333
             _it.Property_Name = null;
 
             // Assert
-            Assert.IsNull(_it.Property_Name);
+            _it.Property_Name.Should().BeNull();
         }
 
         [Fact]
@@ -1476,7 +1476,7 @@ fd333
         public void It_has_Property_Name_which_is_null_by_default()
         {
             // Assert
-            Assert.IsNull(_it.Property_Name);
+            _it.Property_Name.Should().BeNull();
         }
 
         [Fact]
@@ -1492,7 +1492,7 @@ fd333
             _it.Property_Name = null;
 
             // Assert
-            Assert.IsNull(_it.Property_Name);
+            _it.Property_Name.Should().BeNull();
         }
 
         [Fact]
@@ -1556,7 +1556,7 @@ fd333
         public void It_has_Property_Name_which_is_null_by_default()
         {
             // Assert
-            Assert.IsNull(_it.Property_Name);
+            _it.Property_Name.Should().BeNull();
         }
 
         [Fact]
@@ -1571,7 +1571,7 @@ fd333
             _it.Property_Name = null;
 
             // Assert
-            Assert.IsNull(_it.Property_Name);
+            _it.Property_Name.Should().BeNull();
         }
 
         [Fact]
@@ -1595,7 +1595,7 @@ fd333
         public void It_has_Property_Name_which_is_null_by_default()
         {
             // Assert
-            Assert.IsNull(_it.Property_Name);
+            _it.Property_Name.Should().BeNull();
         }
 
         [Fact]
@@ -1613,7 +1613,7 @@ fd333
             _it.Property_Name = null;
 
             // Assert
-            Assert.IsNull(_it.Property_Name);
+            _it.Property_Name.Should().BeNull();
         }
 
         [Fact]
@@ -1721,7 +1721,7 @@ fd333
             _it.PropertyName = null;
 
             // Assert
-            Assert.IsNull(_it.PropertyName);
+            _it.PropertyName.Should().BeNull();
         }
 
         [Fact]
@@ -1809,7 +1809,7 @@ fd333
         public void It_has_PropertyName_which_is_null_by_default()
         {
             // Assert
-            Assert.IsNull(_it.PropertyName);
+            _it.PropertyName.Should().BeNull();
         }
 
         [Fact]
@@ -1824,7 +1824,7 @@ fd333
             _it.PropertyName = null;
 
             // Assert
-            Assert.IsNull(_it.PropertyName);
+            _it.PropertyName.Should().BeNull();
         }
 
         [Fact]

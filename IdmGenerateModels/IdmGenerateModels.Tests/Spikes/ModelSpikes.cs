@@ -9,7 +9,7 @@ namespace IdmGenerateModels.Tests.Spikes
 {
     public class ModelSpikes
     {
-        [Fact]
+        //[Fact]
         public async Task AllObjectTypeNames()
         {
             var client = IdmNetClientFactory.BuildClient();
@@ -26,7 +26,7 @@ namespace IdmGenerateModels.Tests.Spikes
             }
         }
 
-        [Fact]
+        //[Fact]
         public async Task AllReferenceAttributes()
         {
             var client = IdmNetClientFactory.BuildClient();
