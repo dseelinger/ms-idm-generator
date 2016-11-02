@@ -747,11 +747,11 @@ fd333
         }
 
         [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_Property_Name_is_too_small()
         {
             // Act
-            _it.Property_Name = 4;
+            Action action = () => _it.Property_Name = 4;
+            action.ShouldThrow<ArgumentException>();
         }
 
 ";
@@ -785,11 +785,11 @@ fd333
         }
 
         [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_Property_Name_is_too_big()
         {
             // Act
-            _it.Property_Name = 11;
+            Action action = () => _it.Property_Name = 11;
+            action.ShouldThrow<ArgumentException>();
         }
 
 ";
@@ -841,19 +841,19 @@ fd333
         }
 
         [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_Property_Name_is_too_small()
         {
             // Act
-            _it.Property_Name = 1;
+            Action action = () => _it.Property_Name = 1;
+            action.ShouldThrow<ArgumentException>();
         }
 
         [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_Property_Name_is_too_big()
         {
             // Act
-            _it.Property_Name = 6;
+            Action action = () => _it.Property_Name = 6;
+            action.ShouldThrow<ArgumentException>();
         }
 
 ";
@@ -890,19 +890,19 @@ fd333
         }
 
         [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_Property_Name_is_too_small()
         {
             // Act
-            _it.Property_Name = 1;
+            Action action = () => _it.Property_Name = 1;
+            action.ShouldThrow<ArgumentException>();
         }
 
         [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_Property_Name_is_too_big()
         {
             // Act
-            _it.Property_Name = 6;
+            Action action = () => _it.Property_Name = 6;
+            action.ShouldThrow<ArgumentException>();
         }
 
 ";
@@ -1512,7 +1512,6 @@ fd333
         }
 
         [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_Property_Name_is_too_small()
         {
             // Arrange
@@ -1521,11 +1520,11 @@ fd333
             var list = new List<int> { subObject1, subObject2 };
 
             // Act
-            _it.Property_Name = list;
+            Action action = () => _it.Property_Name = list;
+            action.ShouldThrow<ArgumentException>();
         }
 
         [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_Property_Name_is_too_big()
         {
             // Arrange
@@ -1534,7 +1533,8 @@ fd333
             var list = new List<int> { subObject1, subObject2 };
 
             // Act
-            _it.Property_Name = list;
+            Action action = () => _it.Property_Name = list;
+            action.ShouldThrow<ArgumentException>();
         }
 
 ";
@@ -1564,8 +1564,11 @@ fd333
         {
             // Arrange
             var now = DateTime.Now;
-            var testTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
-            _it.Property_Name = testTime;
+            var testTime1 = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+            var later = DateTime.Now.AddHours(1);
+            var testTime2 = new DateTime(later.Year, later.Month, later.Day, later.Hour, later.Minute, later.Second);
+            _it.Property_Name[0] = testTime1;
+            _it.Property_Name[1] = testTime2;
 
             // Act
             _it.Property_Name = null;
@@ -1579,13 +1582,17 @@ fd333
         {
             // Arrange
             var now = DateTime.Now;
-            var testTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+            var testTime1 = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+            var later = DateTime.Now.AddHours(1);
+            var testTime2 = new DateTime(later.Year, later.Month, later.Day, later.Hour, later.Minute, later.Second);
 
             // Act
-            _it.Property_Name = testTime;
+            _it.Property_Name[0] = testTime1;
+            _it.Property_Name[1] = testTime2;
 
             // Assert
-            Assert.AreEqual(testTime, _it.Property_Name);
+            _it.Property_Name[0].Should().Be(testTime1);
+            _it.Property_Name[1].Should().Be(testTime2);
         }
 
 ";
@@ -1630,8 +1637,8 @@ fd333
             _it.Property_Name = list;
 
             // Assert
-            Assert.AreEqual(list[0].DisplayName, _it.Property_Name[0].DisplayName);
-            Assert.AreEqual(list[1].DisplayName, _it.Property_Name[1].DisplayName);
+            _it.Property_Name[0].DisplayName.Should().Be(list[0].DisplayName);
+            _it.Property_Name[1].DisplayName.Should().Be(list[1].DisplayName);
         }
 
 ";
@@ -1758,7 +1765,7 @@ fd333
             _it.Property_Name = testTime;
 
             // Assert
-            Assert.AreEqual(testTime, _it.Property_Name);
+            _it.Property_Name.Should().Be(testTime);
         }
 
 ";
@@ -1786,7 +1793,7 @@ fd333
             _it.PropertyName = testTime;
 
             // Assert
-            Assert.AreEqual(testTime, _it.PropertyName);
+            _it.PropertyName.Should().Be(testTime);
         }
 
 ";
@@ -1836,7 +1843,7 @@ fd333
             _it.PropertyName = testTime;
 
             // Assert
-            Assert.AreEqual(testTime, _it.PropertyName);
+            _it.PropertyName.Should().Be(testTime);
         }
 
 ";

@@ -175,13 +175,17 @@
         {{
             // Arrange
             var now = DateTime.Now;
-            var testTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+            var testTime1 = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+            var later = DateTime.Now.AddHours(1);
+            var testTime2 = new DateTime(later.Year, later.Month, later.Day, later.Hour, later.Minute, later.Second);
 
             // Act
-            _it.{0} = testTime;
+            _it.{0}[0] = testTime1;
+            _it.{0}[1] = testTime2;
 
             // Assert
-            Assert.AreEqual(testTime, _it.{0});
+            _it.{0}[0].Should().Be(testTime1);
+            _it.{0}[1].Should().Be(testTime2);
         }}
 
 ";
@@ -196,7 +200,7 @@
             _it.{0} = testTime;
 
             // Assert
-            Assert.AreEqual(testTime, _it.{0});
+            _it.{0}.Should().Be(testTime);
         }}
 
 ";
@@ -261,8 +265,11 @@
         {{
             // Arrange
             var now = DateTime.Now;
-            var testTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
-            _it.{0} = testTime;
+            var testTime1 = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+            var later = DateTime.Now.AddHours(1);
+            var testTime2 = new DateTime(later.Year, later.Month, later.Day, later.Hour, later.Minute, later.Second);
+            _it.{0}[0] = testTime1;
+            _it.{0}[1] = testTime2;
 
             // Act
             _it.{0} = null;
@@ -273,17 +280,16 @@
 ";
 
         public const string MinTest = @"        [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_{0}_is_too_small()
         {{
             // Act
-            _it.{0} = {1};
+            Action action = () => _it.{0} = {1};
+            action.ShouldThrow<ArgumentException>();
         }}
 
 ";
 
         public const string MinTestMultivalued = @"        [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_{0}_is_too_small()
         {{
             // Arrange
@@ -292,13 +298,13 @@
             var list = new List<int> {{ subObject1, subObject2 }};
 
             // Act
-            _it.{0} = list;
+            Action action = () => _it.{0} = list;
+            action.ShouldThrow<ArgumentException>();
         }}
 
 ";
 
         public const string MaxTestMultivalued = @"        [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_{0}_is_too_big()
         {{
             // Arrange
@@ -307,17 +313,18 @@
             var list = new List<int> {{ subObject1, subObject2 }};
 
             // Act
-            _it.{0} = list;
+            Action action = () => _it.{0} = list;
+            action.ShouldThrow<ArgumentException>();
         }}
 
 ";
 
         public const string MaxTest = @"        [Fact]
-        [ExpectedException(typeof(ArgumentException))]
         public void It_throws_when_{0}_is_too_big()
         {{
             // Act
-            _it.{0} = {1};
+            Action action = () => _it.{0} = {1};
+            action.ShouldThrow<ArgumentException>();
         }}
 
 ";
@@ -573,8 +580,8 @@
             _it.{0} = list;
 
             // Assert
-            Assert.AreEqual(list[0].DisplayName, _it.{0}[0].DisplayName);
-            Assert.AreEqual(list[1].DisplayName, _it.{0}[1].DisplayName);
+            _it.{0}[0].DisplayName.Should().Be(list[0].DisplayName);
+            _it.{0}[1].DisplayName.Should().Be(list[1].DisplayName);
         }}
 
 ";
