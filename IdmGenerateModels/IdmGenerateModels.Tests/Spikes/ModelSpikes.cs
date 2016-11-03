@@ -10,6 +10,16 @@ namespace IdmGenerateModels.Tests.Spikes
     public class ModelSpikes
     {
         //[Fact]
+        public async Task TestSingleObjectType()
+        {
+            var client = IdmNetClientFactory.BuildClient();
+
+            var objectType = await client.GetSchemaAsync("Group");
+            var attr = objectType.BindingDescriptions[23];
+
+        }
+
+        //[Fact]
         public async Task AllObjectTypeNames()
         {
             var client = IdmNetClientFactory.BuildClient();

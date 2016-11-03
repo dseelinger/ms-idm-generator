@@ -1093,7 +1093,7 @@ fd333
         public void It_has_PropertyName_which_is_null_by_default()
         {
             // Assert
-            _it.PropertyName.Should().Be(null);
+            _it.PropertyName.Should().BeNull();
         }
 
         [Fact]
@@ -1108,7 +1108,7 @@ fd333
             _it.PropertyName = null;
 
             // Assert
-            _it.PropertyName.Should().Be(null);
+            _it.PropertyName.Should().BeNull();
         }
 
         [Fact]

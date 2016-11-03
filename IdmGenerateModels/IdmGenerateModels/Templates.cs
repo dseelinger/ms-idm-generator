@@ -356,7 +356,7 @@
         public void It_has_{0}_which_is_null_by_default()
         {{
             // Assert
-            _it.{0}.Should().Be(null);
+            _it.{0}.Should().BeNull();
         }}
 
         [Fact]
@@ -371,7 +371,7 @@
             _it.{0} = null;
 
             // Assert
-            _it.{0}.Should().Be(null);
+            _it.{0}.Should().BeNull();
         }}
 ";
 
