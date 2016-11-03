@@ -253,7 +253,7 @@ namespace IdmGenerateModels
             var validCSharpIdentifier = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
             string nullTest = bindingDescription.Required == true
                 ? ""
-                : string.Format(Templates.MultiValuedStringFormatNullTests,
+                : string.Format(Templates.MultiValuedStringFormatEmptyTests,
                     validCSharpIdentifier);
             return string.Format(Templates.MultiValuedStringFormatTests,
                validCSharpIdentifier,
@@ -278,7 +278,7 @@ namespace IdmGenerateModels
             var validCSharpIdentifier = GetValidCSharpIdentifier(bindingDescription.BoundAttributeType.Name);
             string nullTest = bindingDescription.Required == true
                 ? ""
-                : string.Format(Templates.MultialuedBinaryNullTestFormat,
+                : string.Format(Templates.MultialuedBinaryEmptyTestFormat,
                     validCSharpIdentifier);
             var tests = string.Format(Templates.MultivaluedBinaryFormatTests,
                 validCSharpIdentifier,
@@ -424,7 +424,7 @@ namespace IdmGenerateModels
         {
             string nullTest = bindingDescription.Required == true
                 ? ""
-                : string.Format(Templates.MultiValuedValueValueNullTestFormat,
+                : string.Format(Templates.MultiValuedValueValueEmptyTestFormat,
                     validCSharpIdentifier, testValueString);
             return nullTest;
         }
@@ -433,7 +433,7 @@ namespace IdmGenerateModels
         {
             string nullTest = bindingDescription.Required == true
                 ? ""
-                : string.Format(Templates.MultiValuedDateTimeNullTestFormat, validCSharpIdentifier);
+                : string.Format(Templates.MultiValuedDateTimeEmptyTestFormat, validCSharpIdentifier);
             return nullTest;
         }
 

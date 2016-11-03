@@ -72,28 +72,20 @@
 
 ";
 
-        public const string MultiValuedStringFormatNullTests = @"
+        public const string MultiValuedStringFormatEmptyTests = @"
         [Fact]
-        public void It_has_{0}_which_is_null_by_default()
+        public void It_has_{0}_which_is_an_empty_collection_by_default()
         {{
             // Assert
-            _it.{0}.Should().BeNull();
+            _it.{0}.Should().BeEmpty();
         }}
 
         [Fact]
-        public void It_has_{0}_which_can_be_set_back_to_null()
+        public void It_has_{0}_which_as_a_collection_cannot_be_set_to_null()
         {{
-            // Arrange
-            var subObject1 = ""foo1"";
-            var subObject2 = ""foo2"";
-            var list = new List<string> {{ subObject1, subObject2 }};
-            _it.{0} = list; 
-
-            // Act
-            _it.{0} = null;
-
             // Assert
-            _it.{0}.Should().BeNull();
+            Action action = () => _it.{0} = null;
+            action.ShouldThrow<InvalidOperationException>();
         }}
 ";
 
@@ -210,7 +202,7 @@
         public void It_has_{0}_which_is_null_by_default()
         {{
             // Assert
-            _it.{0}.Should().BeNull();
+            _it.{0}.Should().Be(null);
         }}
 
         [Fact]
@@ -223,59 +215,41 @@
             _it.{0} = null;
 
             // Assert
-            _it.{0}.Should().BeNull();
+            _it.{0}.Should().Be(null);
         }}
 ";
 
-        public const string MultiValuedValueValueNullTestFormat = @"
+        public const string MultiValuedValueValueEmptyTestFormat = @"
         [Fact]
-        public void It_has_{0}_which_is_null_by_default()
+        public void It_has_{0}_which_is_an_empty_collection_by_default()
         {{
             // Assert
-            _it.{0}.Should().BeNull();
+            _it.{0}.Should().BeEmpty();
         }}
 
         [Fact]
-        public void It_has_{0}_which_can_be_set_back_to_null()
+        public void It_has_{0}_which_as_a_collection_cannot_be_set_to_null()
         {{
-            // Arrange
-            var subObject1 = {1};
-            var subObject2 = {1};
-            var list = new List<int> {{ subObject1, subObject2 }};
-            _it.{0} = list; 
-
-            // Act
-            _it.{0} = null;
-
             // Assert
-            _it.{0}.Should().BeNull();
+            Action action = () => _it.{0} = null;
+            action.ShouldThrow<InvalidOperationException>();
         }}
 ";
 
-        public const string MultiValuedDateTimeNullTestFormat = @"
+        public const string MultiValuedDateTimeEmptyTestFormat = @"
         [Fact]
-        public void It_has_{0}_which_is_null_by_default()
+        public void It_has_{0}_which_is_an_empty_collection_by_default()
         {{
             // Assert
-            _it.{0}.Should().BeNull();
+            _it.{0}.Should().BeEmpty();
         }}
 
         [Fact]
-        public void It_has_{0}_which_can_be_set_back_to_null()
+        public void It_has_{0}_which_as_a_collection_cannot_be_set_to_null()
         {{
-            // Arrange
-            var now = DateTime.Now;
-            var testTime1 = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
-            var later = DateTime.Now.AddHours(1);
-            var testTime2 = new DateTime(later.Year, later.Month, later.Day, later.Hour, later.Minute, later.Second);
-            _it.{0}[0] = testTime1;
-            _it.{0}[1] = testTime2;
-
-            // Act
-            _it.{0} = null;
-
             // Assert
-            _it.{0}.Should().BeNull();
+            Action action = () => _it.{0} = null;
+            action.ShouldThrow<InvalidOperationException>();
         }}
 ";
 
@@ -334,7 +308,7 @@
         public void It_has_{0}_which_is_null_by_default()
         {{
             // Assert
-            _it.{0}.Should().BeNull();
+            _it.{0}.Should().Be(null);
         }}
 
         [Fact]
@@ -349,7 +323,7 @@
             _it.{0} = null;
 
             // Assert
-            _it.{0}.Should().BeNull();
+            _it.{0}.Should().Be(null);
         }}
 ";
 
@@ -382,7 +356,7 @@
         public void It_has_{0}_which_is_null_by_default()
         {{
             // Assert
-            _it.{0}.Should().BeNull();
+            _it.{0}.Should().Be(null);
         }}
 
         [Fact]
@@ -397,35 +371,24 @@
             _it.{0} = null;
 
             // Assert
-            _it.{0}.Should().BeNull();
+            _it.{0}.Should().Be(null);
         }}
 ";
 
-        public const string MultialuedBinaryNullTestFormat = @"
+        public const string MultialuedBinaryEmptyTestFormat = @"
         [Fact]
-        public void It_has_{0}_which_is_null_by_default()
+        public void It_has_{0}_which_is_an_empty_collection_by_default()
         {{
             // Assert
-            _it.{0}.Should().BeNull();
+            _it.{0}.Should().BeEmpty();
         }}
 
         [Fact]
-        public void It_has_{0}_which_can_be_set_back_to_null()
+        public void It_has_{0}_which_as_a_collection_cannot_be_set_to_null()
         {{
-            // Arrange
-            var stringReprentation = @""/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAoHBwkHBgoJCAkLCwoMDxkQDw4ODx4WFxIZJCAmJSMgIyIoLTkwKCo2KyIjMkQyNjs9QEBAJjBGS0U+Sjk/QD3/2wBDAQsLCw8NDx0QEB09KSMpPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT3/wAARCAAyADIDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD2CS6t42KvPGrDqCwBpv221/5+Yf8AvsV494+O3xpfgZGPL7/9M1rnsn1P51i6tnY+pw/DqrUYVPaW5knt3XqfQDXdqf8Al4h/77FcBoHjKPS9dvNOvmAs3uZDFLj/AFZLHr6g+vb6V59uPrRuO7Oec5zUuo2d+H4fp04ThOXMpeVreZ9DowYZBBUjIIPWnV5Z4L8anTymn6m5a0J2xSt/yy9if7v8vpXqKuGAKkFSMgg9a2jJSR8rjsBUwdTknt0fcfRSUVRwni/j/wD5HXUP+2f/AKLWudrovH//ACOuof8AbP8A9FrXO1yS3Z+nYD/dKX+GP5IKKKKk6xQcGu18GeNTpzJp2pvm0biOVusR9D/s/wAq4quu8F+Dn1iVb29QixjbhT/y2I7fT1NXC99Dzs0jhnh5fWNvxv5ef9bHqI1K1IBE8WP94UUz+ybD/nzg/wC/YorqPz21Lz/A8k8e8eMr/wD7Z/8Aota57Nez6n4L0nVtQlu7qKRppMbiJCBwABx9BVX/AIVxoX/PvL/3+NYSpSbbPrcLn+FpUIU5J3SS27L1PIutBGK9e/4VzoOP9RLn/rsa4rRfB0ms+ILqLDR6fbTMjv3wGPyj3x+VQ6ckd9DOsLWjKaulHe4zwd4RfX7nz7oMlhEfmYcGQ/3R/U16/DBHBCkUKCONAAqqMACmWlpDZ26W9tGI4Y1Cqi9ABU/WuiEeVHx2Y5jPHVOZ6RWy/rqFFLRVHnBRRRQA09DWP4aH/EumPf7TN/6GaKKSOin/AAJ+q/U2aWiimc4UUUUAf//Z"";
-            var byteArray = Convert.FromBase64String(stringReprentation);
-            var list = new List<byte[]> {{
-                byteArray,
-                byteArray
-            }};
-            _it.{0} = list; 
-
-            // Act
-            _it.{0} = null;
-
             // Assert
-            _it.{0}.Should().BeNull();
+            Action action = () => _it.{0} = null;
+            action.ShouldThrow<InvalidOperationException>();
         }}
 ";
 
@@ -510,7 +473,7 @@
         public void It_has_{0}_which_is_null_by_default()
         {{
             // Assert
-            _it.{0}.Should().BeNull();
+            _it.{0}.Should().Be(null);
         }}
 
         [Fact]
@@ -524,7 +487,7 @@
             _it.{0} = null;
 
             // Assert
-            _it.{0}.Should().BeNull();
+            _it.{0}.Should().Be(null);
         }}
 
         [Fact]
@@ -542,28 +505,18 @@
 
         public const string MultivaluedReferenceFormatTests = @"
         [Fact]
-        public void It_has_{0}_which_is_null_by_default()
+        public void It_has_{0}_which_is_an_empty_collection_by_default()
         {{
             // Assert
-            _it.{0}.Should().BeNull();
+            _it.{0}.Should().BeEmpty();
         }}
 
         [Fact]
-        public void It_has_{0}_which_can_be_set_back_to_null()
+        public void It_has_{0}_which_as_a_collection_cannot_be_set_to_null()
         {{
-            // Arrange
-            var list = new List<{1}>
-            {{
-                new {1} {{ DisplayName = ""Test {1}1"", ObjectID = ""guid1"" }},
-                new {1} {{ DisplayName = ""Test {1}2"", ObjectID = ""guid2"" }}
-            }};
-            _it.{0} = list;
-
-            // Act
-            _it.{0} = null;
-
             // Assert
-            _it.{0}.Should().BeNull();
+            Action action = () => _it.{0} = null;
+            action.ShouldThrow<InvalidOperationException>();
         }}
 
         [Fact]
@@ -583,7 +536,6 @@
             _it.{0}[0].DisplayName.Should().Be(list[0].DisplayName);
             _it.{0}[1].DisplayName.Should().Be(list[1].DisplayName);
         }}
-
 ";
 
         public const string MultiValuedReferenceFormat = @"
@@ -708,7 +660,7 @@ namespace IdmNet.Models.Tests
             var it = new {0}(resource);
 
             it.DisplayName.Should().Be(""My Display Name"");
-            it.Creator.Should().BeNull();
+            it.Creator.Should().Be(null);
         }}
 
         [Fact]
