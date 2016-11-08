@@ -446,7 +446,10 @@
         /// </summary>
         {2}public List<byte[]> {4}
         {{
-            get {{ return GetAttr(""{3}"")?.ToBinaries(); }}
+            get {{
+                IdmAttribute attr = GetAttr(""{3}"");
+                return (attr != null) ? attr.ToBinaries() : new List<byte[]>();
+            }}
             set {{ SetAttrValues(""{3}"", value?.Select(Convert.ToBase64String).ToList()); }}
         }}
 

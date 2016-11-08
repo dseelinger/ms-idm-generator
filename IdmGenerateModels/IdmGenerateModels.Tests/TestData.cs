@@ -1614,7 +1614,10 @@ fd333
         /// </summary>
         public List<byte[]> Property_Name
         {
-            get { return GetAttr(""Property-Name"")?.ToBinaries(); }
+            get {
+                IdmAttribute attr = GetAttr(""Property-Name"");
+                return (attr != null) ? attr.ToBinaries() : new List<byte[]>();
+            }
             set { SetAttrValues(""Property-Name"", value?.Select(Convert.ToBase64String).ToList()); }
         }
 
@@ -1922,7 +1925,10 @@ namespace IdmNet.Models
         [Required]
         public List<byte[]> Property_Name
         {
-            get { return GetAttr(""Property-Name"")?.ToBinaries(); }
+            get {
+                IdmAttribute attr = GetAttr(""Property-Name"");
+                return (attr != null) ? attr.ToBinaries() : new List<byte[]>();
+            }
             set { SetAttrValues(""Property-Name"", value?.Select(Convert.ToBase64String).ToList()); }
         }
 
